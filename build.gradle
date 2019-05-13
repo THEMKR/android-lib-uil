@@ -9,6 +9,9 @@ buildscript {
         maven {
             url 'https://dl.google.com/dl/android/maven2'
         }
+        maven {
+            url 'https://api.bitbucket.org/1.0/repositories/THEMKR/android-libs/raw/releases'
+        }
         jcenter()
     }
     dependencies {
@@ -27,6 +30,9 @@ allprojects {
         maven { url "https://raw.github.com/synergian/wagon-git/releases" }
         maven {
             url 'https://dl.google.com/dl/android/maven2'
+        }
+        maven {
+            url 'https://api.bitbucket.org/1.0/repositories/THEMKR/android-libs/raw/releases'
         }
         jcenter()
     }

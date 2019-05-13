@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="toolbar_height">@dimen/mkrdp_15</dimen>
+    <dimen name="toolbar_title_text_size">@dimen/mkrdp_5.50</dimen>
+    <dimen name="toolbar_title_text_padding">@dimen/mkrdp_2</dimen>
+    <dimen name="toolbar_icon_width">@dimen/mkrdp_15</dimen>
+
+    <dimen name="dialog_progress_circle_dim">@dimen/mkrdp_25</dimen>
+    <dimen name="dialog_progress_progress_width">@dimen/mkrdp_1</dimen>
+
+    <dimen name="card_corner">@dimen/mkrdp_1</dimen>
+    <dimen name="card_padding">@dimen/mkrdp_2</dimen>
+    <dimen name="card_margin">@dimen/mkrdp_2</dimen>
+    <dimen name="card_elevation">@dimen/mkrdp_2</dimen>
+
+    <dimen name="album_name_text_size">@dimen/mkrdp_4.50</dimen>
+    <dimen name="gallery_border">@dimen/mkrdp_1</dimen>
+
+</resources>
