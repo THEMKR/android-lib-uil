@@ -6,6 +6,7 @@ import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.asynctask.BaseAsyncTask
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.dto.DTOAlbumData
+import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
 
@@ -30,12 +31,16 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                 val path = cursor!!.getString(colPathIndex)
                 val bucketName = cursor!!.getString(colAlbumNameIndex)
                 Tracer.debug(TAG, "doInBackground : EXTERNAL : $path")
-                var dtoAlbumData = getDTOAlbumData(dtoAlbumList, bucketName, Constants.STORAGE_TYPE.EXTERNAL.ordinal)
+                var dtoAlbumData = getDTOAlbumData(dtoAlbumList, bucketName, Constants.STORAGE_TYPE.EXTERNAL.value)
                 if (dtoAlbumData == null) {
-                    dtoAlbumData = DTOAlbumData(Constants.STORAGE_TYPE.EXTERNAL, bucketName)
+                    dtoAlbumData = DTOAlbumData(Constants.STORAGE_TYPE.EXTERNAL.value, bucketName)
                     dtoAlbumList.add(dtoAlbumData)
                 }
-                dtoAlbumData.imagePathList.add(path)
+                val imageData = ImageData()
+                imageData.dimensionPer = -1F
+                imageData.path = path
+                imageData.storageType = Constants.STORAGE_TYPE.EXTERNAL.value
+                dtoAlbumData.imagePathList.add(imageData)
             }
             cursor!!.close()
         } catch (e: Exception) {
@@ -52,12 +57,16 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                     val path = cursor!!.getString(colPathIndex)
                     val bucketName = cursor!!.getString(colAlbumNameIndex)
                     Tracer.debug(TAG, "doInBackground : INTERNAL : $path")
-                    var dtoAlbumData = getDTOAlbumData(dtoAlbumList, bucketName, Constants.STORAGE_TYPE.INTERNAL.ordinal)
+                    var dtoAlbumData = getDTOAlbumData(dtoAlbumList, bucketName, Constants.STORAGE_TYPE.INTERNAL.value)
                     if (dtoAlbumData == null) {
-                        dtoAlbumData = DTOAlbumData(Constants.STORAGE_TYPE.INTERNAL, bucketName)
+                        dtoAlbumData = DTOAlbumData(Constants.STORAGE_TYPE.INTERNAL.value, bucketName)
                         dtoAlbumList.add(dtoAlbumData)
                     }
-                    dtoAlbumData.imagePathList.add(path)
+                    val imageData = ImageData()
+                    imageData.dimensionPer = -1F
+                    imageData.path = path
+                    imageData.storageType = Constants.STORAGE_TYPE.INTERNAL.value
+                    dtoAlbumData.imagePathList.add(imageData)
                 }
                 cursor!!.close()
             }

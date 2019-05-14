@@ -9,12 +9,19 @@
     <dimen name="dialog_progress_circle_dim">@dimen/mkrdp_25</dimen>
     <dimen name="dialog_progress_progress_width">@dimen/mkrdp_1</dimen>
 
-    <dimen name="card_corner">@dimen/mkrdp_1</dimen>
-    <dimen name="card_padding">@dimen/mkrdp_2</dimen>
-    <dimen name="card_margin">@dimen/mkrdp_2</dimen>
-    <dimen name="card_elevation">@dimen/mkrdp_2</dimen>
+    <dimen name="card_padding_s">@dimen/mkrdp_1</dimen>
+    <dimen name="card_elevation_s">@dimen/mkrdp_2</dimen>
 
+    <dimen name="card_padding_no">@dimen/mkrdp_0</dimen>
+    <dimen name="card_elevation_no">@dimen/mkrdp_1</dimen>
+
+    <dimen name="item_album_size">@dimen/mkrdp_40</dimen>
     <dimen name="album_name_text_size">@dimen/mkrdp_4.50</dimen>
-    <dimen name="gallery_border">@dimen/mkrdp_1</dimen>
+    <dimen name="album_name_text_padding">@dimen/mkrdp_1</dimen>
+
+    <dimen name="item_pic_size">@dimen/mkrdp_30</dimen>
+
+    <dimen name="thumbnail_stroke">@dimen/mkrdp_0.50</dimen>
+    <dimen name="thumbnail_padding">@dimen/mkrdp_0.25</dimen>
 
 </resources>

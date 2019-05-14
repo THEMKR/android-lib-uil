@@ -57,4 +57,46 @@ class ImageData {
     override fun hashCode(): Int {
         return path.hashCode()
     }
+
+    /**
+     * Method to clone the Object based on the New Dimension given
+     * @param dimensionPer
+     */
+    fun clone(dimensionPer: Float): ImageData {
+        val imageData = ImageData()
+        imageData.storageType = storageType
+        imageData.path = path
+        imageData.cropSection = cropSection
+        imageData.flipType = flipType
+        imageData.dimensionPer = dimensionPer
+        return imageData
+    }
+
+    /**
+     * Method to clone the Object based on the New CropSection
+     * @param cropSection
+     */
+    fun clone(cropSection: CropSection): ImageData {
+        val imageData = ImageData()
+        imageData.storageType = storageType
+        imageData.path = path
+        imageData.cropSection = cropSection
+        imageData.flipType = flipType
+        imageData.dimensionPer = dimensionPer
+        return imageData
+    }
+
+    /**
+     * Method to clone the Object based on the New FlipType
+     * @param dimensionPer
+     */
+    fun clone(flipType: Int): ImageData {
+        val imageData = ImageData()
+        imageData.storageType = storageType
+        imageData.path = path
+        imageData.cropSection = cropSection
+        imageData.flipType = flipType
+        imageData.dimensionPer = dimensionPer
+        return imageData
+    }
 }

@@ -23,4 +23,39 @@
         <item name="android:background">@color/toolbar_back</item>
     </style>
 
+    <!-- CardView Property Start -->
+    <style name="style_card_view_property_no">
+        <item name="contentPaddingBottom">@dimen/card_padding_no</item>
+        <item name="contentPaddingLeft">@dimen/card_padding_no</item>
+        <item name="contentPaddingRight">@dimen/card_padding_no</item>
+        <item name="contentPaddingTop">@dimen/card_padding_no</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/card_elevation_no</item>
+        <item name="elevation">@dimen/card_elevation_no</item>
+        <item name="cardBackgroundColor">@color/card_background</item>
+        <item name="cardCornerRadius">0dp</item>
+    </style>
+
+    <style name="style_card_view_property_s" parent="style_card_view_property_no">
+        <item name="contentPaddingBottom">@dimen/card_padding_s</item>
+        <item name="contentPaddingLeft">@dimen/card_padding_s</item>
+        <item name="contentPaddingRight">@dimen/card_padding_s</item>
+        <item name="contentPaddingTop">@dimen/card_padding_s</item>
+        <item name="android:elevation" tools:ignore="NewApi">@dimen/card_elevation_s</item>
+        <item name="elevation">@dimen/card_elevation_s</item>
+    </style>
+    <!-- CardView Property End -->
+
+    <style name="thumbnail_album">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/shape_thumbnail</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="thumbnail_pic">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/shape_thumbnail</item>
+    </style>
+
 </resources>
