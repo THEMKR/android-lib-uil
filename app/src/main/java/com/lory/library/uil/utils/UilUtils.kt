@@ -7,7 +7,6 @@ import android.graphics.Canvas
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
-import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 
 

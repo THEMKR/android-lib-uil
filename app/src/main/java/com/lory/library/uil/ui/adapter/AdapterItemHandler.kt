@@ -6,7 +6,6 @@ import android.widget.FrameLayout
 import com.lory.library.ui.ui.adapter.BaseAdapterItemHandler
 import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
-import com.lory.library.uil.R
 import com.lory.library.uil.utils.Tracer
 
 /**

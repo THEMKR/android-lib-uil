@@ -20,7 +20,6 @@ import com.lory.library.uil.provider.AsyncTaskProvider
 import com.lory.library.uil.provider.FragmentProvider
 import com.lory.library.uil.utils.JsonUtil
 import com.lory.library.uil.utils.Tracer
-import com.mkrworld.sketch.ui.fragment.FragmentGalleryAlbum
 
 class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissionController.OnAppPermissionControllerListener {
 
