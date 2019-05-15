@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <padding android:left="@dimen/thumbnail_selected_padding"
+             android:top="@dimen/thumbnail_selected_padding"
+             android:right="@dimen/thumbnail_selected_padding"
+             android:bottom="@dimen/thumbnail_selected_padding"/>
+
+    <stroke android:width="@dimen/thumbnail_selected_stroke"
+            android:color="@color/selected"/>
+
+    <solid android:color="@android:color/transparent"/>
+</shape>

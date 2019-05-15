@@ -4,12 +4,16 @@
     <color name="colorPrimary">#0000FF</color>
     <color name="colorPrimaryDark">#1919A5</color>
     <color name="colorAccent">#F1240B</color>
+    <color name="selected">#0B45F1</color>
+
     <color name="app_background">#EEEEEE</color>
     <color name="card_background">#FFFFFF</color>
+    <color name="album_name_back">#88000000</color>
+
 
     <!-- TEXT -->
     <color name="text_color_primary">#000000</color>
-    <color name="text_color_secondary">#F1240B</color>
+    <color name="text_color_secondary">#FFFFFF</color>
 
     <!-- TOOL BAR -->
     <color name="toolbar_back">@color/colorPrimary</color>

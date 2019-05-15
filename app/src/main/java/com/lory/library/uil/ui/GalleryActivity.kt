@@ -16,8 +16,10 @@ import com.lory.library.ui.utils.MKRDialogUtil
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.dto.DTOAlbumData
+import com.lory.library.uil.dto.Model
 import com.lory.library.uil.provider.AsyncTaskProvider
 import com.lory.library.uil.provider.FragmentProvider
+import com.lory.library.uil.ui.fragment.FragmentGalleryAlbum
 import com.lory.library.uil.utils.JsonUtil
 import com.lory.library.uil.utils.Tracer
 
@@ -52,6 +54,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ), this
         )
+        Model.getInstance().selectedImageDataList.clear()
         if (appPermissionController?.isHaveAllRequiredPermission() == true) {
             loadGalleryInfoList()
         } else {

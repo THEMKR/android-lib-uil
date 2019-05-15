@@ -37,7 +37,6 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                     dtoAlbumList.add(dtoAlbumData)
                 }
                 val imageData = ImageData()
-                imageData.dimensionPer = -1F
                 imageData.path = path
                 imageData.storageType = Constants.STORAGE_TYPE.EXTERNAL.value
                 dtoAlbumData.imagePathList.add(imageData)
@@ -63,7 +62,6 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                         dtoAlbumList.add(dtoAlbumData)
                     }
                     val imageData = ImageData()
-                    imageData.dimensionPer = -1F
                     imageData.path = path
                     imageData.storageType = Constants.STORAGE_TYPE.INTERNAL.value
                     dtoAlbumData.imagePathList.add(imageData)

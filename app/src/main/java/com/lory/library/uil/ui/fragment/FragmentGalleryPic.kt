@@ -10,13 +10,16 @@ import android.view.ViewGroup
 import com.lory.library.ui.callback.OnBaseFragmentListener
 import com.lory.library.ui.ui.adapter.BaseAdapter
 import com.lory.library.ui.ui.adapter.BaseAdapterItem
+import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
+import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.Model
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
 import com.lory.library.uil.utils.JsonUtil
 import com.lory.library.uil.utils.Tracer
 
-class FragmentGalleryPic : Fragment(), OnBaseFragmentListener {
+class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VHClickable {
     companion object {
         private const val TAG: String = BuildConfig.BASE_TAG + ".FragmentGalleryPic"
         const val EXTRA_IMAGE_LIST: String = "EXTRA_IMAGE_LIST"
@@ -31,12 +34,13 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val data = arguments?.getString(FragmentGalleryPic.EXTRA_IMAGE_LIST, "[]") ?: "[]"
-        val dtoImageLocationList = JsonUtil.toObjectTokenType<ArrayList<String>>(data, false)
+        val dtoImageLocationList = JsonUtil.toObjectTokenType<ArrayList<ImageData>>(data, false)
         val recyclerView = view?.findViewById(R.id.fragment_album_recyclerView_pic) as RecyclerView
         recyclerView?.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
         recyclerView?.adapter = baseAdapter
+        baseAdapter?.setVHClickCallback(this)
         val baseAdapterItemList: ArrayList<BaseAdapterItem<*>> = ArrayList()
-        val adapterViewType = AdapterItemHandler.AdapterItemViewType.GALLERY_IMAGE.ordinal
+        val adapterViewType = AdapterItemHandler.AdapterItemViewType.GALLERY_PIC.ordinal
         for (dto in dtoImageLocationList) {
             Tracer.debug(TAG, "onViewCreated : $dto ")
             baseAdapterItemList.add(BaseAdapterItem(adapterViewType, dto))
@@ -63,5 +67,21 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener {
 
     override fun onRefresh() {
         Tracer.debug(TAG, "onRefresh : ")
+    }
+
+    override fun onViewHolderClicked(holder: BaseViewHolder<*>, view: View) {
+        Tracer.debug(TAG, "onViewHolderClicked : ")
+        when (view.id) {
+            R.id.item_pic_cardView -> {
+                val tagDto = (view.tag ?: return) as? ImageData ?: return
+                val selectedImageDataList = Model.getInstance().selectedImageDataList
+                if (selectedImageDataList.contains(tagDto)) {
+                    selectedImageDataList.remove(tagDto)
+                } else {
+                    selectedImageDataList.add(tagDto)
+                }
+                baseAdapter.notifyDataSetChanged()
+            }
+        }
     }
 }

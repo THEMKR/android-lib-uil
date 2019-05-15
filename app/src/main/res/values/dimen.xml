@@ -15,13 +15,19 @@
     <dimen name="card_padding_no">@dimen/mkrdp_0</dimen>
     <dimen name="card_elevation_no">@dimen/mkrdp_1</dimen>
 
+
+    <dimen name="item_album_padding_ver">@dimen/mkrdp_5</dimen>
     <dimen name="item_album_size">@dimen/mkrdp_40</dimen>
     <dimen name="album_name_text_size">@dimen/mkrdp_4.50</dimen>
     <dimen name="album_name_text_padding">@dimen/mkrdp_1</dimen>
 
+    <dimen name="item_pic_padding_ver">@dimen/mkrdp_5</dimen>
     <dimen name="item_pic_size">@dimen/mkrdp_30</dimen>
 
     <dimen name="thumbnail_stroke">@dimen/mkrdp_0.50</dimen>
     <dimen name="thumbnail_padding">@dimen/mkrdp_0.25</dimen>
+
+    <dimen name="thumbnail_selected_stroke">@dimen/mkrdp_2</dimen>
+    <dimen name="thumbnail_selected_padding">@dimen/mkrdp_0.25</dimen>
 
 </resources>

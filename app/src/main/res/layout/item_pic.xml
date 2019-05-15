@@ -2,7 +2,9 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/item_pic_padding_ver"
+        android:paddingBottom="@dimen/item_pic_padding_ver">
 
     <android.support.v7.widget.CardView
             android:id="@+id/item_pic_cardView"
@@ -13,6 +15,15 @@
 
         <com.lory.library.uil.ui.custom.MKRImageView
                 android:id="@+id/item_pic_imageView"
-                style="@style/thumbnail_pic"/>
+                style="@style/thumbnail"/>
+
+        <View
+                android:id="@+id/item_pic_view_selected"
+                android:layout_width="match_parent"
+                android:focusable="false"
+                android:clickable="false"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_thumbnail_selected"/>
+
     </android.support.v7.widget.CardView>
 </RelativeLayout>

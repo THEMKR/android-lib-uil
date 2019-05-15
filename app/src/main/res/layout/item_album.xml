@@ -2,70 +2,37 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/item_album_padding_ver"
+        android:paddingBottom="@dimen/item_album_padding_ver">
 
     <android.support.v7.widget.CardView
             android:id="@+id/item_album_cardView"
             android:layout_centerInParent="true"
             style="@style/style_card_view_property_no"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+            android:layout_width="@dimen/item_album_size"
+            android:layout_height="@dimen/item_album_size">
 
-            <LinearLayout
-                    android:layout_width="@dimen/item_album_size"
-                    android:layout_height="@dimen/item_album_size"
-                    android:orientation="vertical">
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <LinearLayout
-                        android:id="@+id/item_album_layout_section_top"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                    <com.lory.library.uil.ui.custom.MKRImageView
-                            android:id="@+id/item_album_imageView_1"
-                            style="@style/thumbnail_album"/>
-
-                    <com.lory.library.uil.ui.custom.MKRImageView
-                            android:id="@+id/item_album_imageView_2"
-                            style="@style/thumbnail_album"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                        android:id="@+id/item_album_layout_section_bottom"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
-
-                    <com.lory.library.uil.ui.custom.MKRImageView
-                            android:id="@+id/item_album_imageView_3"
-                            style="@style/thumbnail_album"/>
-
-                    <com.lory.library.uil.ui.custom.MKRImageView
-                            android:id="@+id/item_album_imageView_4"
-                            style="@style/thumbnail_album"/>
-
-                </LinearLayout>
-            </LinearLayout>
+            <com.lory.library.uil.ui.custom.MKRImageView
+                    android:id="@+id/item_album_imageView"
+                    style="@style/thumbnail"/>
 
             <com.lory.library.ui.ui.view.FontTextView
                     android:id="@+id/item_album_textView_albumName"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:gravity="center"
                     android:textStyle="bold"
-                    android:text="@string/app_name"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/album_name_back"
                     android:padding="@dimen/album_name_text_padding"
                     android:textSize="@dimen/album_name_text_size"
-                    android:textColor="@color/text_color_primary"/>
-        </LinearLayout>
+                    android:textColor="@color/text_color_secondary"/>
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

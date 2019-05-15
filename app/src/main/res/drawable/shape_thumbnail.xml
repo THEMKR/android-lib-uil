@@ -7,6 +7,4 @@
 
     <stroke android:width="@dimen/thumbnail_stroke"
             android:color="@color/colorAccent"/>
-
-    <solid android:color="@color/card_background"/>
 </shape>

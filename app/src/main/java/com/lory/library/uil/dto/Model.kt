@@ -22,6 +22,6 @@ class Model {
     /**
      * List of selected ImageData
      */
-    val selectedImageDataLlist: ArrayList<ImageData> = ArrayList<ImageData>()
+    val selectedImageDataList: ArrayList<ImageData> = ArrayList<ImageData>()
 
 }

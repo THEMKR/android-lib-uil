@@ -6,6 +6,9 @@ import android.widget.FrameLayout
 import com.lory.library.ui.ui.adapter.BaseAdapterItemHandler
 import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
+import com.lory.library.uil.R
+import com.lory.library.uil.ui.adapter.viewholder.GalleryAlbumVH
+import com.lory.library.uil.ui.adapter.viewholder.GalleryPicVH
 import com.lory.library.uil.utils.Tracer
 
 /**
@@ -21,14 +24,14 @@ class AdapterItemHandler : BaseAdapterItemHandler() {
      * Type of view hold by adapter
      */
     enum class AdapterItemViewType {
-        NONE, GALLERY_ALBUM, GALLERY_IMAGE
+        NONE, GALLERY_ALBUM, GALLERY_PIC
     }
 
     override fun createHolder(inflater: LayoutInflater, parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
         Tracer.debug(TAG, "createHolder: " + getItemViewType(viewType));
         when (getItemViewType(viewType)) {
-            //AdapterItemHandler.AdapterItemViewType.GALLERY_ALBUM -> return GalleryAlbumVH(inflater.inflate(R.layout.item_gallery_album, parent, false))
-            //AdapterItemHandler.AdapterItemViewType.GALLERY_PIC -> return GalleryImageVH(inflater.inflate(R.layout.item_gallery_image, parent, false))
+            AdapterItemHandler.AdapterItemViewType.GALLERY_ALBUM -> return GalleryAlbumVH(inflater.inflate(R.layout.item_album, parent, false))
+            AdapterItemHandler.AdapterItemViewType.GALLERY_PIC -> return GalleryPicVH(inflater.inflate(R.layout.item_pic, parent, false))
             else -> return object : BaseViewHolder<Any>(FrameLayout(inflater.context)) {
                 protected override fun bindData(o: Any) {
                     mParent.tag = o

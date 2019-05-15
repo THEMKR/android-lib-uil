@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.lory.library.ui.callback.OnBaseActivityListener
 import com.lory.library.ui.callback.OnBaseFragmentListener
 import com.lory.library.ui.ui.adapter.BaseAdapter
 import com.lory.library.ui.ui.adapter.BaseAdapterItem
@@ -14,6 +15,7 @@ import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.dto.DTOAlbumData
+import com.lory.library.uil.provider.FragmentProvider
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
 import com.lory.library.uil.utils.JsonUtil
 import com.lory.library.uil.utils.Tracer
@@ -52,19 +54,19 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
     override fun onViewHolderClicked(holder: BaseViewHolder<*>, view: View) {
         Tracer.debug(TAG, "onViewHolderClicked : ")
         when (view.id) {
-//            R.id.item_gallery_album_parent -> {
-//                val tagDto = view.tag ?: return
-//                if (tagDto !is DTOAlbumData) {
-//                    return
-//                }
-//                val tag = FragmentProvider.TAG.GALLERY_PIC
-//                val fragment = FragmentProvider.getFragment(tag)
-//                val bundle = Bundle()
-//                bundle.putString(FragmentGalleryPic.EXTRA_IMAGE_LIST, JsonUtil.toStringTokenType<ArrayList<String>>(tagDto.imagePathList, false))
-//                if (activity is OnBaseActivityListener) {
-//                    (activity as OnBaseActivityListener)?.onBaseActivityAddFragment(fragment, bundle, true, tag)
-//                }
-//            }
+            R.id.item_album_cardView -> {
+                val tagDto = view.tag ?: return
+                if (tagDto !is DTOAlbumData) {
+                    return
+                }
+                val tag = FragmentProvider.TAG.GALLERY_PIC
+                val fragment = FragmentProvider.getFragment(tag)
+                val bundle = Bundle()
+                bundle.putString(FragmentGalleryPic.EXTRA_IMAGE_LIST, JsonUtil.toStringTokenType<ArrayList<String>>(tagDto.imagePathList, false))
+                if (activity is OnBaseActivityListener) {
+                    (activity as OnBaseActivityListener)?.onBaseActivityAddFragment(fragment, bundle, true, tag)
+                }
+            }
         }
     }
 

@@ -25,6 +25,7 @@ class MKRImageView : View, ImageLoader.OnImageLoaded {
         set(value) {
             imageLoader?.removeImage(field)
             field = value
+            Tracer.debug(TAG, " FIELD : $field")
             if (field != null) {
                 val savedBitmap = SessionStorage.getInstance(context).getValue<Bitmap>(field!!.key)
                 if (savedBitmap != null) {
@@ -60,11 +61,6 @@ class MKRImageView : View, ImageLoader.OnImageLoaded {
         init()
     }
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-        imageData = imageData
-    }
-
     override fun onDetachedFromWindow() {
         imageLoader.removeImage(imageData)
         super.onDetachedFromWindow()
@@ -85,12 +81,12 @@ class MKRImageView : View, ImageLoader.OnImageLoaded {
         rectF.top = 0F
         rectF.right = width.toFloat()
         rectF.bottom = height.toFloat()
-
         if (bitmap.isRecycled) {
             bitmap = UilUtils.getDefaultBitmap(context)
+        }
+        if (bitmap.equals(UilUtils.getDefaultBitmap(context))) {
             imageLoader.loadImage(imageData, this)
         }
-
         canvas?.drawBitmap(bitmap, null, rectF, null)
     }
 
