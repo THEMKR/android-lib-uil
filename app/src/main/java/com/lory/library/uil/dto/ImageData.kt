@@ -108,18 +108,4 @@ class ImageData {
         imageData.dimensionPer = dimensionPer
         return imageData
     }
-
-    /**
-     * Method to clone the Object based on the New Path
-     * @param path
-     */
-    fun clone(path: String): ImageData {
-        val imageData = ImageData()
-        imageData.storageType = storageType
-        imageData.path = path
-        imageData.cropSection = cropSection
-        imageData.flipType = flipType
-        imageData.dimensionPer = dimensionPer
-        return imageData
-    }
 }

@@ -90,11 +90,12 @@ class MKRImageView : View, ImageLoader.OnImageLoaded {
         canvas?.drawBitmap(bitmap, null, rectF, null)
     }
 
-    override fun onImageLoaded(bitmap: Bitmap, imageData: ImageData) {
+    override fun onImageLoaded(bitmap: Bitmap?, imageData: ImageData) {
         Tracer.debug(TAG, "onImageLoaded : $bitmap : $imageData")
-        if (imageData.equals(this.imageData)) {
+        if (bitmap != null && !bitmap!!.isRecycled && imageData.equals(this.imageData)) {
             this.bitmap = bitmap
         } else {
+            this.bitmap = UilUtils.getDefaultBitmap(context)
             imageLoader.loadImage(this.imageData!!, this)
         }
         invalidate()

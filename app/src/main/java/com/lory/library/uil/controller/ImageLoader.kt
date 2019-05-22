@@ -2,6 +2,7 @@ package com.lory.library.uil.controller
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.AsyncTask
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.storage.session.OnSessionStorageListener
 import com.lory.library.storage.session.SessionStorage
@@ -10,6 +11,7 @@ import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.provider.AsyncTaskProvider
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
+import java.lang.Exception
 import java.util.*
 
 
@@ -18,7 +20,6 @@ class ImageLoader {
     companion object {
         private const val TAG: String = BuildConfig.BASE_TAG + ".ImageLoader"
         private val MAX_THREAD_COUNT: Int = 5
-        private var mThreadCount: Int = 0
         private var instance: ImageLoader? = null
 
         /**
@@ -34,8 +35,10 @@ class ImageLoader {
 
     }
 
+    private var worker: Worker? = null
+    private var threadCount = 0
     private var context: Context
-    private val query: Vector<ImageData>
+    private val query = Vector<ImageData>()
     private val listenerList = Hashtable<ImageData, OnImageLoaded>()
     val asyncTaskProvider: AsyncTaskProvider = AsyncTaskProvider()
     val onSessionStorageListener = object : OnSessionStorageListener<Bitmap> {
@@ -47,12 +50,13 @@ class ImageLoader {
         override fun onItemSizeInByte(mkr: Bitmap): Int {
             return mkr.height * mkr.width * 4
         }
-
     }
 
+    /**
+     *
+     */
     private constructor(context: Context) {
         this.context = context.applicationContext
-        query = Vector()
         asyncTaskProvider.attachProvider()
     }
 
@@ -78,46 +82,94 @@ class ImageLoader {
         if (imageData == null) {
             return
         }
+        listenerList.remove(imageData)
         query.add(imageData)
         if (onImageLoaded != null) {
             listenerList[imageData] = onImageLoaded
         }
-        when (imageData.storageType) {
-            Constants.STORAGE_TYPE.EXTERNAL.ordinal -> {
-                asyncTaskProvider.fetchBitmapFromExternalStorage(context, imageData, object : AsyncCallBack<Bitmap, Any> {
-                    override fun onProgress(progress: Any?) {
+        runWorker()
+    }
 
-                    }
+    /**
+     * Method to run the worker
+     */
+    fun runWorker() {
+        if (worker == null && query.size > 0) {
+            worker = Worker()
+            worker!!.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+        }
+    }
 
-                    override fun onSuccess(mkr: Bitmap?) {
-                        Tracer.debug(TAG, "onSuccess : $imageData")
-                        mThreadCount--
-                        if (mkr != null && !mkr.isRecycled) {
-                            SessionStorage.getInstance(context).put(imageData.key, mkr, onSessionStorageListener)
-                            listenerList[imageData]?.onImageLoaded(mkr, imageData)
-                        } else {
-                            SessionStorage.getInstance(context).removeValue(imageData.key)
-                        }
-                    }
-                })
+    /**
+     * Class used to control the Number of Request to load bitmap
+     */
+    private inner class Worker : AsyncTask<Void, ImageData, Void>() {
+
+        override fun doInBackground(vararg params: Void?): Void? {
+            while (query.size > 0) {
+                try {
+                    Thread.sleep(10)
+                } catch (e: Exception) {
+                    Tracer.error(TAG, "doInBackground : ${e.message} ")
+                }
+                if (threadCount < MAX_THREAD_COUNT) {
+                    threadCount++
+                    val imageData = query[0]
+                    query.removeAt(0)
+                    publishProgress(imageData)
+                }
             }
-            Constants.STORAGE_TYPE.INTERNAL.ordinal -> {
-                asyncTaskProvider.fetchBitmapFromInternalStorage(context, imageData, object : AsyncCallBack<Bitmap, Any> {
-                    override fun onProgress(progress: Any?) {
+            return null
+        }
 
-                    }
+        override fun onProgressUpdate(vararg values: ImageData?) {
+            val imageData: ImageData = if ((values?.size ?: 0) > 0) {
+                values[0]!!
+            } else {
+                threadCount--
+                return
+            }
+            when (imageData.storageType) {
+                Constants.STORAGE_TYPE.EXTERNAL.ordinal -> {
+                    asyncTaskProvider.fetchBitmapFromExternalStorage(context, imageData, BitmapCallback(imageData))
+                }
+                Constants.STORAGE_TYPE.INTERNAL.ordinal -> {
+                    asyncTaskProvider.fetchBitmapFromInternalStorage(context, imageData, BitmapCallback(imageData))
+                }
+            }
+        }
 
-                    override fun onSuccess(mkr: Bitmap?) {
-                        Tracer.debug(TAG, "onSuccess : $imageData")
-                        mThreadCount--
-                        if (mkr != null && !mkr.isRecycled) {
-                            SessionStorage.getInstance(context).put(imageData.key, mkr, onSessionStorageListener)
-                            listenerList[imageData]?.onImageLoaded(mkr, imageData)
-                        } else {
-                            SessionStorage.getInstance(context).removeValue(imageData.key)
-                        }
-                    }
-                })
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+            worker = null
+            runWorker()
+        }
+    }
+
+    /**
+     * Class to handle the callback
+     */
+    private inner class BitmapCallback : AsyncCallBack<Bitmap, Any> {
+        private val imageData: ImageData
+
+        /**
+         * Constructor
+         * @param imageData
+         */
+        constructor(imageData: ImageData) {
+            this.imageData = imageData
+        }
+
+        override fun onProgress(progress: Any?) {
+            Tracer.debug(TAG, "onProgress : ")
+        }
+
+        override fun onSuccess(mkr: Bitmap?) {
+            Tracer.debug(TAG, "onSuccess : ")
+            threadCount--
+            listenerList[imageData]?.onImageLoaded(mkr, imageData)
+            if (mkr != null && !mkr.isRecycled) {
+                SessionStorage.getInstance(context).put(imageData.key, mkr, onSessionStorageListener)
             }
         }
     }
@@ -128,6 +180,6 @@ class ImageLoader {
      * @author THE-MKR
      */
     interface OnImageLoaded {
-        fun onImageLoaded(bitmap: Bitmap, imageData: ImageData)
+        fun onImageLoaded(bitmap: Bitmap?, imageData: ImageData)
     }
 }
