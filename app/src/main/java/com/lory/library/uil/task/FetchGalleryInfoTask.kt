@@ -42,17 +42,20 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
         val mapAlbum = HashMap<String, DTOAlbumData>()
         try {
             val locale = Locale.getDefault()
-            val cursor = context.contentResolver.query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, null, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC") ?: return null
+            val cursor = context.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC") ?: return null
             val colPathIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.DATA)
             val colAlbumNameIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
             while (cursor.moveToNext()) {
+                val path = cursor?.getString(colPathIndex)?:continue
+                if(path.trim().isEmpty()){
+                    continue
+                }
                 val bucketName = cursor!!.getString(colAlbumNameIndex).toUpperCase(locale).trim()
                 if (!mapAlbum.containsKey(bucketName)) {
                     mapAlbum[bucketName] = DTOAlbumData(Constants.STORAGE_TYPE.EXTERNAL.value, bucketName)
                 }
-                val path = cursor!!.getString(colPathIndex)
                 val imageData = ImageData()
-                imageData.path = path
+                imageData.path = path.trim()
                 imageData.storageType = Constants.STORAGE_TYPE.EXTERNAL.value
                 mapAlbum[bucketName]?.imagePathList?.add(imageData)
             }
@@ -71,15 +74,18 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
         val mapAlbum = HashMap<String, DTOAlbumData>()
         try {
             val locale = Locale.getDefault()
-            val cursor = context.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC") ?: return null
+            val cursor = context.contentResolver.query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, null, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC") ?: return null
             val colPathIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.DATA)
             val colAlbumNameIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
             while (cursor.moveToNext()) {
+                val path = cursor?.getString(colPathIndex)?:continue
+                if(path.trim().isEmpty()){
+                    continue
+                }
                 val bucketName = cursor!!.getString(colAlbumNameIndex).toUpperCase(locale).trim()
                 if (!mapAlbum.containsKey(bucketName)) {
                     mapAlbum[bucketName] = DTOAlbumData(Constants.STORAGE_TYPE.INTERNAL.value, bucketName)
                 }
-                val path = cursor!!.getString(colPathIndex)
                 val imageData = ImageData()
                 imageData.path = path
                 imageData.storageType = Constants.STORAGE_TYPE.INTERNAL.value

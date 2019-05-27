@@ -11,6 +11,7 @@ import com.lory.library.uil.task.FetchBitmapFromExternalStorage
 import com.lory.library.uil.task.FetchBitmapFromInternalStorage
 import com.lory.library.uil.task.FetchGalleryInfoTask
 import com.lory.library.uil.utils.Tracer
+import com.lory.library.uil.utils.UilUtils
 
 class AsyncTaskProvider : BaseAsyncTaskProvider() {
 
@@ -27,11 +28,15 @@ class AsyncTaskProvider : BaseAsyncTaskProvider() {
         Tracer.debug(TAG, "fetchGalleryInfoList : ")
         val task = FetchGalleryInfoTask(context, object : AsyncCallBack<ArrayList<DTOAlbumData>, Any> {
             override fun onProgress(progress: Any?) {
-                asyncCallBack?.onProgress(progress)
+                notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
             }
 
             override fun onSuccess(mkr: ArrayList<DTOAlbumData>?) {
-                asyncCallBack?.onSuccess(mkr)
+                if (mkr != null) {
+                    notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
+                } else {
+                    notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, ArrayList<DTOAlbumData>())
+                }
             }
         })
         task.executeTask()
@@ -47,11 +52,15 @@ class AsyncTaskProvider : BaseAsyncTaskProvider() {
         Tracer.debug(TAG, "fetchBitmapFromExternalStorage : $imageData")
         val task = FetchBitmapFromExternalStorage(context, imageData, object : AsyncCallBack<Bitmap, Any> {
             override fun onProgress(progress: Any?) {
-                asyncCallBack?.onProgress(progress)
+                notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
             }
 
             override fun onSuccess(mkr: Bitmap?) {
-                asyncCallBack?.onSuccess(mkr)
+                if (mkr != null) {
+                    notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
+                } else {
+                    notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, UilUtils.getDefaultBitmap(context))
+                }
             }
         })
         task.executeTask()
@@ -67,11 +76,15 @@ class AsyncTaskProvider : BaseAsyncTaskProvider() {
         Tracer.debug(TAG, "fetchBitmapFromInternalStorage : $imageData")
         val task = FetchBitmapFromInternalStorage(context, imageData, object : AsyncCallBack<Bitmap, Any> {
             override fun onProgress(progress: Any?) {
-                asyncCallBack?.onProgress(progress)
+                notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
             }
 
             override fun onSuccess(mkr: Bitmap?) {
-                asyncCallBack?.onSuccess(mkr)
+                if (mkr != null) {
+                    notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
+                } else {
+                    notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, UilUtils.getDefaultBitmap(context))
+                }
             }
         })
         task.executeTask()

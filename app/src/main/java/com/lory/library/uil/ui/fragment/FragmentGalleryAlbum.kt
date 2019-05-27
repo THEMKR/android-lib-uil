@@ -15,6 +15,7 @@ import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.dto.DTOAlbumData
+import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.provider.FragmentProvider
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
 import com.lory.library.uil.utils.JsonUtil
@@ -62,7 +63,7 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
                 val tag = FragmentProvider.TAG.GALLERY_PIC
                 val fragment = FragmentProvider.getFragment(tag)
                 val bundle = Bundle()
-                bundle.putString(FragmentGalleryPic.EXTRA_IMAGE_LIST, JsonUtil.toStringTokenType<ArrayList<String>>(tagDto.imagePathList, false))
+                bundle.putString(FragmentGalleryPic.EXTRA_IMAGE_LIST, JsonUtil.toStringTokenType<ArrayList<ImageData>>(tagDto.imagePathList, false))
                 if (activity is OnBaseActivityListener) {
                     (activity as OnBaseActivityListener)?.onBaseActivityAddFragment(fragment, bundle, true, tag)
                 }

@@ -35,6 +35,7 @@ class ImageLoader {
 
     }
 
+    private val sessionStorage: SessionStorage
     private var worker: Worker? = null
     private var threadCount = 0
     private var context: Context
@@ -58,6 +59,7 @@ class ImageLoader {
     private constructor(context: Context) {
         this.context = context.applicationContext
         asyncTaskProvider.attachProvider()
+        sessionStorage = SessionStorage.getInstance(context)
     }
 
     /**
@@ -82,6 +84,11 @@ class ImageLoader {
         if (imageData == null) {
             return
         }
+        val bitmap = sessionStorage.getValue<Bitmap>(imageData.key)
+        if (bitmap != null && !bitmap.isRecycled) {
+            onImageLoaded?.onImageLoaded(bitmap, imageData)
+            return
+        }
         listenerList.remove(imageData)
         query.add(imageData)
         if (onImageLoaded != null) {
@@ -94,6 +101,7 @@ class ImageLoader {
      * Method to run the worker
      */
     fun runWorker() {
+        Tracer.debug(TAG, "runWorker : ${(worker == null && query.size > 0)}")
         if (worker == null && query.size > 0) {
             worker = Worker()
             worker!!.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
@@ -106,7 +114,9 @@ class ImageLoader {
     private inner class Worker : AsyncTask<Void, ImageData, Void>() {
 
         override fun doInBackground(vararg params: Void?): Void? {
+            Tracer.debug(TAG, "doInBackground : ")
             while (query.size > 0) {
+                Tracer.debug(TAG, "doInBackground >>>>: ${this@Worker}")
                 try {
                     Thread.sleep(10)
                 } catch (e: Exception) {
@@ -114,26 +124,33 @@ class ImageLoader {
                 }
                 if (threadCount < MAX_THREAD_COUNT) {
                     threadCount++
-                    val imageData = query[0]
-                    query.removeAt(0)
-                    publishProgress(imageData)
+                    try {
+                        val imageData = query[0]
+                        query.removeAt(0)
+                        publishProgress(imageData)
+                    } catch (e: Exception) {
+                        Tracer.error(TAG, "doInBackground : ${e.message} ")
+                        threadCount--
+                    }
                 }
             }
             return null
         }
 
         override fun onProgressUpdate(vararg values: ImageData?) {
+            Tracer.debug(TAG, "onProgressUpdate : 1")
             val imageData: ImageData = if ((values?.size ?: 0) > 0) {
                 values[0]!!
             } else {
                 threadCount--
                 return
             }
+            Tracer.debug(TAG, "onProgressUpdate : 2")
             when (imageData.storageType) {
-                Constants.STORAGE_TYPE.EXTERNAL.ordinal -> {
+                Constants.STORAGE_TYPE.EXTERNAL.value -> {
                     asyncTaskProvider.fetchBitmapFromExternalStorage(context, imageData, BitmapCallback(imageData))
                 }
-                Constants.STORAGE_TYPE.INTERNAL.ordinal -> {
+                Constants.STORAGE_TYPE.INTERNAL.value -> {
                     asyncTaskProvider.fetchBitmapFromInternalStorage(context, imageData, BitmapCallback(imageData))
                 }
             }
@@ -157,6 +174,7 @@ class ImageLoader {
          * @param imageData
          */
         constructor(imageData: ImageData) {
+            Tracer.debug(TAG, " : BitmapCallback()")
             this.imageData = imageData
         }
 
@@ -165,11 +183,11 @@ class ImageLoader {
         }
 
         override fun onSuccess(mkr: Bitmap?) {
-            Tracer.debug(TAG, "onSuccess : ")
+            Tracer.debug(TAG, "BitmapCallback:onSuccess : ")
             threadCount--
             listenerList[imageData]?.onImageLoaded(mkr, imageData)
             if (mkr != null && !mkr.isRecycled) {
-                SessionStorage.getInstance(context).put(imageData.key, mkr, onSessionStorageListener)
+                sessionStorage.put(imageData.key, mkr, onSessionStorageListener)
             }
         }
     }

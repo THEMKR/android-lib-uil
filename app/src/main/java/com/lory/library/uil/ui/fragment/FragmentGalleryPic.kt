@@ -35,7 +35,7 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
         super.onViewCreated(view, savedInstanceState)
         val data = arguments?.getString(FragmentGalleryPic.EXTRA_IMAGE_LIST, "[]") ?: "[]"
         val dtoImageLocationList = JsonUtil.toObjectTokenType<ArrayList<ImageData>>(data, false)
-        val recyclerView = view?.findViewById(R.id.fragment_album_recyclerView_pic) as RecyclerView
+        val recyclerView = view?.findViewById(R.id.fragment_pic_recyclerView_pic) as RecyclerView
         recyclerView?.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
         recyclerView?.adapter = baseAdapter
         baseAdapter?.setVHClickCallback(this)

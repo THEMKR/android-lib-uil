@@ -14,7 +14,6 @@ class FetchBitmapFromExternalStorage : FetchBitmapTask {
     }
 
     override fun getBitmapFromPath(): Bitmap {
-        var bitmap: Bitmap? = null
         val options = BitmapFactory.Options()
         options.inPreferredConfig = Bitmap.Config.ARGB_8888
         options.inJustDecodeBounds = true
@@ -22,7 +21,6 @@ class FetchBitmapFromExternalStorage : FetchBitmapTask {
         BitmapFactory.decodeFile(imageData.path, options)
         options.inSampleSize = getSampleSize(options.outWidth, options.outHeight)
         options.inJustDecodeBounds = false
-        bitmap = BitmapFactory.decodeFile(imageData.path, options)
-        return bitmap
+        return BitmapFactory.decodeFile(imageData.path, options)
     }
 }

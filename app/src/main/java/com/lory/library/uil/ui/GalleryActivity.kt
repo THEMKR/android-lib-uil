@@ -155,7 +155,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
     private fun loadGalleryInfoList() {
         Tracer.debug(TAG, "loadGalleryInfoList : ")
         MKRDialogUtil.showLoadingDialog(this, "LOAD MOBILE GALLERY")
-        AsyncTaskProvider().fetchGalleryInfoList(this, asyncCallBackFetchGalleryInfo)
+        asyncTaskProvider.fetchGalleryInfoList(this, asyncCallBackFetchGalleryInfo)
     }
 
     /**
