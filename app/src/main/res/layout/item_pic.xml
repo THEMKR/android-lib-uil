@@ -1,29 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+
+<android.support.v7.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/item_pic_cardView"
+        style="@style/style_card_view_property_s"
+        android:layout_margin="@dimen/item_pic_margin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/item_pic_padding_ver"
-        android:paddingBottom="@dimen/item_pic_padding_ver">
+        android:layout_height="@dimen/item_pic_size">
 
-    <android.support.v7.widget.CardView
-            android:id="@+id/item_pic_cardView"
-            android:layout_centerInParent="true"
-            style="@style/style_card_view_property_no"
-            android:layout_width="@dimen/item_pic_size"
-            android:layout_height="@dimen/item_pic_size">
+    <com.lory.library.uil.ui.custom.MKRImageView
+            android:id="@+id/item_pic_imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
-        <com.lory.library.uil.ui.custom.MKRImageView
-                android:id="@+id/item_pic_imageView"
-                style="@style/thumbnail"/>
-
-        <View
-                android:id="@+id/item_pic_view_selected"
-                android:layout_width="match_parent"
-                android:focusable="false"
-                android:clickable="false"
-                android:layout_height="match_parent"
-                android:background="@drawable/shape_thumbnail_selected"/>
-
-    </android.support.v7.widget.CardView>
-</RelativeLayout>
+</android.support.v7.widget.CardView>

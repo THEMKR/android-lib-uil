@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.View
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.ui.callback.OnBaseActivityListener
@@ -47,6 +48,8 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery)
+        setSupportActionBar(findViewById<Toolbar>(R.id.activity_gallery_toolbar))
+        onBaseActivitySetToolbar(layoutInflater.inflate(R.layout.toolbar, null))
         asyncTaskProvider.attachProvider()
         appPermissionController = AppPermissionController(
             this, arrayOf(

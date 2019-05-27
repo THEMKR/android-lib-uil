@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="colorPrimary">#0000FF</color>
-    <color name="colorPrimaryDark">#1919A5</color>
-    <color name="colorAccent">#F1240B</color>
-    <color name="selected">#0B45F1</color>
+    <color name="colorPrimary">#9C27B0</color>
+    <color name="colorPrimaryDark">#720F91</color>
+    <color name="colorAccent">#00BCD4</color>
+    <color name="selected">#8BC34A</color>
 
-    <color name="app_background">#EEEEEE</color>
+    <color name="app_background">#DDDDDD</color>
     <color name="card_background">#FFFFFF</color>
-    <color name="album_name_back">#88000000</color>
+    <color name="album_name_back">#99000000</color>
 
 
     <!-- TEXT -->

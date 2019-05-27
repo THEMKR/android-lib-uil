@@ -16,5 +16,4 @@
             android:id="@+id/fragment_album_recyclerView_selected_pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-
 </LinearLayout>

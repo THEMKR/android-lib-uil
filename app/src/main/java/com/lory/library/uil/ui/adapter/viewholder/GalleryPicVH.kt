@@ -1,5 +1,6 @@
 package com.lory.library.uil.ui.adapter.viewholder
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.view.View
 import com.lory.library.ui.ui.adapter.BaseViewHolder
@@ -22,7 +23,6 @@ class GalleryPicVH : BaseViewHolder<ImageData> {
     }
 
     private val mkrImageView: MKRImageView
-    private val selectedView: View
     private val cardView: CardView
 
     /**
@@ -33,7 +33,6 @@ class GalleryPicVH : BaseViewHolder<ImageData> {
     constructor(itemView: View) : super(itemView) {
         Tracer.debug(TAG, "GalleryAlbumVH: ")
         mkrImageView = itemView.findViewById<MKRImageView>(R.id.item_pic_imageView)
-        selectedView = itemView.findViewById<View>(R.id.item_pic_view_selected)
         cardView = itemView.findViewById<CardView>(R.id.item_pic_cardView)
         cardView.setOnClickListener(this)
     }
@@ -44,11 +43,13 @@ class GalleryPicVH : BaseViewHolder<ImageData> {
             return
         }
         cardView.tag = dto
-        selectedView.visibility = if (Model.getInstance().selectedImageDataList.contains(dto)) {
-            View.VISIBLE
-        } else {
-            View.GONE
-        }
+        cardView.setCardBackgroundColor(
+            if (Model.getInstance().selectedImageDataList.contains(dto)) {
+                ContextCompat.getColor(context, R.color.selected)
+            } else {
+                ContextCompat.getColor(context, R.color.card_background)
+            }
+        )
         mkrImageView.imageData = dto.clone(Constants.DEFAULT_PIC_ITEM_LOAD_SIZE)
     }
 }
