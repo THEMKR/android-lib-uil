@@ -13,7 +13,7 @@ import com.lory.library.uil.task.FetchGalleryInfoTask
 import com.lory.library.uil.utils.Tracer
 import com.lory.library.uil.utils.UilUtils
 
-class AsyncTaskProvider : BaseAsyncTaskProvider() {
+open class AsyncTaskProvider : BaseAsyncTaskProvider() {
 
     companion object {
         private const val TAG: String = BuildConfig.BASE_TAG + ".AsyncTaskProvider"

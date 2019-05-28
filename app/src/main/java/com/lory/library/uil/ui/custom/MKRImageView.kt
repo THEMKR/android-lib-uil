@@ -15,7 +15,7 @@ import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.utils.Tracer
 import com.lory.library.uil.utils.UilUtils
 
-class MKRImageView : View, ImageLoader.OnImageLoaded {
+open class MKRImageView : View, ImageLoader.OnImageLoaded {
 
     companion object {
         private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageView"

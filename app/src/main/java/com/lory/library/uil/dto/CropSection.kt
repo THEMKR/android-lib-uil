@@ -3,7 +3,7 @@ package com.lory.library.uil.dto
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
-class CropSection {
+open class CropSection {
 
     /**
      * Left Percent to crop

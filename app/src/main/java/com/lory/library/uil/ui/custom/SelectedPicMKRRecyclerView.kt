@@ -10,7 +10,7 @@ import com.lory.library.ui.ui.view.MKRRecyclerView
 import com.lory.library.uil.R
 
 
-class SelectedPicMKRRecyclerView : MKRRecyclerView {
+open class SelectedPicMKRRecyclerView : MKRRecyclerView {
 
     private val paint = Paint()
     private var color1: Int = Color.BLACK

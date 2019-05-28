@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.lory.library.storage.session.SessionStorage
 import com.lory.library.uil.utils.Constants
 
-class ImageData {
+open class ImageData {
 
     /**
      * Unique Key used by [SessionStorage]
