@@ -14,8 +14,8 @@ class Constants {
     enum class STORAGE_TYPE {
         INTERNAL(1),
         EXTERNAL(2),
-        ASSSETS(1),
-        URL(2);
+        ASSSETS(3),
+        URL(4);
 
         val value: Int
 

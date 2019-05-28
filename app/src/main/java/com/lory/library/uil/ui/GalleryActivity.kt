@@ -88,7 +88,9 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
         appPermissionController = AppPermissionController(
             this, arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.INTERNET,
+                Manifest.permission.ACCESS_NETWORK_STATE
             ), this
         )
         findViewById<View>(R.id.toolbar_imageView_imageView_ok).setOnClickListener(this)
