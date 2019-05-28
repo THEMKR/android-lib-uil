@@ -5,6 +5,7 @@ import android.provider.MediaStore
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.asynctask.BaseAsyncTask
 import com.lory.library.uil.BuildConfig
+import com.lory.library.uil.dto.CropSection
 import com.lory.library.uil.dto.DTOAlbumData
 import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.utils.Constants
@@ -32,14 +33,6 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
         if (internalImageData != null) {
             arrayList.addAll(internalImageData)
         }
-        // NETWORK
-        val dtoAlbumData = DTOAlbumData(Constants.STORAGE_TYPE.URL.value, "SERVER")
-        val imageData = ImageData()
-        imageData.path = "https://juststickers.in/wp-content/uploads/2016/06/ghanta.png"
-        imageData.storageType = Constants.STORAGE_TYPE.URL.value
-        dtoAlbumData.imagePathList?.add(imageData)
-        arrayList.add(dtoAlbumData)
-
         Collections.sort(arrayList, object : Comparator<DTOAlbumData> {
             override fun compare(o1: DTOAlbumData?, o2: DTOAlbumData?): Int {
                 return (o1?.albumName ?: "").compareTo((o2?.albumName ?: ""))
