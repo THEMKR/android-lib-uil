@@ -20,7 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.GalleryActivity" android:label="@string/gallery"/>
+        <activity android:name=".ui.GalleryActivity" android:label="@string/gallery"
+                  android:excludeFromRecents="true"
+                  android:exported="true"
+                  android:launchMode="singleTask"
+                  android:noHistory="true"
+                  android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

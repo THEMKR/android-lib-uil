@@ -1,5 +1,7 @@
 package com.lory.library.uil.ui.fragment
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
@@ -15,6 +17,7 @@ import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.dto.Model
+import com.lory.library.uil.ui.GalleryActivity
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
 import com.lory.library.uil.utils.JsonUtil
 import com.lory.library.uil.utils.Tracer
@@ -74,11 +77,18 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
         when (view.id) {
             R.id.item_pic_cardView -> {
                 val tagDto = (view.tag ?: return) as? ImageData ?: return
-                val selectedImageDataList = Model.getInstance().selectedImageDataList
-                if (selectedImageDataList.contains(tagDto)) {
-                    selectedImageDataList.remove(tagDto)
+                val model = Model.getInstance()
+                if (model.selectedImageDataList.contains(tagDto)) {
+                    model.selectedImageDataList.remove(tagDto)
                 } else {
-                    selectedImageDataList.add(tagDto)
+                    model.selectedImageDataList.add(tagDto)
+                    if (model.maxPicCount == 1) {
+                        val data = JsonUtil.toStringTokenType<ArrayList<ImageData>>(model.selectedImageDataList, false)
+                        val intent = Intent()
+                        intent.putExtra(GalleryActivity.EXTRA_IMAGE_DATA, data)
+                        activity?.setResult(Activity.RESULT_OK, intent)
+                        activity?.finish()
+                    }
                 }
                 baseAdapter.notifyDataSetChanged()
             }

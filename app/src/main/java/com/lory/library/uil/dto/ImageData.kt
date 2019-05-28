@@ -23,14 +23,14 @@ class ImageData {
     var cropSection: CropSection = CropSection()
 
     /**
-     * Type of Storage Location [Constants.STORAGE_TYPE]
+     * Type of Storage Location [Constants.STORAGE_TYPE.value]
      */
     @SerializedName("storageType")
     @Expose
     var storageType: Int = Constants.STORAGE_TYPE.EXTERNAL.value
 
     /**
-     * Flip Type [Constants.FLIP_TYPE]
+     * Flip Type [Constants.FLIP_TYPE.value]
      */
     @SerializedName("flipType")
     @Expose
