@@ -6,9 +6,11 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.uil.dto.ImageData
+import java.net.HttpURLConnection
+import java.net.URL
 
 
-open class FetchBitmapFromInternalStorage : FetchBitmapTask {
+open class FetchBitmapFromURL : FetchBitmapTask {
 
     constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?) : super(context, imageData, asyncCallBack) {
 
@@ -16,18 +18,21 @@ open class FetchBitmapFromInternalStorage : FetchBitmapTask {
 
     override fun getBitmapFromPath(): Bitmap? {
         try {
-            var bitmap: Bitmap? = null
+            val url: URL = URL(imageData.path)
+            var connection = url.openConnection() as HttpURLConnection
+            var inputStream = connection.getInputStream()
             val options = BitmapFactory.Options()
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
             options.inJustDecodeBounds = true
-            options.inSampleSize = 1
-            BitmapFactory.decodeFile(imageData.path, options)
+            BitmapFactory.decodeStream(inputStream, null, options)
+            inputStream.close()
+            connection = url.openConnection() as HttpURLConnection
+            inputStream = connection.getInputStream()
             options.inSampleSize = getSampleSize(options.outWidth, options.outHeight)
             options.inJustDecodeBounds = false
-            bitmap = BitmapFactory.decodeFile(imageData.path, options)
-            return bitmap
+            return BitmapFactory.decodeStream(inputStream, null, options)
         } catch (e: Exception) {
-            Log.e("UIL", "getBitmapFromPath : INTERNAL : ${e.message} ")
+            Log.e("UIL", "getBitmapFromPath : URL : ${e.message} ")
             return null
         }
     }

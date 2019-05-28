@@ -11,7 +11,6 @@ import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.provider.AsyncTaskProvider
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
-import java.lang.Exception
 import java.util.*
 
 
@@ -146,14 +145,25 @@ class ImageLoader {
                 return
             }
             Tracer.debug(TAG, "onProgressUpdate : 2")
-            when (imageData.storageType) {
-                Constants.STORAGE_TYPE.EXTERNAL.value -> {
-                    asyncTaskProvider.fetchBitmapFromExternalStorage(context, imageData, BitmapCallback(imageData))
+            asyncTaskProvider.fetchBitmap(
+                context, imageData, BitmapCallback(imageData), when (imageData.storageType) {
+                    Constants.STORAGE_TYPE.EXTERNAL.value -> {
+                        AsyncTaskProvider.BITMAP_LOCATION.EXTERNAL
+                    }
+                    Constants.STORAGE_TYPE.INTERNAL.value -> {
+                        AsyncTaskProvider.BITMAP_LOCATION.INTERNAL
+                    }
+                    Constants.STORAGE_TYPE.URL.value -> {
+                        AsyncTaskProvider.BITMAP_LOCATION.URL
+                    }
+                    Constants.STORAGE_TYPE.ASSSETS.value -> {
+                        AsyncTaskProvider.BITMAP_LOCATION.ASSETS
+                    }
+                    else -> {
+                        AsyncTaskProvider.BITMAP_LOCATION.EXTERNAL
+                    }
                 }
-                Constants.STORAGE_TYPE.INTERNAL.value -> {
-                    asyncTaskProvider.fetchBitmapFromInternalStorage(context, imageData, BitmapCallback(imageData))
-                }
-            }
+            )
         }
 
         override fun onPostExecute(result: Void?) {
@@ -166,7 +176,7 @@ class ImageLoader {
     /**
      * Class to handle the callback
      */
-    private inner class BitmapCallback : AsyncCallBack<Bitmap, Any> {
+    private inner class BitmapCallback : AsyncCallBack<Bitmap?, Any> {
         private val imageData: ImageData
 
         /**

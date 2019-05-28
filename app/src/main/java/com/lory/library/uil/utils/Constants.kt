@@ -3,8 +3,6 @@ package com.lory.library.uil.utils
 class Constants {
     companion object {
         const val CHANNEL_ID = "com.mkrworld.sketch"
-        const val MAX_FAILED_COUNT = 3
-        const val LIFELINE_INCREMENT = 2
         const val DEFAULT_ALBUM_ITEM_LOAD_SIZE = 0.2F
         const val DEFAULT_PIC_ITEM_LOAD_SIZE = 0.3F
     }
@@ -15,7 +13,9 @@ class Constants {
      */
     enum class STORAGE_TYPE {
         INTERNAL(1),
-        EXTERNAL(2);
+        EXTERNAL(2),
+        ASSSETS(1),
+        URL(2);
 
         val value: Int
 

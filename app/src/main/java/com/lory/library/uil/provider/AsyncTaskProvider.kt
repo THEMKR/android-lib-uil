@@ -7,12 +7,8 @@ import com.lory.library.asynctask.BaseAsyncTaskProvider
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.dto.DTOAlbumData
 import com.lory.library.uil.dto.ImageData
-import com.lory.library.uil.task.FetchBitmapFromExternalStorage
-import com.lory.library.uil.task.FetchBitmapFromInternalStorage
-import com.lory.library.uil.task.FetchBitmapTask
-import com.lory.library.uil.task.FetchGalleryInfoTask
+import com.lory.library.uil.task.*
 import com.lory.library.uil.utils.Tracer
-import com.lory.library.uil.utils.UilUtils
 
 open class AsyncTaskProvider : BaseAsyncTaskProvider() {
 
@@ -20,8 +16,11 @@ open class AsyncTaskProvider : BaseAsyncTaskProvider() {
         private const val TAG: String = BuildConfig.BASE_TAG + ".AsyncTaskProvider"
     }
 
-    enum class TASK {
-        EXTERNAL_BITMAP, INTERNAL_BITMAP
+    /**
+     * BITMAP_LOCATION hold the location from where the bitmap is fetched
+     */
+    enum class BITMAP_LOCATION {
+        EXTERNAL, INTERNAL, ASSETS, URL
     }
 
     /**
@@ -48,50 +47,23 @@ open class AsyncTaskProvider : BaseAsyncTaskProvider() {
     }
 
     /**
-     * Method to fetch the Bitmap From External Storage
+     * Method to fetch the Bitmap
      * @param context
      * @param imageData
      * @param asyncCallBack
+     * @param bitmapLocation
      */
-    fun fetchBitmapFromExternalStorage(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap, Any>) {
-        Tracer.debug(TAG, "fetchBitmapFromExternalStorage : $imageData")
-        val task = getTask(context, imageData, object : AsyncCallBack<Bitmap, Any> {
+    fun fetchBitmap(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>, bitmapLocation: BITMAP_LOCATION) {
+        Tracer.debug(TAG, "fetchBitmap : $imageData : ${bitmapLocation.name}")
+        val task = getTask(context, imageData, object : AsyncCallBack<Bitmap?, Any> {
             override fun onProgress(progress: Any?) {
                 notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
             }
 
             override fun onSuccess(mkr: Bitmap?) {
-                if (mkr != null) {
-                    notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
-                } else {
-                    notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, UilUtils.getDefaultBitmap(context))
-                }
+                notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
             }
-        }, TASK.EXTERNAL_BITMAP)
-        task.executeTask()
-    }
-
-    /**
-     * Method to fetch the Bitmap From External Storage
-     * @param context
-     * @param imageData
-     * @param asyncCallBack
-     */
-    fun fetchBitmapFromInternalStorage(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap, Any>) {
-        Tracer.debug(TAG, "fetchBitmapFromInternalStorage : $imageData")
-        val task = getTask(context, imageData, object : AsyncCallBack<Bitmap, Any> {
-            override fun onProgress(progress: Any?) {
-                notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
-            }
-
-            override fun onSuccess(mkr: Bitmap?) {
-                if (mkr != null) {
-                    notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
-                } else {
-                    notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, UilUtils.getDefaultBitmap(context))
-                }
-            }
-        }, TASK.INTERNAL_BITMAP)
+        }, bitmapLocation)
         task.executeTask()
     }
 
@@ -102,13 +74,19 @@ open class AsyncTaskProvider : BaseAsyncTaskProvider() {
      * @param asyncCallBack
      * @param task
      */
-    open protected fun getTask(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap, Any>, task: TASK): FetchBitmapTask {
+    open protected fun getTask(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>, task: BITMAP_LOCATION): FetchBitmapTask {
         return when (task) {
-            TASK.EXTERNAL_BITMAP -> {
+            BITMAP_LOCATION.EXTERNAL -> {
                 FetchBitmapFromExternalStorage(context, imageData, asyncCallBack)
             }
-            TASK.INTERNAL_BITMAP -> {
+            BITMAP_LOCATION.INTERNAL -> {
                 FetchBitmapFromInternalStorage(context, imageData, asyncCallBack)
+            }
+            BITMAP_LOCATION.ASSETS -> {
+                FetchBitmapFromAssets(context, imageData, asyncCallBack)
+            }
+            BITMAP_LOCATION.URL -> {
+                FetchBitmapFromURL(context, imageData, asyncCallBack)
             }
             else -> {
                 FetchBitmapFromExternalStorage(context, imageData, asyncCallBack)

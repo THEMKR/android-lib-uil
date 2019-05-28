@@ -14,23 +14,23 @@ import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.UilUtils
 
 
-abstract class FetchBitmapTask : BaseAsyncTask<Bitmap, Any> {
+abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
 
     val imageData: ImageData
 
-    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap, Any>?) : super(context, asyncCallBack) {
+    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?) : super(context, asyncCallBack) {
         this.imageData = imageData
     }
 
     /**
      * Method to get from the Location
      */
-    abstract fun getBitmapFromPath(): Bitmap
+    abstract fun getBitmapFromPath(): Bitmap?
 
 
-    override fun doInBackground(): Bitmap {
+    override fun doInBackground(): Bitmap? {
         // CREATE BITMAP
-        var bitmap = getBitmapFromPath()
+        var bitmap = getBitmapFromPath()?:return null
         bitmap = cropBitmap(bitmap)
         bitmap = flipBitmap(bitmap)
         return bitmap
