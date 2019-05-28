@@ -12,7 +12,7 @@ open class ImageData {
      */
     val key: String
         get() {
-            return "$path-$storageType-$flipType-$dimensionPer-$cropSection"
+            return "[$path][$storageType][$flipType][$dimensionPer][$cropSection]"
         }
 
     /**
