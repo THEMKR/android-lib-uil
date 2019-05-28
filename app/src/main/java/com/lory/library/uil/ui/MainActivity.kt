@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.activity_main_open_gallery).setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 Tracer.debug(TAG, "onClick : ")
-                GalleryActivity.launch(this@MainActivity, 1001, 10, false)
+                GalleryActivity.launch(this@MainActivity, 1001, 10, true)
             }
         })
     }

@@ -211,7 +211,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
                 val model = Model.getInstance()
                 val size = model.selectedImageDataList.size
                 if (model.isMaxPicCountFixed && size != model.maxPicCount) {
-                    Toast.makeText(this, "USER SHOULD SELECT ${model.maxPicCount} IMAGES. CURRENT SELECTION IS $size", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "CURRENT SELECTION COUNT IS $size", Toast.LENGTH_LONG).show()
                     return
                 }
                 if (size == 0) {
