@@ -24,4 +24,23 @@ class Model {
      */
     val selectedImageDataList: ArrayList<ImageData> = ArrayList<ImageData>()
 
+    /**
+     * Maximum pic user select
+     */
+    var maxPicCount = 1
+
+    /**
+     * Maximum pic user select
+     */
+    var isMaxPicCountFixed = false
+
+    /**
+     * Method to reset this cache
+     */
+    fun reset() {
+        selectedImageDataList.clear()
+        maxPicCount = 1
+        isMaxPicCountFixed = false
+    }
+
 }

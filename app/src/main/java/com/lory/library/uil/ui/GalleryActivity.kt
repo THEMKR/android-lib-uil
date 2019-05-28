@@ -77,7 +77,10 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
             ), this
         )
-        Model.getInstance().selectedImageDataList.clear()
+        val model = Model.getInstance()
+        model.reset()
+        model.maxPicCount = intent?.getIntExtra(EXTRA_IMAGE_COUNT, 1) ?: 1
+        model.isMaxPicCountFixed = intent?.getBooleanExtra(EXTRA_IS_COUNT_FIXED, false) ?: false
         if (appPermissionController?.isHaveAllRequiredPermission() == true) {
             loadGalleryInfoList()
         } else {

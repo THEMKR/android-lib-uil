@@ -3,6 +3,7 @@ package com.lory.library.uil.ui.fragment
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.dto.DTOAlbumData
 import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.Model
 import com.lory.library.uil.provider.FragmentProvider
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
 import com.lory.library.uil.utils.JsonUtil
@@ -29,6 +31,7 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
     }
 
     private val baseAdapter: BaseAdapter = BaseAdapter(AdapterItemHandler())
+    private val baseAdapterSelected: BaseAdapter = BaseAdapter(AdapterItemHandler())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_album, container, false)
@@ -40,6 +43,8 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
         val data = arguments?.getString(EXTRA_ALBUM_LIST, "{}") ?: "{}"
         val dtoAlbumDataList = JsonUtil.toObjectTokenType<ArrayList<DTOAlbumData>>(data, true)
         baseAdapter?.setVHClickCallback(this)
+        baseAdapterSelected?.setVHClickCallback(this)
+
         val recyclerView = view?.findViewById(R.id.fragment_album_recyclerView_pic) as RecyclerView
         recyclerView?.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
         recyclerView?.adapter = baseAdapter
@@ -50,6 +55,11 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
             baseAdapterItemList.add(BaseAdapterItem(adapterViewType, dto))
         }
         baseAdapter.updateAdapterItemList(baseAdapterItemList)
+
+        val recyclerViewSelected = view?.findViewById(R.id.fragment_album_recyclerView_selected_pic) as RecyclerView
+        recyclerViewSelected?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewSelected?.adapter = baseAdapterSelected
+        updateSelectedImageList()
     }
 
     override fun onViewHolderClicked(holder: BaseViewHolder<*>, view: View) {
@@ -67,6 +77,14 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
                 if (activity is OnBaseActivityListener) {
                     (activity as OnBaseActivityListener)?.onBaseActivityAddFragment(fragment, bundle, true, tag)
                 }
+            }
+            R.id.item_selected_pic_imageView_cancel -> {
+                val tagDto = (view.tag ?: return) as? ImageData ?: return
+                val selectedImageDataList = Model.getInstance().selectedImageDataList
+                if (selectedImageDataList.contains(tagDto)) {
+                    selectedImageDataList.remove(tagDto)
+                }
+                updateSelectedImageList()
             }
         }
     }
@@ -86,9 +104,31 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
 
     override fun onPopFromBackStack() {
         Tracer.debug(TAG, "onPopFromBackStack : ")
+        updateSelectedImageList()
     }
 
     override fun onRefresh() {
         Tracer.debug(TAG, "onRefresh : ")
+        updateSelectedImageList()
+    }
+
+    /**
+     * Method to update the UI of the selected Image
+     */
+    private fun updateSelectedImageList() {
+        Tracer.debug(TAG, "updateSelectedImageList : ")
+        val selectedImageDataList = Model.getInstance().selectedImageDataList
+        if (selectedImageDataList.size > 0) {
+            view?.findViewById<View>(R.id.fragment_album_recyclerView_selected_pic)?.visibility = View.VISIBLE
+            val baseAdapterItemList: ArrayList<BaseAdapterItem<*>> = ArrayList()
+            val adapterViewType = AdapterItemHandler.AdapterItemViewType.SELECTED_PIC.ordinal
+            for (dto in selectedImageDataList) {
+                Tracer.debug(TAG, "updateSelectedImageList : $dto ")
+                baseAdapterItemList.add(BaseAdapterItem(adapterViewType, dto))
+            }
+            baseAdapterSelected.updateAdapterItemList(baseAdapterItemList)
+        } else {
+            view?.findViewById<View>(R.id.fragment_album_recyclerView_selected_pic)?.visibility = View.GONE
+        }
     }
 }

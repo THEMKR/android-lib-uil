@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         findViewById<View>(R.id.activity_main_open_gallery).setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
-                // LAUNCH GALLERY
+                GalleryActivity.launch(this@MainActivity, 1001, 10, false)
             }
         })
     }

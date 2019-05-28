@@ -12,8 +12,10 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-    <com.lory.library.ui.ui.view.MKRRecyclerView
+    <com.lory.library.uil.ui.custom.SelectedPicMKRRecyclerView
             android:id="@+id/fragment_album_recyclerView_selected_pic"
+            android:padding="@dimen/fragment_album_selected_list_margin"
             android:layout_width="match_parent"
+            android:background="@color/colorPrimaryDark"
             android:layout_height="wrap_content"/>
 </LinearLayout>

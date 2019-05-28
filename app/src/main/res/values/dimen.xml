@@ -15,6 +15,7 @@
     <dimen name="card_padding_no">@dimen/mkrdp_0</dimen>
     <dimen name="card_elevation_no">@dimen/mkrdp_1</dimen>
 
+    <dimen name="fragment_album_selected_list_margin">@dimen/mkrdp_1</dimen>
 
     <dimen name="item_album_margin">@dimen/mkrdp_1</dimen>
     <dimen name="item_album_size">@dimen/mkrdp_50</dimen>
@@ -22,6 +23,8 @@
 
     <dimen name="item_pic_margin">@dimen/mkrdp_1</dimen>
     <dimen name="item_pic_size">@dimen/mkrdp_33</dimen>
+    <dimen name="item_cancel_size">@dimen/mkrdp_12</dimen>
+    <dimen name="item_cancel_padding">@dimen/mkrdp_3</dimen>
 
     <dimen name="thumbnail_stroke">@dimen/mkrdp_0.50</dimen>
     <dimen name="thumbnail_padding">@dimen/mkrdp_0.25</dimen>

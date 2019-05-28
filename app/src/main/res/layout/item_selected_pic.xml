@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/item_selected_pic_parent"
+        android:layout_width="@dimen/item_pic_size"
+        android:layout_height="@dimen/item_pic_size">
+
+    <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <android.support.v7.widget.CardView
+                style="@style/style_card_view_property_s"
+                android:layout_margin="@dimen/item_pic_margin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <com.lory.library.uil.ui.custom.MKRImageView
+                    android:id="@+id/item_selected_pic_imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+        </android.support.v7.widget.CardView>
+    </FrameLayout>
+
+    <ImageView
+            android:id="@+id/item_selected_pic_imageView_cancel"
+            android:layout_width="@dimen/item_cancel_size"
+            android:layout_height="@dimen/item_cancel_size"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_cancel"
+            android:padding="@dimen/item_cancel_padding"/>
+</RelativeLayout>
