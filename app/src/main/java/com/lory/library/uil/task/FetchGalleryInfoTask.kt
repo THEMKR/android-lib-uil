@@ -10,6 +10,7 @@ import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
 import java.util.*
+import kotlin.Comparator
 
 
 class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
@@ -31,6 +32,11 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
         if (internalImageData != null) {
             arrayList.addAll(internalImageData)
         }
+        Collections.sort(arrayList, object : Comparator<DTOAlbumData> {
+            override fun compare(o1: DTOAlbumData?, o2: DTOAlbumData?): Int {
+                return (o1?.albumName ?: "").compareTo((o2?.albumName ?: ""))
+            }
+        })
         return arrayList
     }
 
@@ -46,8 +52,8 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
             val colPathIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.DATA)
             val colAlbumNameIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
             while (cursor.moveToNext()) {
-                val path = cursor?.getString(colPathIndex)?:continue
-                if(path.trim().isEmpty()){
+                val path = cursor?.getString(colPathIndex) ?: continue
+                if (path.trim().isEmpty()) {
                     continue
                 }
                 val bucketName = cursor!!.getString(colAlbumNameIndex).toUpperCase(locale).trim()
@@ -78,8 +84,8 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
             val colPathIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.DATA)
             val colAlbumNameIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
             while (cursor.moveToNext()) {
-                val path = cursor?.getString(colPathIndex)?:continue
-                if(path.trim().isEmpty()){
+                val path = cursor?.getString(colPathIndex) ?: continue
+                if (path.trim().isEmpty()) {
                     continue
                 }
                 val bucketName = cursor!!.getString(colAlbumNameIndex).toUpperCase(locale).trim()

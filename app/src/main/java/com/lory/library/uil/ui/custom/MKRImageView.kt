@@ -3,7 +3,7 @@ package com.lory.library.uil.ui.custom
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.RectF
+import android.graphics.Matrix
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.util.AttributeSet
@@ -21,28 +21,43 @@ class MKRImageView : View, ImageLoader.OnImageLoaded {
         private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageView"
     }
 
+    private val imageMatrix = Matrix()
+
+    /**
+     * Image data to be set
+     */
     var imageData: ImageData? = null
         set(value) {
             imageLoader?.removeImage(field)
             field = value
-            Tracer.debug(TAG, " FIELD : $field")
             if (field != null) {
                 val savedBitmap = SessionStorage.getInstance(context).getValue<Bitmap>(field!!.key)
                 if (savedBitmap != null) {
                     bitmap = savedBitmap
                 } else {
                     bitmap = UilUtils.getDefaultBitmap(context)
-                    imageLoader.loadImage(field, this)
+                    imageLoader?.loadImage(field, this)
                 }
             } else {
                 bitmap = UilUtils.getDefaultBitmap(context)
             }
+        }
+
+    /**
+     * Drawing Bitmap of the View
+     */
+    private var bitmap: Bitmap? = null
+        set(value) {
+            var value = value
+            if (value == null) {
+                value = UilUtils.getDefaultBitmap(context)
+            }
+            field = value
+            setMatrix()
             invalidate()
         }
 
-    private lateinit var rectF: RectF
-    private lateinit var bitmap: Bitmap
-    private lateinit var imageLoader: ImageLoader
+    private var imageLoader: ImageLoader? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -61,33 +76,34 @@ class MKRImageView : View, ImageLoader.OnImageLoaded {
         init()
     }
 
-    override fun onDetachedFromWindow() {
-        imageLoader.removeImage(imageData)
-        super.onDetachedFromWindow()
-    }
-
     /**
      * Method to init the View
      */
     private fun init() {
-        rectF = RectF()
+        imageMatrix.reset()
         imageLoader = ImageLoader.getInstance(context)
         bitmap = UilUtils.getDefaultBitmap(context)
     }
 
+    override fun onDetachedFromWindow() {
+        imageLoader?.removeImage(imageData)
+        super.onDetachedFromWindow()
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        bitmap = bitmap
+    }
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        rectF.left = 0F
-        rectF.top = 0F
-        rectF.right = width.toFloat()
-        rectF.bottom = height.toFloat()
-        if (bitmap.isRecycled) {
+        if (bitmap?.isRecycled ?: true) {
             bitmap = UilUtils.getDefaultBitmap(context)
         }
-        if (bitmap.equals(UilUtils.getDefaultBitmap(context))) {
-            imageLoader.loadImage(imageData, this)
+        if (bitmap?.equals(UilUtils.getDefaultBitmap(context)) ?: true) {
+            imageLoader?.loadImage(imageData, this)
         }
-        canvas?.drawBitmap(bitmap, null, rectF, null)
+        canvas?.drawBitmap(bitmap, imageMatrix, null)
     }
 
     override fun onImageLoaded(bitmap: Bitmap?, imageData: ImageData) {
@@ -96,9 +112,34 @@ class MKRImageView : View, ImageLoader.OnImageLoaded {
             this.bitmap = bitmap
         } else {
             this.bitmap = UilUtils.getDefaultBitmap(context)
-            imageLoader.loadImage(this.imageData!!, this)
+            imageLoader?.loadImage(this.imageData!!, this)
         }
         invalidate()
     }
 
+    /**
+     * Method to set the matrix based on Bitmap
+     * @param bitmap
+     */
+    private fun setMatrix() {
+        imageMatrix.reset()
+        setMatrixCropCenter()
+    }
+
+    /**
+     * Set the matrix by cropping the center of the Bitmap
+     */
+    private fun setMatrixCropCenter() {
+        val bitmapLamda = (bitmap?.width?.toFloat() ?: 1F) / (bitmap?.height?.toFloat() ?: 1F)
+        val viewLamda = width.toFloat() / height.toFloat()
+        if (viewLamda <= bitmapLamda) {
+            val scale: Float = height.toFloat() / (bitmap?.height?.toFloat() ?: 1F)
+            imageMatrix.setScale(scale, scale)
+            imageMatrix.postTranslate(-((bitmap?.width ?: width).toFloat() * scale - width.toFloat()) / 2F, 0F)
+        } else {
+            val scale: Float = width.toFloat() / (bitmap?.width?.toFloat() ?: 1F)
+            imageMatrix.setScale(scale, scale)
+            imageMatrix.postTranslate(0F, -((bitmap?.height ?: height).toFloat() * scale - height.toFloat()) / 2F)
+        }
+    }
 }

@@ -123,7 +123,6 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
 
     override fun onBaseActivityAddFragment(containerId: Int, fragment: Fragment, bundle: Bundle?, isAddToBackStack: Boolean, tag: String) {
         Tracer.debug(TAG, "onBaseActivityAddFragment: ")
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
         val findFragmentByTag = supportFragmentManager.findFragmentByTag(tag)
         if (findFragmentByTag == null) {
             val fragmentTransaction = supportFragmentManager.beginTransaction()
@@ -152,7 +151,12 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
     }
 
     override fun onBaseActivitySetToolbar(toolbarLayout: View) {
-        Tracer.debug(TAG, "onBaseActivitySetToolbar: ");
+        Tracer.debug(TAG, "onBaseActivitySetToolbar: ")
+        Tracer.debug(TAG, "onBaseActivitySetToolbar: $toolbarLayout")
+        val toolbar: Toolbar = findViewById<Toolbar>(R.id.activity_gallery_toolbar)
+        toolbar.visibility = View.VISIBLE
+        toolbar.removeAllViews()
+        toolbar.addView(toolbarLayout, Toolbar.LayoutParams(Toolbar.LayoutParams.MATCH_PARENT, Toolbar.LayoutParams.WRAP_CONTENT))
     }
 
     private fun loadGalleryInfoList() {

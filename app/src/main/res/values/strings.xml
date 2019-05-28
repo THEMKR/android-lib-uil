@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">UIL</string>
+    <string name="app_name">Universal Image Loader</string>
+    <string name="gallery">GALLERY</string>
 </resources>
