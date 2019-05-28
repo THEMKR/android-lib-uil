@@ -225,7 +225,12 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
                     return
                 }
                 // SEND RESULT TO CALLER
-                val data = JsonUtil.toStringTokenType<ArrayList<ImageData>>(model.selectedImageDataList, false)
+                val newSelectedImageDataList: ArrayList<ImageData> = ArrayList<ImageData>()
+                val selectedImageDataList = model.selectedImageDataList
+                for (imageData in selectedImageDataList){
+                    newSelectedImageDataList.add(imageData.clone(-1))
+                }
+                val data = JsonUtil.toStringTokenType<ArrayList<ImageData>>(newSelectedImageDataList, false)
                 val intent = Intent()
                 intent.putExtra(EXTRA_IMAGE_DATA, data)
                 setResult(Activity.RESULT_OK, intent)

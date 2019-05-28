@@ -83,7 +83,12 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
                 } else {
                     model.selectedImageDataList.add(tagDto)
                     if (model.maxPicCount == 1) {
-                        val data = JsonUtil.toStringTokenType<ArrayList<ImageData>>(model.selectedImageDataList, false)
+                        val newSelectedImageDataList: ArrayList<ImageData> = ArrayList<ImageData>()
+                        val selectedImageDataList = model.selectedImageDataList
+                        for (imageData in selectedImageDataList) {
+                            newSelectedImageDataList.add(imageData.clone(-1))
+                        }
+                        val data = JsonUtil.toStringTokenType<ArrayList<ImageData>>(newSelectedImageDataList, false)
                         val intent = Intent()
                         intent.putExtra(GalleryActivity.EXTRA_IMAGE_DATA, data)
                         activity?.setResult(Activity.RESULT_OK, intent)
