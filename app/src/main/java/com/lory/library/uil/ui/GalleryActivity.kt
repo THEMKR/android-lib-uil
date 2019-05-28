@@ -28,6 +28,26 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
 
     companion object {
         private const val TAG: String = BuildConfig.BASE_TAG + ".GalleryActivity"
+        private const val EXTRA_IMAGE_COUNT = "EXTRA_IMAGE_COUNT"
+        private const val EXTRA_IS_COUNT_FIXED = "EXTRA_IS_COUNT_FIXED"
+
+        /**
+         * Method to launch the Gallery Activity for result
+         * @param activity
+         * @param requestCode Code to be return in onActivityRresult
+         * @param maxImageCount Number of Image to be requested
+         * @param isCountFixed  If TRUE then forced user to pick this much of Image. If FALSE then user my choose less image too
+         */
+        fun launch(activity: Activity, requestCode: Int, maxImageCount: Int, isCountFixed: Boolean) {
+            Tracer.debug(TAG, "launch : Request Code = $requestCode : Image Count = $maxImageCount")
+            val intent = Intent(activity, GalleryActivity::class.java)
+            intent.putExtra(EXTRA_IMAGE_COUNT, maxImageCount)
+            intent.putExtra(EXTRA_IS_COUNT_FIXED, isCountFixed)
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            activity.startActivityForResult(intent, requestCode)
+        }
     }
 
     private var dtoAlbumDataList: ArrayList<DTOAlbumData> = ArrayList()
