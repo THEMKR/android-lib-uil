@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <com.lory.library.uil.ui.custom.MKRImageView
+        <com.lory.library.uil.ui.custom.MKRImageDataView
                 android:id="@+id/item_album_imageView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

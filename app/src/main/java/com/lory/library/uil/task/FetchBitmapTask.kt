@@ -39,6 +39,54 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
         var bitmap = getBitmapFromPath() ?: return null
         bitmap = cropBitmap(bitmap)
         bitmap = flipBitmap(bitmap)
+        bitmap = orientBitmap(bitmap)
+        return bitmap
+    }
+
+    /**
+     * Method to orient the bitmap
+     * @param bitmap
+     */
+    protected fun orientBitmap(bitmap: Bitmap): Bitmap {
+        when (imageData.orientation) {
+            Constants.ORIENTATION.LANDSCAPE_90.value -> {
+                val rotatedBitmap = Bitmap.createBitmap(bitmap.height, bitmap.width, bitmap.config)
+                val matrix = Matrix()
+                matrix.preRotate(90F)
+                matrix.postTranslate(rotatedBitmap.width.toFloat(), 0F)
+                val canvas = Canvas(rotatedBitmap)
+                canvas.drawBitmap(bitmap, matrix, null)
+                if (rotatedBitmap != bitmap) {
+                    bitmap.recycle()
+                }
+                return rotatedBitmap
+            }
+            Constants.ORIENTATION.LANDSCAPE_180.value -> {
+                val rotatedBitmap = Bitmap.createBitmap(bitmap.height, bitmap.width, bitmap.config)
+                val matrix = Matrix()
+                matrix.preRotate(-90F)
+                matrix.postTranslate(0F, rotatedBitmap.height.toFloat())
+                val canvas = Canvas(rotatedBitmap)
+                canvas.drawBitmap(bitmap, matrix, null)
+                if (rotatedBitmap != bitmap) {
+                    bitmap.recycle()
+                }
+                return rotatedBitmap
+            }
+            Constants.ORIENTATION.REVERSED.value -> {
+                Log.e("MKR", "orientBitmap : 3 : ${bitmap.width} : ${bitmap.height}")
+                val rotatedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
+                val matrix = Matrix()
+                matrix.preRotate(180F)
+                matrix.postTranslate(rotatedBitmap.width.toFloat(), rotatedBitmap.height.toFloat())
+                val canvas = Canvas(rotatedBitmap)
+                canvas.drawBitmap(bitmap, matrix, null)
+                if (rotatedBitmap != bitmap) {
+                    bitmap.recycle()
+                }
+                return rotatedBitmap
+            }
+        }
         return bitmap
     }
 
@@ -48,7 +96,7 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
      */
     protected fun flipBitmap(bitmap: Bitmap): Bitmap {
         when (imageData.flipType) {
-            Constants.FLIP_TYPE.VERTICAL.ordinal -> {
+            Constants.FLIP_TYPE.VERTICAL.value -> {
                 val flipBitmapVertical = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
                 val canvas = Canvas(flipBitmapVertical)
                 val flipHorizontalMatrix = Matrix()
@@ -60,7 +108,7 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
                 }
                 return flipBitmapVertical
             }
-            Constants.FLIP_TYPE.HORIZONTAL.ordinal -> {
+            Constants.FLIP_TYPE.HORIZONTAL.value -> {
                 val flipBitmapHorizontal = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
                 val canvas = Canvas(flipBitmapHorizontal)
                 val flipHorizontalMatrix = Matrix()
@@ -72,7 +120,7 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
                 }
                 return flipBitmapHorizontal
             }
-            Constants.FLIP_TYPE.BOTH.ordinal -> {
+            Constants.FLIP_TYPE.BOTH.value -> {
                 val flipBitmapHorizontal = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
                 var canvas = Canvas(flipBitmapHorizontal)
                 var flipHorizontalMatrix = Matrix()

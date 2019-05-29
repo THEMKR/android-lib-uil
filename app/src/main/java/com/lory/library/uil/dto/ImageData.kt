@@ -12,7 +12,7 @@ open class ImageData {
      */
     val key: String
         get() {
-            return "[$path][$storageType][$flipType][$dimensionPer][$cropSection]"
+            return "[$path][$orientation][$storageType][$flipType][$dimensionPer][$cropSection]"
         }
 
     /**
@@ -23,14 +23,14 @@ open class ImageData {
     var cropSection: CropSection = CropSection()
 
     /**
-     * Type of Storage Location [Constants.STORAGE_TYPE.value]
+     * Type of Storage Location [Constants.STORAGE_TYPE].value
      */
     @SerializedName("storageType")
     @Expose
     var storageType: Int = Constants.STORAGE_TYPE.EXTERNAL.value
 
     /**
-     * Flip Type [Constants.FLIP_TYPE.value]
+     * Flip Type [Constants.FLIP_TYPE].value
      */
     @SerializedName("flipType")
     @Expose
@@ -43,6 +43,13 @@ open class ImageData {
     @SerializedName("dimensionPer")
     @Expose
     var dimensionPer: Float = 1F
+
+    /**
+     * Type of Orientation Location [Constants.ORIENTATION].value
+     */
+    @SerializedName("orientation")
+    @Expose
+    var orientation: Int = Constants.ORIENTATION.NAN.value
 
     /**
      * Image Path
@@ -90,6 +97,7 @@ open class ImageData {
         imageData.cropSection = cropSection
         imageData.flipType = flipType
         imageData.dimensionPer = dimensionPer
+        imageData.orientation = orientation
         return imageData
     }
 
@@ -104,6 +112,7 @@ open class ImageData {
         imageData.cropSection = cropSection
         imageData.flipType = flipType
         imageData.dimensionPer = dimensionPer
+        imageData.orientation = orientation
         return imageData
     }
 
@@ -118,6 +127,7 @@ open class ImageData {
         imageData.cropSection = cropSection
         imageData.flipType = flipType
         imageData.dimensionPer = dimensionPer
+        imageData.orientation = orientation
         return imageData
     }
 }

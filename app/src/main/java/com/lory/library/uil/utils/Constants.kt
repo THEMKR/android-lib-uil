@@ -9,13 +9,30 @@ class Constants {
 
     /**
      * STORAGE LOCATION TYPE
-     * [<OL><LI>INTERNAL : 1</LI><LI>EXTERNAL : 2</LI></OL>]
+     * [<OL><LI>INTERNAL : 1</LI><LI>EXTERNAL : 2</LI><LI>ASSSETS : 3</LI><LI>URL : 4</LI></OL>]
      */
     enum class STORAGE_TYPE {
         INTERNAL(1),
         EXTERNAL(2),
         ASSSETS(3),
         URL(4);
+
+        val value: Int
+
+        constructor(value: Int) {
+            this.value = value
+        }
+    }
+
+    /**
+     * STORAGE LOCATION TYPE
+     * [<OL><LI>NAN : 0</LI><LI>LANDSCAPE_90 : 90</LI><LI>REVERSED : 180</LI><LI>LANDSCAPE_180 : 270</LI></OL>]
+     */
+    enum class ORIENTATION {
+        NAN(0),
+        LANDSCAPE_90(90),
+        REVERSED(180),
+        LANDSCAPE_180(270);
 
         val value: Int
 

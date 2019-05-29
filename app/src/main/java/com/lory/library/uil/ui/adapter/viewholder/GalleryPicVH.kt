@@ -8,7 +8,7 @@ import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.dto.Model
-import com.lory.library.uil.ui.custom.MKRImageView
+import com.lory.library.uil.ui.custom.MKRImageDataView
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
 
@@ -22,7 +22,7 @@ class GalleryPicVH : BaseViewHolder<ImageData> {
         private val TAG: String = BuildConfig.BASE_TAG + ".GalleryPicVH";
     }
 
-    private val mkrImageView: MKRImageView
+    private val mkrImageView: MKRImageDataView
     private val cardView: CardView
 
     /**
@@ -32,7 +32,7 @@ class GalleryPicVH : BaseViewHolder<ImageData> {
      */
     constructor(itemView: View) : super(itemView) {
         Tracer.debug(TAG, "GalleryAlbumVH: ")
-        mkrImageView = itemView.findViewById<MKRImageView>(R.id.item_pic_imageView)
+        mkrImageView = itemView.findViewById<MKRImageDataView>(R.id.item_pic_imageView)
         cardView = itemView.findViewById<CardView>(R.id.item_pic_cardView)
         cardView.setOnClickListener(this)
     }

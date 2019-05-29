@@ -67,6 +67,7 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
             val cursor = context.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC") ?: return null
             val colPathIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.DATA)
             val colAlbumNameIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
+            val colOrientation = cursor!!.getColumnIndex(MediaStore.Images.Media.ORIENTATION)
             while (cursor.moveToNext()) {
                 val path = cursor?.getString(colPathIndex) ?: continue
                 if (path.trim().isEmpty()) {
@@ -79,6 +80,7 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                 val imageData = ImageData()
                 imageData.path = path.trim()
                 imageData.storageType = Constants.STORAGE_TYPE.EXTERNAL.value
+                imageData.orientation = cursor!!.getInt(colOrientation)
                 mapAlbum[bucketName]?.imagePathList?.add(imageData)
             }
             cursor.close()
@@ -99,6 +101,7 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
             val cursor = context.contentResolver.query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, null, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC") ?: return null
             val colPathIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.DATA)
             val colAlbumNameIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
+            val colOrientation = cursor!!.getColumnIndex(MediaStore.Images.Media.ORIENTATION)
             while (cursor.moveToNext()) {
                 val path = cursor?.getString(colPathIndex) ?: continue
                 if (path.trim().isEmpty()) {
@@ -111,6 +114,7 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                 val imageData = ImageData()
                 imageData.path = path
                 imageData.storageType = Constants.STORAGE_TYPE.INTERNAL.value
+                imageData.orientation = cursor!!.getInt(colOrientation)
                 mapAlbum[bucketName]?.imagePathList?.add(imageData)
             }
             cursor.close()

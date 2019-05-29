@@ -3,7 +3,7 @@ package com.lory.library.uil.ui.custom
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Matrix
+import android.graphics.Rect
 import android.os.Build
 import android.support.annotation.RequiresApi
 import android.util.AttributeSet
@@ -15,13 +15,31 @@ import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.utils.Tracer
 import com.lory.library.uil.utils.UilUtils
 
-open class MKRImageView : View, ImageLoader.OnImageLoaded {
+open class MKRImageDataView : View, ImageLoader.OnImageLoaded {
 
     companion object {
-        private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageView"
+        private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageDataView"
     }
 
-    private val imageMatrix = Matrix()
+    /**
+     * Method to set the scale type of the MKRImageDataView
+     */
+    enum class SCALE_TYPE {
+        CENTER_CROP,
+        FIT_CENTER,
+        FIT_XY
+    }
+
+    /**
+     * Hold the scale type
+     */
+    var scaleType = SCALE_TYPE.CENTER_CROP
+        set(value) {
+            field = value
+            bitmap = bitmap
+        }
+
+    private val rectDrawBitmap = Rect()
 
     /**
      * Image data to be set
@@ -53,7 +71,7 @@ open class MKRImageView : View, ImageLoader.OnImageLoaded {
                 value = UilUtils.getDefaultBitmap(context)
             }
             field = value
-            setMatrix()
+            resetRect()
             invalidate()
         }
 
@@ -80,7 +98,6 @@ open class MKRImageView : View, ImageLoader.OnImageLoaded {
      * Method to init the View
      */
     private fun init() {
-        imageMatrix.reset()
         imageLoader = ImageLoader.getInstance(context)
         bitmap = UilUtils.getDefaultBitmap(context)
     }
@@ -103,7 +120,7 @@ open class MKRImageView : View, ImageLoader.OnImageLoaded {
         if (bitmap?.equals(UilUtils.getDefaultBitmap(context)) ?: true) {
             imageLoader?.loadImage(imageData, this)
         }
-        canvas?.drawBitmap(bitmap, imageMatrix, null)
+        canvas?.drawBitmap(bitmap, null, rectDrawBitmap, null)
     }
 
     override fun onImageLoaded(bitmap: Bitmap?, imageData: ImageData) {
@@ -118,28 +135,71 @@ open class MKRImageView : View, ImageLoader.OnImageLoaded {
     }
 
     /**
-     * Method to set the matrix based on Bitmap
-     * @param bitmap
+     * Method to set the rect based on Bitmap
      */
-    private fun setMatrix() {
-        imageMatrix.reset()
-        setMatrixCropCenter()
+    private fun resetRect() {
+        when (scaleType) {
+            SCALE_TYPE.CENTER_CROP -> {
+                setRectCropCenter()
+            }
+            SCALE_TYPE.FIT_CENTER -> {
+                setRectCenterInside()
+            }
+            SCALE_TYPE.FIT_XY -> {
+                rectDrawBitmap.left = 0
+                rectDrawBitmap.right = width
+                rectDrawBitmap.top = 0
+                rectDrawBitmap.bottom = height
+            }
+            else -> {
+                setRectCropCenter()
+            }
+        }
     }
 
     /**
-     * Set the matrix by cropping the center of the Bitmap
+     * Set the rect by cropping the center of the Bitmap
      */
-    private fun setMatrixCropCenter() {
+    private fun setRectCropCenter() {
         val bitmapLamda = (bitmap?.width?.toFloat() ?: 1F) / (bitmap?.height?.toFloat() ?: 1F)
         val viewLamda = width.toFloat() / height.toFloat()
         if (viewLamda <= bitmapLamda) {
-            val scale: Float = height.toFloat() / (bitmap?.height?.toFloat() ?: 1F)
-            imageMatrix.setScale(scale, scale)
-            imageMatrix.postTranslate(-((bitmap?.width ?: width).toFloat() * scale - width.toFloat()) / 2F, 0F)
+            // MATCH HEIGHT
+            val widthReq = ((width.toFloat() * (bitmap?.width?.toFloat() ?: 1F)) / (bitmap?.height?.toFloat() ?: 1F)).toInt()
+            rectDrawBitmap.left = -((widthReq - width) shr 1)
+            rectDrawBitmap.right = rectDrawBitmap.top + widthReq
+            rectDrawBitmap.top = 0
+            rectDrawBitmap.bottom = height
         } else {
-            val scale: Float = width.toFloat() / (bitmap?.width?.toFloat() ?: 1F)
-            imageMatrix.setScale(scale, scale)
-            imageMatrix.postTranslate(0F, -((bitmap?.height ?: height).toFloat() * scale - height.toFloat()) / 2F)
+            // MATH WIDTH
+            rectDrawBitmap.left = 0
+            rectDrawBitmap.right = width
+            val heightReq = ((height.toFloat() * (bitmap?.height?.toFloat() ?: 1F)) / (bitmap?.width?.toFloat() ?: 1F)).toInt()
+            rectDrawBitmap.top = -((heightReq - height) shr 1)
+            rectDrawBitmap.bottom = rectDrawBitmap.top + heightReq
+        }
+    }
+
+    /**
+     * Set the rect by fit the center Inside
+     */
+    private fun setRectCenterInside() {
+        val bitmapLamda = (bitmap?.width?.toFloat() ?: 1F) / (bitmap?.height?.toFloat() ?: 1F)
+        val viewLamda = width.toFloat() / height.toFloat()
+        if (viewLamda <= bitmapLamda) {
+            // MATH WIDTH
+            rectDrawBitmap.left = 0
+            rectDrawBitmap.right = width
+            val heightReq = ((height.toFloat() * (bitmap?.height?.toFloat() ?: 1F)) / (bitmap?.width?.toFloat() ?: 1F)).toInt()
+            rectDrawBitmap.top = (height - heightReq) shr 1
+            rectDrawBitmap.bottom = rectDrawBitmap.top + heightReq
+        } else {
+            // MATCH HEIGHT
+            val widthReq = ((width.toFloat() * (bitmap?.width?.toFloat() ?: 1F)) / (bitmap?.height?.toFloat() ?: 1F)).toInt()
+            rectDrawBitmap.left = (width - widthReq) shr 1
+            rectDrawBitmap.right = rectDrawBitmap.top + widthReq
+            rectDrawBitmap.top = 0
+            rectDrawBitmap.bottom = height
         }
     }
 }
