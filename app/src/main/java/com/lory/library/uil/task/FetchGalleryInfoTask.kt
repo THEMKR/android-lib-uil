@@ -11,7 +11,6 @@ import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
 import java.util.*
-import kotlin.Comparator
 
 
 open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {

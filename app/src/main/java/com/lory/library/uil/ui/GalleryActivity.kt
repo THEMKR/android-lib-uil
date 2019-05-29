@@ -228,7 +228,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
                 val newSelectedImageDataList: ArrayList<ImageData> = ArrayList<ImageData>()
                 val selectedImageDataList = model.selectedImageDataList
                 for (imageData in selectedImageDataList) {
-                    newSelectedImageDataList.add(ImageData.resize(imageData, -1F))
+                    newSelectedImageDataList.add(ImageData.resize(imageData, ImageData(), -1F))
                 }
                 val data = JsonUtil.toStringTokenType<ArrayList<ImageData>>(newSelectedImageDataList, false)
                 val intent = Intent()

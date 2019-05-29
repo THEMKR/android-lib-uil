@@ -12,101 +12,104 @@ open class ImageData {
         /**
          * Method to return ImageData with New Size
          * @param imageData
+         * @param newImageData
          * @param dimensionPer
+         * @return Return the newImageData as pass in parameter
          */
-        fun resize(imageData: ImageData, dimensionPer: Float): ImageData {
-            val dto = ImageData()
-            dto.storageType = imageData.storageType
-            dto.path = imageData.path
-            dto.cropSection = imageData.cropSection
-            dto.flipType = imageData.flipType
-            dto.dimensionPer = dimensionPer
-            dto.orientation = imageData.orientation
-            return dto
+        fun resize(imageData: ImageData, newImageData: ImageData, dimensionPer: Float): ImageData {
+            newImageData.storageType = imageData.storageType
+            newImageData.path = imageData.path
+            newImageData.cropSection = imageData.cropSection
+            newImageData.flipType = imageData.flipType
+            newImageData.dimensionPer = dimensionPer
+            newImageData.orientation = imageData.orientation
+            return newImageData
         }
 
         /**
          * Method to return ImageData with New CropSection
          * @param imageData
+         * @param newImageData
          * @param cropSection
+         * @return Return the newImageData as pass in parameter
          */
-        fun crop(imageData: ImageData, cropSection: CropSection): ImageData {
-            val dto = ImageData()
-            dto.storageType = imageData.storageType
-            dto.path = imageData.path
-            dto.cropSection = cropSection
-            dto.flipType = imageData.flipType
-            dto.dimensionPer = imageData.dimensionPer
-            dto.orientation = imageData.orientation
-            return dto
+        fun crop(imageData: ImageData, newImageData: ImageData, cropSection: CropSection): ImageData {
+            newImageData.storageType = imageData.storageType
+            newImageData.path = imageData.path
+            newImageData.cropSection = cropSection
+            newImageData.flipType = imageData.flipType
+            newImageData.dimensionPer = imageData.dimensionPer
+            newImageData.orientation = imageData.orientation
+            return newImageData
         }
 
         /**
          * Method to return ImageData with New FlipType
          * @param imageData
+         * @param newImageData
          * @param flipType
+         * @return Return the newImageData as pass in parameter
          */
-        fun flip(imageData: ImageData, flipType: Constants.FLIP_TYPE): ImageData {
-            val dto = ImageData()
-            dto.storageType = imageData.storageType
-            dto.path = imageData.path
-            dto.cropSection = imageData.cropSection
-            dto.dimensionPer = imageData.dimensionPer
-            dto.orientation = imageData.orientation
+        fun flip(imageData: ImageData, newImageData: ImageData, flipType: Constants.FLIP_TYPE): ImageData {
+            newImageData.storageType = imageData.storageType
+            newImageData.path = imageData.path
+            newImageData.cropSection = imageData.cropSection
+            newImageData.dimensionPer = imageData.dimensionPer
+            newImageData.orientation = imageData.orientation
             when (imageData.flipType) {
                 Constants.FLIP_TYPE.BOTH.value -> {
                     when (flipType) {
                         Constants.FLIP_TYPE.BOTH -> {
-                            dto.flipType = Constants.FLIP_TYPE.NAN.value
+                            newImageData.flipType = Constants.FLIP_TYPE.NAN.value
                         }
                         Constants.FLIP_TYPE.HORIZONTAL -> {
-                            dto.flipType = Constants.FLIP_TYPE.VERTICAL.value
+                            newImageData.flipType = Constants.FLIP_TYPE.VERTICAL.value
                         }
                         Constants.FLIP_TYPE.VERTICAL -> {
-                            dto.flipType = Constants.FLIP_TYPE.HORIZONTAL.value
+                            newImageData.flipType = Constants.FLIP_TYPE.HORIZONTAL.value
                         }
                         else -> {
-                            dto.flipType = imageData.flipType
+                            newImageData.flipType = imageData.flipType
                         }
                     }
                 }
                 Constants.FLIP_TYPE.HORIZONTAL.value -> {
                     when (flipType) {
                         Constants.FLIP_TYPE.BOTH -> {
-                            dto.flipType = Constants.FLIP_TYPE.VERTICAL.value
+                            newImageData.flipType = Constants.FLIP_TYPE.VERTICAL.value
                         }
                         Constants.FLIP_TYPE.HORIZONTAL -> {
-                            dto.flipType = Constants.FLIP_TYPE.NAN.value
+                            newImageData.flipType = Constants.FLIP_TYPE.NAN.value
                         }
                         Constants.FLIP_TYPE.VERTICAL -> {
-                            dto.flipType = Constants.FLIP_TYPE.BOTH.value
+                            newImageData.flipType = Constants.FLIP_TYPE.BOTH.value
                         }
                         else -> {
-                            dto.flipType = imageData.flipType
+                            newImageData.flipType = imageData.flipType
                         }
                     }
                 }
                 Constants.FLIP_TYPE.VERTICAL.value -> {
                     when (flipType) {
                         Constants.FLIP_TYPE.BOTH -> {
-                            dto.flipType = Constants.FLIP_TYPE.HORIZONTAL.value
+                            newImageData.flipType = Constants.FLIP_TYPE.HORIZONTAL.value
                         }
                         Constants.FLIP_TYPE.HORIZONTAL -> {
-                            dto.flipType = Constants.FLIP_TYPE.BOTH.value
+                            newImageData.flipType = Constants.FLIP_TYPE.BOTH.value
                         }
                         Constants.FLIP_TYPE.VERTICAL -> {
-                            dto.flipType = Constants.FLIP_TYPE.NAN.value
+                            newImageData.flipType = Constants.FLIP_TYPE.NAN.value
                         }
                         else -> {
-                            dto.flipType = imageData.flipType
+                            newImageData.flipType = imageData.flipType
                         }
                     }
                 }
                 else -> {
-                    dto.flipType = imageData.flipType
+                    newImageData.flipType = imageData.flipType
                 }
             }
-            return dto
+            return newImageData
         }
     }
 

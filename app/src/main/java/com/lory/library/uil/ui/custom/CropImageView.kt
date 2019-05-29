@@ -21,7 +21,7 @@ open class CropImageView : View, ImageLoader.OnImageLoaded {
         private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageDataView"
     }
 
-    enum class CROPPING_TYPE{
+    enum class CROPPING_TYPE {
         CIRCLE,
         RECT,
         SQUARE

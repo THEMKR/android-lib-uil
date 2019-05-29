@@ -40,6 +40,6 @@ class SelectedPicVH : BaseViewHolder<ImageData> {
             return
         }
         cancelView.tag = dto
-        mkrImageView.imageData = ImageData.resize(dto, Constants.DEFAULT_PIC_ITEM_LOAD_SIZE)
+        mkrImageView.imageData = ImageData.resize(dto, ImageData(), Constants.DEFAULT_PIC_ITEM_LOAD_SIZE)
     }
 }

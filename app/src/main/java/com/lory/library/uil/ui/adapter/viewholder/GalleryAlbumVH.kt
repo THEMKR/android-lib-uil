@@ -47,6 +47,6 @@ class GalleryAlbumVH : BaseViewHolder<DTOAlbumData> {
         cardView.tag = dto
         textView.text = dto.albumName
         val imagePathList = dto.imagePathList
-        mkrImageView.imageData = ImageData.resize(imagePathList[0], Constants.DEFAULT_ALBUM_ITEM_LOAD_SIZE)
+        mkrImageView.imageData = ImageData.resize(imagePathList[0], ImageData(), Constants.DEFAULT_ALBUM_ITEM_LOAD_SIZE)
     }
 }
