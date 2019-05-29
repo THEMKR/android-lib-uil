@@ -14,7 +14,7 @@ import java.util.*
 import kotlin.Comparator
 
 
-class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
+open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
     companion object {
         private const val TAG: String = BuildConfig.BASE_TAG + ".FetchGalleryInfoTask"
     }
@@ -59,7 +59,7 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
     /**
      * Method to get the list of All External Image
      */
-    private fun getExternalImageData(): ArrayList<DTOAlbumData>? {
+    protected fun getExternalImageData(): ArrayList<DTOAlbumData>? {
         Tracer.debug(TAG, "getExternalImageData : ")
         val mapAlbum = HashMap<String, DTOAlbumData>()
         try {
@@ -91,7 +91,7 @@ class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
     /**
      * Method to get the list of All Internal Image
      */
-    private fun getInternalImageData(): ArrayList<DTOAlbumData>? {
+    protected fun getInternalImageData(): ArrayList<DTOAlbumData>? {
         Tracer.debug(TAG, "getInternalImageData : ")
         val mapAlbum = HashMap<String, DTOAlbumData>()
         try {
