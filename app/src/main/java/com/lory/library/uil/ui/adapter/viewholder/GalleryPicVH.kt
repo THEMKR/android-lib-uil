@@ -50,6 +50,6 @@ class GalleryPicVH : BaseViewHolder<ImageData> {
                 ContextCompat.getColor(context, R.color.card_background)
             }
         )
-        mkrImageView.imageData = dto.clone(Constants.DEFAULT_PIC_ITEM_LOAD_SIZE)
+        mkrImageView.imageData = ImageData.resize(dto, Constants.DEFAULT_PIC_ITEM_LOAD_SIZE)
     }
 }

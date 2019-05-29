@@ -21,6 +21,12 @@ open class CropImageView : View, ImageLoader.OnImageLoaded {
         private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageDataView"
     }
 
+    enum class CROPPING_TYPE{
+        CIRCLE,
+        RECT,
+        SQUARE
+    }
+
     /**
      * Image DRAW Rect
      */
@@ -129,6 +135,7 @@ open class CropImageView : View, ImageLoader.OnImageLoaded {
      */
     private fun setRectCordinate() {
         setRectDrawBitmap()
+        resetRectDrawCropSection()
     }
 
     /**
@@ -152,5 +159,12 @@ open class CropImageView : View, ImageLoader.OnImageLoaded {
             rectDrawBitmap.top = 0
             rectDrawBitmap.bottom = height
         }
+    }
+
+    /**
+     * Method to reset the Rect of Crop Section
+     */
+    private fun resetRectDrawCropSection() {
+
     }
 }

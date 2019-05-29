@@ -39,6 +39,9 @@ open class MKRImageDataView : View, ImageLoader.OnImageLoaded {
             bitmap = bitmap
         }
 
+    /**
+     * Rect used to draw the bitmap
+     */
     private val rectDrawBitmap = Rect()
 
     /**
