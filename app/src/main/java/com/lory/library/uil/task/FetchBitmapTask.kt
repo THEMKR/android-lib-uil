@@ -7,6 +7,7 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Paint.FILTER_BITMAP_FLAG
+import android.util.Log
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.asynctask.BaseAsyncTask
 import com.lory.library.uil.dto.ImageData
@@ -29,8 +30,13 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
 
 
     override fun doInBackground(): Bitmap? {
+        val cropSection = imageData.cropSection
+        if (cropSection.left >= cropSection.right || cropSection.top >= cropSection.bottom) {
+            Log.e("MKR", "FetchBitmapTask : INVALID CROP SECTION : $cropSection")
+            return null
+        }
         // CREATE BITMAP
-        var bitmap = getBitmapFromPath()?:return null
+        var bitmap = getBitmapFromPath() ?: return null
         bitmap = cropBitmap(bitmap)
         bitmap = flipBitmap(bitmap)
         return bitmap
@@ -124,7 +130,10 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
             1
         } else {
             val displayMetrics = context.resources.displayMetrics
-            UilUtils.calculateInSampleSize(optionWidth, optionHeight, (displayMetrics.widthPixels.toFloat() * imageData.dimensionPer).toInt(), (displayMetrics.heightPixels.toFloat() * imageData.dimensionPer).toInt())
+            val cropSection = imageData.cropSection
+            val width = displayMetrics.widthPixels.toFloat() * imageData.dimensionPer / (cropSection.right - cropSection.left)
+            val height = displayMetrics.heightPixels.toFloat() * imageData.dimensionPer / (cropSection.bottom - cropSection.top)
+            UilUtils.calculateInSampleSize(optionWidth, optionHeight, width.toInt(), height.toInt())
         }
     }
 }

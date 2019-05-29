@@ -73,6 +73,7 @@ open class AsyncTaskProvider : BaseAsyncTaskProvider() {
      * @param imageData
      * @param asyncCallBack
      * @param task
+     * [<UL><LI>BITMAP_LOCATION.EXTERNAL : FetchBitmapFromExternalStorage()</LI><LI>BITMAP_LOCATION.INTERNAL : FetchBitmapFromInternalStorage()</LI><LI>BITMAP_LOCATION.ASSETS : FetchBitmapFromAssets()</LI><LI>BITMAP_LOCATION.URL : FetchBitmapFromURL()</LI></UL>]
      */
     open protected fun getTask(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>, task: BITMAP_LOCATION): FetchBitmapTask {
         return when (task) {
