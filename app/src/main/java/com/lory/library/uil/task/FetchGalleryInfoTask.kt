@@ -33,20 +33,6 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
             arrayList.addAll(internalImageData)
         }
 
-        // NETWORK
-        val dtoAlbumData = DTOAlbumData(Constants.STORAGE_TYPE.URL.value, "SERVER")
-        val imageData = ImageData()
-        imageData.path = "https://juststickers.in/wp-content/uploads/2016/06/ghanta.png"
-        imageData.storageType = Constants.STORAGE_TYPE.URL.value
-        val cropSection = CropSection()
-        cropSection.left = 0.3F
-        cropSection.right = 0.9F
-        cropSection.top = 0.3F
-        cropSection.bottom = 1F
-        imageData.cropSection = cropSection
-        dtoAlbumData.imagePathList?.add(imageData)
-        arrayList.add(dtoAlbumData)
-
         Collections.sort(arrayList, object : Comparator<DTOAlbumData> {
             override fun compare(o1: DTOAlbumData?, o2: DTOAlbumData?): Int {
                 return (o1?.albumName ?: "").compareTo((o2?.albumName ?: ""))

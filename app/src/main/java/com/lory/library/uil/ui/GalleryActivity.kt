@@ -21,8 +21,8 @@ import com.lory.library.uil.R
 import com.lory.library.uil.dto.DTOAlbumData
 import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.dto.Model
-import com.lory.library.uil.provider.AsyncTaskProvider
 import com.lory.library.uil.provider.FragmentProvider
+import com.lory.library.uil.provider.UILTaskProvider
 import com.lory.library.uil.ui.fragment.FragmentGalleryAlbum
 import com.lory.library.uil.utils.JsonUtil
 import com.lory.library.uil.utils.Tracer
@@ -38,7 +38,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
 
     private var dtoAlbumDataList: ArrayList<DTOAlbumData> = ArrayList()
     private var appPermissionController: AppPermissionController? = null
-    private var asyncTaskProvider = AsyncTaskProvider()
+    private var uilTaskProvider = UILTaskProvider()
     private var asyncCallBackFetchGalleryInfo = object : AsyncCallBack<ArrayList<DTOAlbumData>, Any> {
         override fun onProgress(progress: Any?) {
             MKRDialogUtil.dismissLoadingDialog()
@@ -56,7 +56,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
         setContentView(R.layout.activity_gallery)
         setSupportActionBar(findViewById<Toolbar>(R.id.activity_gallery_toolbar))
         onBaseActivitySetToolbar(layoutInflater.inflate(R.layout.toolbar, null))
-        asyncTaskProvider.attachProvider()
+        uilTaskProvider.attachProvider()
         appPermissionController = AppPermissionController(
             this, arrayOf(
                 Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -108,7 +108,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
     }
 
     override fun onDestroy() {
-        asyncTaskProvider.detachProvider()
+        uilTaskProvider.detachProvider()
         super.onDestroy()
     }
 
@@ -214,7 +214,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
     private fun loadGalleryInfoList() {
         Tracer.debug(TAG, "loadGalleryInfoList : ")
         MKRDialogUtil.showLoadingDialog(this, "LOAD MOBILE GALLERY")
-        asyncTaskProvider.fetchGalleryInfoList(this, asyncCallBackFetchGalleryInfo)
+        uilTaskProvider.fetchGalleryInfoList(this, asyncCallBackFetchGalleryInfo)
     }
 
     /**

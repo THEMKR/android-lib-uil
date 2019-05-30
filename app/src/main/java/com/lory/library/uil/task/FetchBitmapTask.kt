@@ -12,7 +12,7 @@ import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.asynctask.BaseAsyncTask
 import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.utils.Constants
-import com.lory.library.uil.utils.UilUtils
+import com.lory.library.uil.utils.Utils
 
 
 abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
@@ -181,7 +181,7 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
             val cropSection = imageData.cropSection
             val width = displayMetrics.widthPixels.toFloat() * imageData.dimensionPer / (cropSection.right - cropSection.left)
             val height = displayMetrics.heightPixels.toFloat() * imageData.dimensionPer / (cropSection.bottom - cropSection.top)
-            UilUtils.calculateInSampleSize(optionWidth, optionHeight, width.toInt(), height.toInt())
+            Utils.calculateInSampleSize(optionWidth, optionHeight, width.toInt(), height.toInt())
         }
     }
 }

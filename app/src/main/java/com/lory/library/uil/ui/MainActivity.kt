@@ -8,7 +8,7 @@ import android.view.View
 import com.lory.library.storage.session.SessionStorage
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
-import com.lory.library.uil.UIL
+import com.lory.library.uil.utils.Utils
 import com.lory.library.uil.utils.Tracer
 
 class MainActivity : AppCompatActivity() {
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.activity_main_open_gallery).setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 Tracer.debug(TAG, "onClick : ")
-                UIL.openGallery(this@MainActivity, 1001, 10, false)
+                GalleryActivity.launchGallery(this@MainActivity, 1001, 10, false)
             }
         })
     }
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == 1001) {
             if (resultCode == Activity.RESULT_OK) {
                 Tracer.debug(TAG, "onActivityResult : SUCCESS : ")
-                val parseResponseIntent = UIL.parseGalleryResponse(data)
+                val parseResponseIntent = GalleryActivity.parseGalleryResponse(data)
                 Tracer.debug(TAG, "onActivityResult : SUCCESS : ${parseResponseIntent.size}")
                 for (imageData in parseResponseIntent) {
                     Tracer.debug(TAG, "onActivityResult : SUCCESS : $imageData")

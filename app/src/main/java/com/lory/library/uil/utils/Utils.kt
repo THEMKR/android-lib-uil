@@ -7,12 +7,14 @@ import android.graphics.Canvas
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
+import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 
 
-class UilUtils {
+class Utils {
     companion object {
         private var DEFAULT_BITMAP: Bitmap? = null
+        private const val TAG: String = BuildConfig.BASE_TAG + ".Utils"
 
         /**
          * Method to get the default Bitmap
@@ -20,7 +22,7 @@ class UilUtils {
          */
         fun getDefaultBitmap(context: Context): Bitmap {
             if (DEFAULT_BITMAP == null) {
-                var drawable = ContextCompat.getDrawable(context, R.drawable.default_image) ?: return BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher)
+                var drawable = ContextCompat.getDrawable(context, R.drawable.default_image) ?: return BitmapFactory.decodeResource(context.resources, R.drawable.default)
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     drawable = DrawableCompat.wrap(drawable!!).mutate()
                 }

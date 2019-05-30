@@ -8,7 +8,7 @@ import com.lory.library.storage.session.OnSessionStorageListener
 import com.lory.library.storage.session.SessionStorage
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.dto.ImageData
-import com.lory.library.uil.provider.AsyncTaskProvider
+import com.lory.library.uil.provider.UILTaskProvider
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
 import java.util.*
@@ -40,7 +40,7 @@ class ImageLoader {
     private var context: Context
     private val query = Vector<ImageData>()
     private val listenerList = Hashtable<ImageData, OnImageLoaded>()
-    val asyncTaskProvider: AsyncTaskProvider = AsyncTaskProvider()
+    val uilTaskProvider = UILTaskProvider()
     val onSessionStorageListener = object : OnSessionStorageListener<Bitmap> {
         override fun onItemRecycled(mkr: Bitmap): Int {
             mkr.recycle()
@@ -57,7 +57,7 @@ class ImageLoader {
      */
     private constructor(context: Context) {
         this.context = context.applicationContext
-        asyncTaskProvider.attachProvider()
+        uilTaskProvider.attachProvider()
         sessionStorage = SessionStorage.getInstance(context)
     }
 
@@ -88,7 +88,7 @@ class ImageLoader {
             onImageLoaded?.onImageLoaded(bitmap, imageData)
             return
         }
-        listenerList.remove(imageData)
+        removeImage(imageData)
         query.add(imageData)
         if (onImageLoaded != null) {
             listenerList[imageData] = onImageLoaded
@@ -145,22 +145,22 @@ class ImageLoader {
                 return
             }
             Tracer.debug(TAG, "onProgressUpdate : 2")
-            asyncTaskProvider.fetchBitmap(
+            uilTaskProvider.fetchBitmap(
                 context, imageData, BitmapCallback(imageData), when (imageData.storageType) {
                     Constants.STORAGE_TYPE.EXTERNAL.value -> {
-                        AsyncTaskProvider.BITMAP_LOCATION.EXTERNAL
+                        UILTaskProvider.BITMAP_LOCATION.EXTERNAL
                     }
                     Constants.STORAGE_TYPE.INTERNAL.value -> {
-                        AsyncTaskProvider.BITMAP_LOCATION.INTERNAL
+                        UILTaskProvider.BITMAP_LOCATION.INTERNAL
                     }
                     Constants.STORAGE_TYPE.URL.value -> {
-                        AsyncTaskProvider.BITMAP_LOCATION.URL
+                        UILTaskProvider.BITMAP_LOCATION.URL
                     }
                     Constants.STORAGE_TYPE.ASSSETS.value -> {
-                        AsyncTaskProvider.BITMAP_LOCATION.ASSETS
+                        UILTaskProvider.BITMAP_LOCATION.ASSETS
                     }
                     else -> {
-                        AsyncTaskProvider.BITMAP_LOCATION.EXTERNAL
+                        UILTaskProvider.BITMAP_LOCATION.EXTERNAL
                     }
                 }
             )

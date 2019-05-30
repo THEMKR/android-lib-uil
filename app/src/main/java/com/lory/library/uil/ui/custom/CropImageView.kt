@@ -13,7 +13,7 @@ import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.controller.ImageLoader
 import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.utils.Tracer
-import com.lory.library.uil.utils.UilUtils
+import com.lory.library.uil.utils.Utils
 
 open class CropImageView : View, ImageLoader.OnImageLoaded {
 
@@ -49,11 +49,11 @@ open class CropImageView : View, ImageLoader.OnImageLoaded {
                 if (savedBitmap != null) {
                     bitmap = savedBitmap
                 } else {
-                    bitmap = UilUtils.getDefaultBitmap(context)
+                    bitmap = Utils.getDefaultBitmap(context)
                     imageLoader?.loadImage(field, this)
                 }
             } else {
-                bitmap = UilUtils.getDefaultBitmap(context)
+                bitmap = Utils.getDefaultBitmap(context)
             }
         }
 
@@ -64,7 +64,7 @@ open class CropImageView : View, ImageLoader.OnImageLoaded {
         set(value) {
             var value = value
             if (value == null) {
-                value = UilUtils.getDefaultBitmap(context)
+                value = Utils.getDefaultBitmap(context)
             }
             field = value
             setRectCordinate()
@@ -95,7 +95,7 @@ open class CropImageView : View, ImageLoader.OnImageLoaded {
      */
     private fun init() {
         imageLoader = ImageLoader.getInstance(context)
-        bitmap = UilUtils.getDefaultBitmap(context)
+        bitmap = Utils.getDefaultBitmap(context)
     }
 
     override fun onDetachedFromWindow() {
@@ -111,9 +111,9 @@ open class CropImageView : View, ImageLoader.OnImageLoaded {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (bitmap?.isRecycled ?: true) {
-            bitmap = UilUtils.getDefaultBitmap(context)
+            bitmap = Utils.getDefaultBitmap(context)
         }
-        if (bitmap?.equals(UilUtils.getDefaultBitmap(context)) ?: true) {
+        if (bitmap?.equals(Utils.getDefaultBitmap(context)) ?: true) {
             imageLoader?.loadImage(imageData, this)
         }
         canvas?.drawBitmap(bitmap, null, rectDrawBitmap, null)
@@ -124,7 +124,7 @@ open class CropImageView : View, ImageLoader.OnImageLoaded {
         if (bitmap != null && !bitmap!!.isRecycled && imageData.equals(this.imageData)) {
             this.bitmap = bitmap
         } else {
-            this.bitmap = UilUtils.getDefaultBitmap(context)
+            this.bitmap = Utils.getDefaultBitmap(context)
             imageLoader?.loadImage(this.imageData!!, this)
         }
         invalidate()

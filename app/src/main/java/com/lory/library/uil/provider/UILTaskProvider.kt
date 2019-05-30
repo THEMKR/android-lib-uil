@@ -10,10 +10,10 @@ import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.task.*
 import com.lory.library.uil.utils.Tracer
 
-open class AsyncTaskProvider : BaseAsyncTaskProvider() {
+open class UILTaskProvider : BaseAsyncTaskProvider() {
 
     companion object {
-        private const val TAG: String = BuildConfig.BASE_TAG + ".AsyncTaskProvider"
+        private const val TAG: String = BuildConfig.BASE_TAG + ".UILTaskProvider"
     }
 
     /**
