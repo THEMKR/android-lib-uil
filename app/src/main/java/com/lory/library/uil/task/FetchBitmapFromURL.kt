@@ -10,9 +10,16 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-open class FetchBitmapFromURL : FetchBitmapTask {
+open class FetchBitmapFromURL<MKR> : FetchBitmapTask<MKR> {
 
-    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?) : super(context, imageData, asyncCallBack) {
+    /**
+     * Constructor
+     * @param context
+     * @param imageData
+     * @param asyncCallBack
+     * @param additionalPayLoad
+     */
+    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?, additionalPayLoad: MKR) : super(context, imageData, asyncCallBack, additionalPayLoad) {
 
     }
 

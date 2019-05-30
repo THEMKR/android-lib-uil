@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import com.lory.library.storage.session.SessionStorage
 import com.lory.library.uil.utils.Constants
 
-open class ImageData {
+open class ImageInfo {
 
     companion object {
 
@@ -67,7 +67,7 @@ open class ImageData {
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other != null && other is ImageData) {
+        if (other != null && other is ImageInfo) {
             return path.equals(other.path) &&
                     dimensionPer.equals(other.dimensionPer) &&
                     flipType.equals(other.flipType) &&

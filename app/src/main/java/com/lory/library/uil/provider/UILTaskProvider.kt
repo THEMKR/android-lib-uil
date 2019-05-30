@@ -52,8 +52,9 @@ open class UILTaskProvider : BaseAsyncTaskProvider() {
      * @param imageData
      * @param asyncCallBack
      * @param bitmapLocation
+     * @param additionalPayoad
      */
-    fun fetchBitmap(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>, bitmapLocation: BITMAP_LOCATION) {
+    fun <MKR> fetchBitmap(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>, bitmapLocation: BITMAP_LOCATION, additionalPayoad: MKR) {
         Tracer.debug(TAG, "fetchBitmap : $imageData : ${bitmapLocation.name}")
         val task = getTask(context, imageData, object : AsyncCallBack<Bitmap?, Any> {
             override fun onProgress(progress: Any?) {
@@ -63,7 +64,7 @@ open class UILTaskProvider : BaseAsyncTaskProvider() {
             override fun onSuccess(mkr: Bitmap?) {
                 notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
             }
-        }, bitmapLocation)
+        }, bitmapLocation, additionalPayoad)
         task.executeTask()
     }
 
@@ -73,24 +74,25 @@ open class UILTaskProvider : BaseAsyncTaskProvider() {
      * @param imageData
      * @param asyncCallBack
      * @param task
+     * @param additionalPayoad
      * [<UL><LI>BITMAP_LOCATION.EXTERNAL : FetchBitmapFromExternalStorage()</LI><LI>BITMAP_LOCATION.INTERNAL : FetchBitmapFromInternalStorage()</LI><LI>BITMAP_LOCATION.ASSETS : FetchBitmapFromAssets()</LI><LI>BITMAP_LOCATION.URL : FetchBitmapFromURL()</LI></UL>]
      */
-    open protected fun getTask(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>, task: BITMAP_LOCATION): FetchBitmapTask {
+    open protected fun <MKR> getTask(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>, task: BITMAP_LOCATION, additionalPayoad: MKR): FetchBitmapTask<MKR> {
         return when (task) {
             BITMAP_LOCATION.EXTERNAL -> {
-                FetchBitmapFromExternalStorage(context, imageData, asyncCallBack)
+                FetchBitmapFromExternalStorage(context, imageData, asyncCallBack, additionalPayoad)
             }
             BITMAP_LOCATION.INTERNAL -> {
-                FetchBitmapFromInternalStorage(context, imageData, asyncCallBack)
+                FetchBitmapFromInternalStorage(context, imageData, asyncCallBack, additionalPayoad)
             }
             BITMAP_LOCATION.ASSETS -> {
-                FetchBitmapFromAssets(context, imageData, asyncCallBack)
+                FetchBitmapFromAssets(context, imageData, asyncCallBack, additionalPayoad)
             }
             BITMAP_LOCATION.URL -> {
-                FetchBitmapFromURL(context, imageData, asyncCallBack)
+                FetchBitmapFromURL(context, imageData, asyncCallBack, additionalPayoad)
             }
             else -> {
-                FetchBitmapFromExternalStorage(context, imageData, asyncCallBack)
+                FetchBitmapFromExternalStorage(context, imageData, asyncCallBack, additionalPayoad)
             }
         }
     }

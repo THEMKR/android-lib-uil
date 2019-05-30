@@ -8,7 +8,10 @@ import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
 import com.lory.library.uil.BuildConfig
+import com.lory.library.uil.ImageDataBuilder
 import com.lory.library.uil.R
+import com.lory.library.uil.dto.CropSection
+import com.lory.library.uil.dto.ImageData
 
 
 class Utils {
@@ -62,6 +65,112 @@ class Utils {
             } else {
                 inSampleSize + 1
             }
+        }
+
+
+        /**
+         * Method to return ImageData with New Size
+         * @param imageData
+         * @param dimensionPer
+         * @return Return the newImageData as pass in parameter
+         */
+        fun resize(builder: ImageDataBuilder, imageData: ImageData, dimensionPer: Float): ImageData {
+            return ImageDataBuilder()
+                .setCropSection(imageData.cropSection)
+                .setDimenPer(dimensionPer)
+                .setFlipType(imageData.flipType)
+                .setOrientation(imageData.orientation)
+                .setStorageLocation(imageData.path)
+                .setStorageType(imageData.storageType)
+                .build()
+        }
+
+        /**
+         * Method to return ImageData with New CropSection
+         * @param imageData
+         * @param cropSection
+         * @return Return the newImageData as pass in parameter
+         */
+        fun crop(imageData: ImageData, cropSection: CropSection): ImageData {
+            return ImageDataBuilder()
+                .setCropSection(cropSection)
+                .setDimenPer(imageData.dimensionPer)
+                .setFlipType(imageData.flipType)
+                .setOrientation(imageData.orientation)
+                .setStorageLocation(imageData.path)
+                .setStorageType(imageData.storageType)
+                .build()
+        }
+
+        /**
+         * Method to return ImageData with New FlipType
+         * @param imageData
+         * @param flipType
+         * @return Return the newImageData as pass in parameter
+         */
+        fun flip(imageData: ImageData, flipType: Constants.FLIP_TYPE): ImageData {
+            return ImageDataBuilder()
+                .setCropSection(imageData.cropSection)
+                .setDimenPer(imageData.dimensionPer)
+                .setOrientation(imageData.orientation)
+                .setStorageLocation(imageData.path)
+                .setStorageType(imageData.storageType)
+                .setFlipType(
+                    when (imageData.flipType) {
+                        Constants.FLIP_TYPE.BOTH.value -> {
+                            when (flipType) {
+                                Constants.FLIP_TYPE.BOTH -> {
+                                    Constants.FLIP_TYPE.NAN.value
+                                }
+                                Constants.FLIP_TYPE.HORIZONTAL -> {
+                                    Constants.FLIP_TYPE.VERTICAL.value
+                                }
+                                Constants.FLIP_TYPE.VERTICAL -> {
+                                    Constants.FLIP_TYPE.HORIZONTAL.value
+                                }
+                                else -> {
+                                    imageData.flipType
+                                }
+                            }
+                        }
+                        Constants.FLIP_TYPE.HORIZONTAL.value -> {
+                            when (flipType) {
+                                Constants.FLIP_TYPE.BOTH -> {
+                                    Constants.FLIP_TYPE.VERTICAL.value
+                                }
+                                Constants.FLIP_TYPE.HORIZONTAL -> {
+                                    Constants.FLIP_TYPE.NAN.value
+                                }
+                                Constants.FLIP_TYPE.VERTICAL -> {
+                                    Constants.FLIP_TYPE.BOTH.value
+                                }
+                                else -> {
+                                    imageData.flipType
+                                }
+                            }
+                        }
+                        Constants.FLIP_TYPE.VERTICAL.value -> {
+                            when (flipType) {
+                                Constants.FLIP_TYPE.BOTH -> {
+                                    Constants.FLIP_TYPE.HORIZONTAL.value
+                                }
+                                Constants.FLIP_TYPE.HORIZONTAL -> {
+                                    Constants.FLIP_TYPE.BOTH.value
+                                }
+                                Constants.FLIP_TYPE.VERTICAL -> {
+                                    Constants.FLIP_TYPE.NAN.value
+                                }
+                                else -> {
+                                    imageData.flipType
+                                }
+                            }
+                        }
+                        else -> {
+                            imageData.flipType
+                        }
+                    }
+                )
+                .build()
         }
     }
 }

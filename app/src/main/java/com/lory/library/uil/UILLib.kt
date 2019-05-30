@@ -87,79 +87,10 @@ class UILLib {
 
     /**
      * Method to load Image from the URL
-     * @param imageView
-     * @param url Image URL
-     * @param desiredDimension [<OL><LI>-1 : ORIGINAL SIZE</LI><LI>1.0 : 100% of device width in pixel</LI></OL>]
-     * @param loaderPlaceHolder ID of Loader Placer
-     * @param errorPlaceHolder ID of Error Placer
+     * @param imageData Data of the image
+     * @param callback To Received the Bitmap Info [imageData.path = url]
      */
-    fun loadImageFromUrl(imageView: ImageView, url: String, desiredDimension: Float, loaderPlaceHolder: Int, errorPlaceHolder: Int) {
-        imageView.setImageResource(loaderPlaceHolder)
-        val requestImageData = ImageData()
-        requestImageData.path = url
-        requestImageData.storageType = Constants.STORAGE_TYPE.URL.value
-        requestImageData.dimensionPer = desiredDimension
-        imageLoader.loadImage(requestImageData, object : ImageLoader.OnImageLoaded {
-            override fun onImageLoaded(bitmap: Bitmap?, imageData: ImageData) {
-                if (bitmap != null && !bitmap.isRecycled && requestImageData.equals(imageData)) {
-                    imageView.setImageBitmap(bitmap)
-                } else {
-                    imageView.setImageResource(errorPlaceHolder)
-                }
-            }
-        })
-    }
-
-    /**
-     * Method to load Image from the URL
-     * @param url  Image Sd-Card Path
-     * @param desiredDimansion [<OL><LI>-1 : ORIGINAL SIZE</LI><LI>1.0 : 100% of device in pixel</LI></OL>]
-     * @param callback To Received the Bitmap load from server [imageData.path = url]
-     */
-    fun loadImageFromUrl(url: String, desiredDimansion: Float, callback: ImageLoader.OnImageLoaded) {
-        val imageData = ImageData()
-        imageData.path = url
-        imageData.storageType = Constants.STORAGE_TYPE.URL.value
-        imageData.dimensionPer = desiredDimansion
-        imageLoader.loadImage(imageData, callback)
-    }
-
-    /**
-     * Method to load Image from the URL
-     * @param imageView
-     * @param path Image Path
-     * @param desiredDimension [<OL><LI>-1 : ORIGINAL SIZE</LI><LI>1.0 : 100% of device width in pixel</LI></OL>]
-     * @param loaderPlaceHolder ID of Loader Placer
-     * @param errorPlaceHolder ID of Error Placer
-     */
-    fun loadImageFromSdCard(imageView: ImageView, path: String, desiredDimension: Float, loaderPlaceHolder: Int, errorPlaceHolder: Int) {
-        imageView.setImageResource(loaderPlaceHolder)
-        val requestImageData = ImageData()
-        requestImageData.path = path
-        requestImageData.storageType = Constants.STORAGE_TYPE.EXTERNAL.value
-        requestImageData.dimensionPer = desiredDimension
-        imageLoader.loadImage(requestImageData, object : ImageLoader.OnImageLoaded {
-            override fun onImageLoaded(bitmap: Bitmap?, imageData: ImageData) {
-                if (bitmap != null && !bitmap.isRecycled && requestImageData.equals(imageData)) {
-                    imageView.setImageBitmap(bitmap)
-                } else {
-                    imageView.setImageResource(errorPlaceHolder)
-                }
-            }
-        })
-    }
-
-    /**
-     * Method to load Image from the URL
-     * @param path Image Sd-Card Path
-     * @param desiredDimansion [<OL><LI>-1 : ORIGINAL SIZE</LI><LI>1.0 : 100% of device in pixel</LI></OL>]
-     * @param callback To Received the Bitmap load from server [imageData.path = path]
-     */
-    fun loadImageFromSdCard(path: String, desiredDimansion: Float, callback: ImageLoader.OnImageLoaded) {
-        val imageData = ImageData()
-        imageData.path = path
-        imageData.storageType = Constants.STORAGE_TYPE.EXTERNAL.value
-        imageData.dimensionPer = desiredDimansion
+    fun loadImage(imageData: ImageData, callback: ImageLoader.OnImageLoaded) {
         imageLoader.loadImage(imageData, callback)
     }
 }

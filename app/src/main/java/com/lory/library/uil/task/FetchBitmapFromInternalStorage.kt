@@ -8,9 +8,16 @@ import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.uil.dto.ImageData
 
 
-open class FetchBitmapFromInternalStorage : FetchBitmapTask {
+open class FetchBitmapFromInternalStorage<MKR> : FetchBitmapTask<MKR> {
 
-    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?) : super(context, imageData, asyncCallBack) {
+    /**
+     * Constructor
+     * @param context
+     * @param imageData
+     * @param asyncCallBack
+     * @param additionalPayLoad
+     */
+    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?, additionalPayLoad: MKR) : super(context, imageData, asyncCallBack, additionalPayLoad) {
 
     }
 

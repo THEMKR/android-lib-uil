@@ -15,12 +15,21 @@ import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Utils
 
 
-abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
+abstract class FetchBitmapTask<MKR> : BaseAsyncTask<Bitmap?, Any> {
 
     val imageData: ImageData
+    val additionalPayLoad: MKR
 
-    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?) : super(context, asyncCallBack) {
+    /**
+     * Constructor
+     * @param context
+     * @param imageData
+     * @param asyncCallBack
+     * @param additionalPayLoad
+     */
+    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?, additionalPayLoad: MKR) : super(context, asyncCallBack) {
         this.imageData = imageData
+        this.additionalPayLoad = additionalPayLoad
     }
 
     /**
