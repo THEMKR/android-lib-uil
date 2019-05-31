@@ -1,5 +1,6 @@
 package com.lory.library.uil.provider
 
+import android.support.v4.app.Fragment
 import com.lory.library.uil.ui.fragment.FragmentGalleryAlbum
 import com.lory.library.uil.ui.fragment.FragmentGalleryPic
 

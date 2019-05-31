@@ -1,5 +1,6 @@
 package com.lory.library.uil.ui.adapter.viewholder
 
+import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.TextView
 import com.lory.library.ui.ui.adapter.BaseViewHolder

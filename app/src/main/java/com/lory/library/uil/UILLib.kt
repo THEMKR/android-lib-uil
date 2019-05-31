@@ -7,6 +7,8 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.os.Build
+import android.support.v4.content.ContextCompat
+import android.support.v4.graphics.drawable.DrawableCompat
 import com.lory.library.uil.dto.CropSection
 import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.ui.GalleryActivity
@@ -44,7 +46,7 @@ class UILLib {
         fun parseGalleryResponse(data: Intent?): ArrayList<ImageInfo> {
             Tracer.debug(TAG, "parseGalleryResponse : ")
             val data = data?.getStringExtra(GalleryActivity.EXTRA_IMAGE_DATA) ?: "[]"
-            val dtoImageLocationList = JsonUtil.toObjectTokenType<ArrayList<ImageData>>(data, false)
+            val dtoImageLocationList = JsonUtil.toObjectTokenType<ArrayList<ImageInfo>>(data, false)
             return dtoImageLocationList
         }
 

@@ -2,14 +2,15 @@ package com.lory.library.uil.ui
 
 import android.Manifest
 import android.app.Activity
-import android.app.Fragment
-import android.app.FragmentManager
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import android.widget.Toolbar
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.ui.callback.OnBaseActivityListener
 import com.lory.library.ui.callback.OnBaseFragmentListener
