@@ -98,7 +98,7 @@ class ImageLoader {
     /**
      * Method to run the worker
      */
-    fun runWorker() {
+    private fun runWorker() {
         Tracer.debug(TAG, "runWorker : ${(worker == null && query.size > 0)}")
         if (worker == null && query.size > 0) {
             worker = Worker()
