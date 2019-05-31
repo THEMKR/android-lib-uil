@@ -18,7 +18,6 @@ class ImageLoader {
 
     companion object {
         private const val TAG: String = BuildConfig.BASE_TAG + ".ImageLoader"
-        private val MAX_THREAD_COUNT: Int = 5
         private var instance: ImageLoader? = null
 
         /**
@@ -118,7 +117,7 @@ class ImageLoader {
                 } catch (e: Exception) {
                     Tracer.error(TAG, "doInBackground : ${e.message} ")
                 }
-                if (threadCount < MAX_THREAD_COUNT) {
+                if (threadCount < Constants.MAX_THREAD_COUNT) {
                     threadCount++
                     try {
                         val imageData = query[0]
@@ -187,10 +186,10 @@ class ImageLoader {
         override fun onSuccess(mkr: Bitmap?) {
             Tracer.debug(TAG, "BitmapCallback:onSuccess : ")
             threadCount--
-            listenerList[imageData]?.onImageLoaded(mkr, imageData)
             if (mkr != null && !mkr.isRecycled) {
                 sessionStorage.put(imageData.key, mkr, onSessionStorageListener)
             }
+            listenerList[imageData]?.onImageLoaded(mkr, imageData)
         }
     }
 

@@ -15,14 +15,14 @@ import com.lory.library.uil.controller.ImageLoader
 import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.utils.Tracer
 
-open class MKRImageDataView : View, ImageLoader.OnImageLoaded {
+open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
 
     companion object {
-        private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageDataView"
+        private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageInfoView"
     }
 
     /**
-     * Method to set the scale type of the MKRImageDataView
+     * Method to set the scale type of the MKRImageInfoView
      */
     enum class SCALE_TYPE {
         CENTER_CROP,

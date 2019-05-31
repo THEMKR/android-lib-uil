@@ -6,7 +6,7 @@ import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.UILLib
 import com.lory.library.uil.dto.ImageInfo
-import com.lory.library.uil.ui.custom.MKRImageDataView
+import com.lory.library.uil.ui.custom.MKRImageInfoView
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
 
@@ -20,7 +20,7 @@ class SelectedPicVH : BaseViewHolder<ImageInfo> {
         private val TAG: String = BuildConfig.BASE_TAG + ".GalleryPicVH";
     }
 
-    private val mkrImageView: MKRImageDataView
+    private val mkrImageView: MKRImageInfoView
     private val cancelView: View
 
     /**
@@ -30,7 +30,7 @@ class SelectedPicVH : BaseViewHolder<ImageInfo> {
      */
     constructor(itemView: View) : super(itemView) {
         Tracer.debug(TAG, "GalleryAlbumVH: ")
-        mkrImageView = itemView.findViewById<MKRImageDataView>(R.id.item_selected_pic_imageView)
+        mkrImageView = itemView.findViewById<MKRImageInfoView>(R.id.item_selected_pic_imageView)
         cancelView = itemView.findViewById<View>(R.id.item_selected_pic_imageView_cancel)
         cancelView.setOnClickListener(this)
     }

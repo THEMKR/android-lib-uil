@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_pic_size">
 
-    <com.lory.library.uil.ui.custom.MKRImageDataView
+    <com.lory.library.uil.ui.custom.MKRImageInfoView
             android:id="@+id/item_pic_imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
