@@ -65,7 +65,7 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                     ImageInfo.Builder()
                         .setStorageLocation(path.trim())
                         .setStorageType(Constants.STORAGE_TYPE.EXTERNAL.value)
-                        .setOrientation(colOrientation)
+                        .setOrientation(cursor!!.getInt(colOrientation))
                         .build()
                 )
             }
@@ -101,7 +101,7 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                     ImageInfo.Builder()
                         .setStorageLocation(path.trim())
                         .setStorageType(Constants.STORAGE_TYPE.INTERNAL.value)
-                        .setOrientation(colOrientation)
+                        .setOrientation(cursor!!.getInt(colOrientation))
                         .build()
                 )
             }
