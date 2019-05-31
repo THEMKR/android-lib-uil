@@ -1,11 +1,9 @@
 package com.lory.library.uil.ui.fragment
 
 import android.app.Activity
+import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,8 @@ import com.lory.library.ui.ui.adapter.BaseAdapterItem
 import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.UILLib
+import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.dto.Model
 import com.lory.library.uil.ui.GalleryActivity
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
@@ -37,7 +36,7 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val data = arguments?.getString(FragmentGalleryPic.EXTRA_IMAGE_LIST, "[]") ?: "[]"
-        val dtoImageLocationList = JsonUtil.toObjectTokenType<ArrayList<ImageData>>(data, false)
+        val dtoImageLocationList = JsonUtil.toObjectTokenType<ArrayList<ImageInfo>>(data, false)
         val recyclerView = view?.findViewById(R.id.fragment_pic_recyclerView_pic) as RecyclerView
         recyclerView?.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
         recyclerView?.adapter = baseAdapter
@@ -76,19 +75,19 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
         Tracer.debug(TAG, "onViewHolderClicked : ")
         when (view.id) {
             R.id.item_pic_cardView -> {
-                val tagDto = (view.tag ?: return) as? ImageData ?: return
+                val tagDto = (view.tag ?: return) as? ImageInfo ?: return
                 val model = Model.getInstance()
-                if (model.selectedImageDataList.contains(tagDto)) {
-                    model.selectedImageDataList.remove(tagDto)
+                if (model.selectedImageInfoList.contains(tagDto)) {
+                    model.selectedImageInfoList.remove(tagDto)
                 } else {
-                    model.selectedImageDataList.add(tagDto)
+                    model.selectedImageInfoList.add(tagDto)
                     if (model.maxPicCount == 1) {
-                        val newSelectedImageDataList: ArrayList<ImageData> = ArrayList<ImageData>()
-                        val selectedImageDataList = model.selectedImageDataList
-                        for (imageData in selectedImageDataList) {
-                            newSelectedImageDataList.add(ImageData.resize(imageData, ImageData(), -1F))
+                        val newDtoList: ArrayList<ImageInfo> = ArrayList<ImageInfo>()
+                        val selectedDtoList = model.selectedImageInfoList
+                        for (imageInfo in selectedDtoList) {
+                            newDtoList.add(UILLib.resizeImage(imageInfo, -1F))
                         }
-                        val data = JsonUtil.toStringTokenType<ArrayList<ImageData>>(newSelectedImageDataList, false)
+                        val data = JsonUtil.toStringTokenType<ArrayList<ImageInfo>>(newDtoList, false)
                         val intent = Intent()
                         intent.putExtra(GalleryActivity.EXTRA_IMAGE_DATA, data)
                         activity?.setResult(Activity.RESULT_OK, intent)

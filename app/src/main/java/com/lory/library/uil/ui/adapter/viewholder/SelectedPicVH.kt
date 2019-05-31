@@ -4,7 +4,8 @@ import android.view.View
 import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.UILLib
+import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.ui.custom.MKRImageDataView
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
@@ -13,7 +14,7 @@ import com.lory.library.uil.utils.Tracer
  * Created by mkr on 14/3/18.
  */
 
-class SelectedPicVH : BaseViewHolder<ImageData> {
+class SelectedPicVH : BaseViewHolder<ImageInfo> {
 
     companion object {
         private val TAG: String = BuildConfig.BASE_TAG + ".GalleryPicVH";
@@ -34,12 +35,12 @@ class SelectedPicVH : BaseViewHolder<ImageData> {
         cancelView.setOnClickListener(this)
     }
 
-    override fun bindData(dto: ImageData) {
+    override fun bindData(dto: ImageInfo) {
         Tracer.debug(TAG, "bindData: " + dto)
         if (dto == null) {
             return
         }
         cancelView.tag = dto
-        mkrImageView.imageData = ImageData.resize(dto, ImageData(), Constants.DEFAULT_PIC_ITEM_LOAD_SIZE)
+        mkrImageView.imageInfo = UILLib.resizeImage(dto, , Constants.DEFAULT_PIC_ITEM_LOAD_SIZE)
     }
 }

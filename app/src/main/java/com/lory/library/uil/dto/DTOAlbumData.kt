@@ -22,18 +22,18 @@ class DTOAlbumData {
     /**
      * Album name
      */
-    @SerializedName("imagePathList")
+    @SerializedName("imageInfoList")
     @Expose
-    val imagePathList: ArrayList<ImageData>
+    val imageInfoList: ArrayList<ImageInfo>
 
     constructor(storageType: Int, albumName: String) {
         this.storageType = storageType
         this.albumName = albumName
-        imagePathList = ArrayList()
+        imageInfoList = ArrayList()
     }
 
     override fun toString(): String {
-        return super.toString() + " : $albumName : ${imagePathList.size}"
+        return super.toString() + " : $albumName : ${imageInfoList.size}"
     }
 
     override fun equals(other: Any?): Boolean {

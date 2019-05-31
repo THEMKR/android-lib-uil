@@ -10,26 +10,23 @@ import android.graphics.Paint.FILTER_BITMAP_FLAG
 import android.util.Log
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.asynctask.BaseAsyncTask
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.UILLib
+import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.utils.Constants
-import com.lory.library.uil.utils.Utils
 
 
-abstract class FetchBitmapTask<MKR> : BaseAsyncTask<Bitmap?, Any> {
+abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
 
-    val imageData: ImageData
-    val additionalPayLoad: MKR
+    val imageInfo: ImageInfo
 
     /**
      * Constructor
      * @param context
      * @param imageData
      * @param asyncCallBack
-     * @param additionalPayLoad
      */
-    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?, additionalPayLoad: MKR) : super(context, asyncCallBack) {
-        this.imageData = imageData
-        this.additionalPayLoad = additionalPayLoad
+    constructor(context: Context, imageData: ImageInfo, asyncCallBack: AsyncCallBack<Bitmap?, Any>?) : super(context, asyncCallBack) {
+        this.imageInfo = imageData
     }
 
     /**
@@ -37,9 +34,8 @@ abstract class FetchBitmapTask<MKR> : BaseAsyncTask<Bitmap?, Any> {
      */
     abstract fun getBitmapFromPath(): Bitmap?
 
-
     override fun doInBackground(): Bitmap? {
-        val cropSection = imageData.cropSection
+        val cropSection = imageInfo.cropSection
         if (cropSection.left >= cropSection.right || cropSection.top >= cropSection.bottom) {
             Log.e("MKR", "FetchBitmapTask : INVALID CROP SECTION : $cropSection")
             return null
@@ -57,7 +53,7 @@ abstract class FetchBitmapTask<MKR> : BaseAsyncTask<Bitmap?, Any> {
      * @param bitmap
      */
     protected fun orientBitmap(bitmap: Bitmap): Bitmap {
-        when (imageData.orientation) {
+        when (imageInfo.orientation) {
             Constants.ORIENTATION.LANDSCAPE_90.value -> {
                 val rotatedBitmap = Bitmap.createBitmap(bitmap.height, bitmap.width, bitmap.config)
                 val matrix = Matrix()
@@ -100,11 +96,11 @@ abstract class FetchBitmapTask<MKR> : BaseAsyncTask<Bitmap?, Any> {
     }
 
     /**
-     * Method to flip the Bitmap
+     * Method to flipImage the Bitmap
      * @param bitmap
      */
     protected fun flipBitmap(bitmap: Bitmap): Bitmap {
-        when (imageData.flipType) {
+        when (imageInfo.flipType) {
             Constants.FLIP_TYPE.VERTICAL.value -> {
                 val flipBitmapVertical = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
                 val canvas = Canvas(flipBitmapVertical)
@@ -157,11 +153,11 @@ abstract class FetchBitmapTask<MKR> : BaseAsyncTask<Bitmap?, Any> {
     }
 
     /**
-     * Method to crop the Bitmap
+     * Method to cropImage the Bitmap
      * @param bitmap
      */
     protected fun cropBitmap(bitmap: Bitmap): Bitmap {
-        val cropSection = imageData.cropSection
+        val cropSection = imageInfo.cropSection
         // IF NO CROP
         if (cropSection.left == 0F && cropSection.top == 0F && cropSection.right == 1F && cropSection.bottom == 1F) {
             return bitmap
@@ -183,14 +179,14 @@ abstract class FetchBitmapTask<MKR> : BaseAsyncTask<Bitmap?, Any> {
      * @param optionHeight
      */
     protected fun getSampleSize(optionWidth: Int, optionHeight: Int): Int {
-        return if (imageData.dimensionPer < 0F) {
+        return if (imageInfo.dimensionPer < 0F) {
             1
         } else {
             val displayMetrics = context.resources.displayMetrics
-            val cropSection = imageData.cropSection
-            val width = displayMetrics.widthPixels.toFloat() * imageData.dimensionPer / (cropSection.right - cropSection.left)
-            val height = displayMetrics.heightPixels.toFloat() * imageData.dimensionPer / (cropSection.bottom - cropSection.top)
-            Utils.calculateInSampleSize(optionWidth, optionHeight, width.toInt(), height.toInt())
+            val cropSection = imageInfo.cropSection
+            val width = displayMetrics.widthPixels.toFloat() * imageInfo.dimensionPer / (cropSection.right - cropSection.left)
+            val height = displayMetrics.heightPixels.toFloat() * imageInfo.dimensionPer / (cropSection.bottom - cropSection.top)
+            UILLib.calculateInSampleSize(optionWidth, optionHeight, width.toInt(), height.toInt())
         }
     }
 }

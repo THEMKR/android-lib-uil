@@ -7,7 +7,7 @@ import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.storage.session.OnSessionStorageListener
 import com.lory.library.storage.session.SessionStorage
 import com.lory.library.uil.BuildConfig
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.provider.UILTaskProvider
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
@@ -31,15 +31,14 @@ class ImageLoader {
             }
             return instance!!
         }
-
     }
 
     private val sessionStorage: SessionStorage
     private var worker: Worker? = null
     private var threadCount = 0
     private var context: Context
-    private val query = Vector<ImageData>()
-    private val listenerList = Hashtable<ImageData, OnImageLoaded>()
+    private val query = Vector<ImageInfo>()
+    private val listenerList = Hashtable<ImageInfo, OnImageLoaded>()
     val uilTaskProvider = UILTaskProvider()
     val onSessionStorageListener = object : OnSessionStorageListener<Bitmap> {
         override fun onItemRecycled(mkr: Bitmap): Int {
@@ -63,35 +62,35 @@ class ImageLoader {
 
     /**
      * Method to load image
-     * @param imageData
+     * @param imageInfo
      */
-    fun removeImage(imageData: ImageData?) {
-        if (imageData == null) {
+    fun removeImage(imageInfo: ImageInfo?) {
+        if (imageInfo == null) {
             return
         }
-        query.remove(imageData)
-        listenerList.remove(imageData)
+        query.remove(imageInfo)
+        listenerList.remove(imageInfo)
     }
 
     /**
      * Method to load image
-     * @param imageData
+     * @param imageInfo
      * @param onImageLoaded
      */
-    fun loadImage(imageData: ImageData?, onImageLoaded: OnImageLoaded?) {
+    fun loadImage(imageInfo: ImageInfo?, onImageLoaded: OnImageLoaded?) {
         Tracer.debug(TAG, "loadImage : ")
-        if (imageData == null) {
+        if (imageInfo == null) {
             return
         }
-        val bitmap = sessionStorage.getValue<Bitmap>(imageData.key)
+        val bitmap = sessionStorage.getValue<Bitmap>(imageInfo.key)
         if (bitmap != null && !bitmap.isRecycled) {
-            onImageLoaded?.onImageLoaded(bitmap, imageData)
+            onImageLoaded?.onImageLoaded(bitmap, imageInfo)
             return
         }
-        removeImage(imageData)
-        query.add(imageData)
+        removeImage(imageInfo)
+        query.add(imageInfo)
         if (onImageLoaded != null) {
-            listenerList[imageData] = onImageLoaded
+            listenerList[imageInfo] = onImageLoaded
         }
         runWorker()
     }
@@ -110,12 +109,10 @@ class ImageLoader {
     /**
      * Class used to control the Number of Request to load bitmap
      */
-    private inner class Worker : AsyncTask<Void, ImageData, Void>() {
+    private inner class Worker : AsyncTask<Void, ImageInfo, Void>() {
 
         override fun doInBackground(vararg params: Void?): Void? {
-            Tracer.debug(TAG, "doInBackground : ")
             while (query.size > 0) {
-                Tracer.debug(TAG, "doInBackground >>>>: ${this@Worker}")
                 try {
                     Thread.sleep(10)
                 } catch (e: Exception) {
@@ -136,34 +133,30 @@ class ImageLoader {
             return null
         }
 
-        override fun onProgressUpdate(vararg values: ImageData?) {
-            Tracer.debug(TAG, "onProgressUpdate : 1")
-            val imageData: ImageData = if ((values?.size ?: 0) > 0) {
+        override fun onProgressUpdate(vararg values: ImageInfo?) {
+            val imageInfo: ImageInfo = if ((values?.size ?: 0) > 0) {
                 values[0]!!
             } else {
                 threadCount--
                 return
             }
-            Tracer.debug(TAG, "onProgressUpdate : 2")
-            uilTaskProvider.fetchBitmap(
-                context, imageData, BitmapCallback(imageData), when (imageData.storageType) {
-                    Constants.STORAGE_TYPE.EXTERNAL.value -> {
-                        UILTaskProvider.BITMAP_LOCATION.EXTERNAL
-                    }
-                    Constants.STORAGE_TYPE.INTERNAL.value -> {
-                        UILTaskProvider.BITMAP_LOCATION.INTERNAL
-                    }
-                    Constants.STORAGE_TYPE.URL.value -> {
-                        UILTaskProvider.BITMAP_LOCATION.URL
-                    }
-                    Constants.STORAGE_TYPE.ASSSETS.value -> {
-                        UILTaskProvider.BITMAP_LOCATION.ASSETS
-                    }
-                    else -> {
-                        UILTaskProvider.BITMAP_LOCATION.EXTERNAL
-                    }
+            when (imageInfo.storageType) {
+                Constants.STORAGE_TYPE.EXTERNAL.value -> {
+                    uilTaskProvider.fetchBitmapFromSdCard(context, imageInfo, BitmapCallback(imageInfo))
                 }
-            )
+                Constants.STORAGE_TYPE.INTERNAL.value -> {
+                    uilTaskProvider.fetchBitmapFromInternal(context, imageInfo, BitmapCallback(imageInfo))
+                }
+                Constants.STORAGE_TYPE.URL.value -> {
+                    uilTaskProvider.fetchBitmapFromURL(context, imageInfo, BitmapCallback(imageInfo))
+                }
+                Constants.STORAGE_TYPE.ASSSETS.value -> {
+                    uilTaskProvider.fetchBitmapFromAssets(context, imageInfo, BitmapCallback(imageInfo))
+                }
+                else -> {
+                    uilTaskProvider.fetchBitmapFromSdCard(context, imageInfo, BitmapCallback(imageInfo))
+                }
+            }
         }
 
         override fun onPostExecute(result: Void?) {
@@ -177,14 +170,13 @@ class ImageLoader {
      * Class to handle the callback
      */
     private inner class BitmapCallback : AsyncCallBack<Bitmap?, Any> {
-        private val imageData: ImageData
+        private val imageData: ImageInfo
 
         /**
          * Constructor
          * @param imageData
          */
-        constructor(imageData: ImageData) {
-            Tracer.debug(TAG, " : BitmapCallback()")
+        constructor(imageData: ImageInfo) {
             this.imageData = imageData
         }
 
@@ -208,6 +200,6 @@ class ImageLoader {
      * @author THE-MKR
      */
     interface OnImageLoaded {
-        fun onImageLoaded(bitmap: Bitmap?, imageData: ImageData)
+        fun onImageLoaded(bitmap: Bitmap?, imageData: ImageInfo)
     }
 }

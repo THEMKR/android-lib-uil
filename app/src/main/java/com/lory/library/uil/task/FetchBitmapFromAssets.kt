@@ -5,31 +5,31 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.lory.library.asynctask.AsyncCallBack
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.ImageInfo
 
 
-open class FetchBitmapFromAssets<MKR> : FetchBitmapTask<MKR> {
+open class FetchBitmapFromAssets : FetchBitmapTask {
 
     /**
      * Constructor
      * @param context
-     * @param imageData
+     * @param imageInfo
      * @param asyncCallBack
      * @param additionalPayLoad
      */
-    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?, additionalPayLoad: MKR) : super(context, imageData, asyncCallBack, additionalPayLoad) {
+    constructor(context: Context, imageInfo: ImageInfo, asyncCallBack: AsyncCallBack<Bitmap?, Any>?) : super(context, imageInfo, asyncCallBack) {
 
     }
 
     override fun getBitmapFromPath(): Bitmap? {
         try {
-            var inputStream = context.assets.open(imageData.path)
+            var inputStream = context.assets.open(imageInfo.path)
             val options = BitmapFactory.Options()
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
             options.inJustDecodeBounds = true
             BitmapFactory.decodeStream(inputStream, null, options)
             inputStream.close()
-            inputStream = context.assets.open(imageData.path)
+            inputStream = context.assets.open(imageInfo.path)
             options.inSampleSize = getSampleSize(options.outWidth, options.outHeight)
             options.inJustDecodeBounds = false
             return BitmapFactory.decodeStream(inputStream, null, options)

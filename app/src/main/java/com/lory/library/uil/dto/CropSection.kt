@@ -6,21 +6,21 @@ import com.google.gson.annotations.SerializedName
 open class CropSection {
 
     /**
-     * Left Percent to crop
+     * Left Percent to cropImage
      */
     @SerializedName("left")
     @Expose
     var left: Float = 0F
 
     /**
-     * Top Percent to crop
+     * Top Percent to cropImage
      */
     @SerializedName("top")
     @Expose
     var top: Float = 0F
 
     /**
-     * RIGHT Percent to crop
+     * RIGHT Percent to cropImage
      * @since 1 mean full width
      */
     @SerializedName("right")
@@ -28,7 +28,7 @@ open class CropSection {
     var right: Float = 1F
 
     /**
-     * BOTTOM Percent to crop
+     * BOTTOM Percent to cropImage
      * @since 1 mean full height
      */
     @SerializedName("bottom")

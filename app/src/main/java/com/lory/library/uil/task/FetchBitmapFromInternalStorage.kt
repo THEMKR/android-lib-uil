@@ -5,19 +5,19 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.lory.library.asynctask.AsyncCallBack
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.ImageInfo
 
 
-open class FetchBitmapFromInternalStorage<MKR> : FetchBitmapTask<MKR> {
+open class FetchBitmapFromInternalStorage : FetchBitmapTask {
 
     /**
      * Constructor
      * @param context
-     * @param imageData
+     * @param imageInfo
      * @param asyncCallBack
      * @param additionalPayLoad
      */
-    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?, additionalPayLoad: MKR) : super(context, imageData, asyncCallBack, additionalPayLoad) {
+    constructor(context: Context, imageInfo: ImageInfo, asyncCallBack: AsyncCallBack<Bitmap?, Any>?) : super(context, imageInfo, asyncCallBack) {
 
     }
 
@@ -28,10 +28,10 @@ open class FetchBitmapFromInternalStorage<MKR> : FetchBitmapTask<MKR> {
             options.inPreferredConfig = Bitmap.Config.ARGB_8888
             options.inJustDecodeBounds = true
             options.inSampleSize = 1
-            BitmapFactory.decodeFile(imageData.path, options)
+            BitmapFactory.decodeFile(imageInfo.path, options)
             options.inSampleSize = getSampleSize(options.outWidth, options.outHeight)
             options.inJustDecodeBounds = false
-            bitmap = BitmapFactory.decodeFile(imageData.path, options)
+            bitmap = BitmapFactory.decodeFile(imageInfo.path, options)
             return bitmap
         } catch (e: Exception) {
             Log.e("UIL", "getBitmapFromPath : INTERNAL : ${e.message} ")

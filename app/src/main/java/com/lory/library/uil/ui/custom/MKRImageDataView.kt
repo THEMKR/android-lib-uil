@@ -10,10 +10,10 @@ import android.util.AttributeSet
 import android.view.View
 import com.lory.library.storage.session.SessionStorage
 import com.lory.library.uil.BuildConfig
+import com.lory.library.uil.UILLib
 import com.lory.library.uil.controller.ImageLoader
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.utils.Tracer
-import com.lory.library.uil.utils.Utils
 
 open class MKRImageDataView : View, ImageLoader.OnImageLoaded {
 
@@ -47,7 +47,7 @@ open class MKRImageDataView : View, ImageLoader.OnImageLoaded {
     /**
      * Image data to be set
      */
-    var imageData: ImageData? = null
+    var imageInfo: ImageInfo? = null
         set(value) {
             imageLoader?.removeImage(field)
             field = value
@@ -56,11 +56,11 @@ open class MKRImageDataView : View, ImageLoader.OnImageLoaded {
                 if (savedBitmap != null) {
                     bitmap = savedBitmap
                 } else {
-                    bitmap = Utils.getDefaultBitmap(context)
+                    bitmap = UILLib.getDefaultBitmap(context)
                     imageLoader?.loadImage(field, this)
                 }
             } else {
-                bitmap = Utils.getDefaultBitmap(context)
+                bitmap = UILLib.getDefaultBitmap(context)
             }
         }
 
@@ -71,7 +71,7 @@ open class MKRImageDataView : View, ImageLoader.OnImageLoaded {
         set(value) {
             var value = value
             if (value == null) {
-                value = Utils.getDefaultBitmap(context)
+                value = UILLib.getDefaultBitmap(context)
             }
             field = value
             resetRect()
@@ -102,11 +102,11 @@ open class MKRImageDataView : View, ImageLoader.OnImageLoaded {
      */
     private fun init() {
         imageLoader = ImageLoader.getInstance(context)
-        bitmap = Utils.getDefaultBitmap(context)
+        bitmap = UILLib.getDefaultBitmap(context)
     }
 
     override fun onDetachedFromWindow() {
-        imageLoader?.removeImage(imageData)
+        imageLoader?.removeImage(imageInfo)
         super.onDetachedFromWindow()
     }
 
@@ -118,21 +118,21 @@ open class MKRImageDataView : View, ImageLoader.OnImageLoaded {
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         if (bitmap?.isRecycled ?: true) {
-            bitmap = Utils.getDefaultBitmap(context)
+            bitmap = UILLib.getDefaultBitmap(context)
         }
-        if (bitmap?.equals(Utils.getDefaultBitmap(context)) ?: true) {
-            imageLoader?.loadImage(imageData, this)
+        if (bitmap?.equals(UILLib.getDefaultBitmap(context)) ?: true) {
+            imageLoader?.loadImage(imageInfo, this)
         }
         canvas?.drawBitmap(bitmap, null, rectDrawBitmap, null)
     }
 
-    override fun onImageLoaded(bitmap: Bitmap?, imageData: ImageData) {
+    override fun onImageLoaded(bitmap: Bitmap?, imageData: ImageInfo) {
         Tracer.debug(TAG, "onImageLoaded : $bitmap : $imageData")
-        if (bitmap != null && !bitmap!!.isRecycled && imageData.equals(this.imageData)) {
+        if (bitmap != null && !bitmap!!.isRecycled && imageData.equals(this.imageInfo)) {
             this.bitmap = bitmap
         } else {
-            this.bitmap = Utils.getDefaultBitmap(context)
-            imageLoader?.loadImage(this.imageData!!, this)
+            this.bitmap = UILLib.getDefaultBitmap(context)
+            imageLoader?.loadImage(this.imageInfo!!, this)
         }
         invalidate()
     }

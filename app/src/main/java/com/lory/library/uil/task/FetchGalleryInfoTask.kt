@@ -5,9 +5,8 @@ import android.provider.MediaStore
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.asynctask.BaseAsyncTask
 import com.lory.library.uil.BuildConfig
-import com.lory.library.uil.dto.CropSection
 import com.lory.library.uil.dto.DTOAlbumData
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
 import java.util.*
@@ -62,11 +61,13 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                 if (!mapAlbum.containsKey(bucketName)) {
                     mapAlbum[bucketName] = DTOAlbumData(Constants.STORAGE_TYPE.EXTERNAL.value, bucketName)
                 }
-                val imageData = ImageData()
-                imageData.path = path.trim()
-                imageData.storageType = Constants.STORAGE_TYPE.EXTERNAL.value
-                imageData.orientation = cursor!!.getInt(colOrientation)
-                mapAlbum[bucketName]?.imagePathList?.add(imageData)
+                mapAlbum[bucketName]?.imageInfoList?.add(
+                    ImageInfo.Builder()
+                        .setStorageLocation(path.trim())
+                        .setStorageType(Constants.STORAGE_TYPE.EXTERNAL.value)
+                        .setOrientation(colOrientation)
+                        .build()
+                )
             }
             cursor.close()
         } catch (e: Exception) {
@@ -96,11 +97,13 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                 if (!mapAlbum.containsKey(bucketName)) {
                     mapAlbum[bucketName] = DTOAlbumData(Constants.STORAGE_TYPE.INTERNAL.value, bucketName)
                 }
-                val imageData = ImageData()
-                imageData.path = path
-                imageData.storageType = Constants.STORAGE_TYPE.INTERNAL.value
-                imageData.orientation = cursor!!.getInt(colOrientation)
-                mapAlbum[bucketName]?.imagePathList?.add(imageData)
+                mapAlbum[bucketName]?.imageInfoList?.add(
+                    ImageInfo.Builder()
+                        .setStorageLocation(path.trim())
+                        .setStorageType(Constants.STORAGE_TYPE.INTERNAL.value)
+                        .setOrientation(colOrientation)
+                        .build()
+                )
             }
             cursor.close()
         } catch (e: Exception) {

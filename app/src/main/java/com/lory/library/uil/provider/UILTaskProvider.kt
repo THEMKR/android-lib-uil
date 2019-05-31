@@ -6,7 +6,7 @@ import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.asynctask.BaseAsyncTaskProvider
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.dto.DTOAlbumData
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.task.*
 import com.lory.library.uil.utils.Tracer
 
@@ -14,13 +14,6 @@ open class UILTaskProvider : BaseAsyncTaskProvider() {
 
     companion object {
         private const val TAG: String = BuildConfig.BASE_TAG + ".UILTaskProvider"
-    }
-
-    /**
-     * BITMAP_LOCATION hold the location from where the bitmap is fetched
-     */
-    enum class BITMAP_LOCATION {
-        EXTERNAL, INTERNAL, ASSETS, URL
     }
 
     /**
@@ -32,7 +25,7 @@ open class UILTaskProvider : BaseAsyncTaskProvider() {
         Tracer.debug(TAG, "fetchGalleryInfoList : ")
         val task = FetchGalleryInfoTask(context, object : AsyncCallBack<ArrayList<DTOAlbumData>, Any> {
             override fun onProgress(progress: Any?) {
-                notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
+                notifyTaskProgress(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
             }
 
             override fun onSuccess(mkr: ArrayList<DTOAlbumData>?) {
@@ -49,51 +42,80 @@ open class UILTaskProvider : BaseAsyncTaskProvider() {
     /**
      * Method to fetch the Bitmap
      * @param context
-     * @param imageData
+     * @param imageInfo
      * @param asyncCallBack
-     * @param bitmapLocation
-     * @param additionalPayoad
      */
-    fun <MKR> fetchBitmap(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>, bitmapLocation: BITMAP_LOCATION, additionalPayoad: MKR) {
-        Tracer.debug(TAG, "fetchBitmap : $imageData : ${bitmapLocation.name}")
-        val task = getTask(context, imageData, object : AsyncCallBack<Bitmap?, Any> {
+    fun fetchBitmapFromSdCard(context: Context, imageInfo: ImageInfo, asyncCallBack: AsyncCallBack<Bitmap?, Any>) {
+        Tracer.debug(TAG, "fetchBitmapFromSdCard : $imageInfo")
+        val task = FetchBitmapFromSdCard(context, imageInfo, object : AsyncCallBack<Bitmap?, Any> {
             override fun onProgress(progress: Any?) {
-                notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
+                notifyTaskProgress(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
             }
 
             override fun onSuccess(mkr: Bitmap?) {
                 notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
             }
-        }, bitmapLocation, additionalPayoad)
+        })
         task.executeTask()
     }
 
     /**
-     * Method to get the Tasker correspond to the Constant
+     * Method to fetch the Bitmap
      * @param context
-     * @param imageData
+     * @param imageInfo
      * @param asyncCallBack
-     * @param task
-     * @param additionalPayoad
-     * [<UL><LI>BITMAP_LOCATION.EXTERNAL : FetchBitmapFromExternalStorage()</LI><LI>BITMAP_LOCATION.INTERNAL : FetchBitmapFromInternalStorage()</LI><LI>BITMAP_LOCATION.ASSETS : FetchBitmapFromAssets()</LI><LI>BITMAP_LOCATION.URL : FetchBitmapFromURL()</LI></UL>]
      */
-    open protected fun <MKR> getTask(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>, task: BITMAP_LOCATION, additionalPayoad: MKR): FetchBitmapTask<MKR> {
-        return when (task) {
-            BITMAP_LOCATION.EXTERNAL -> {
-                FetchBitmapFromExternalStorage(context, imageData, asyncCallBack, additionalPayoad)
+    fun fetchBitmapFromInternal(context: Context, imageInfo: ImageInfo, asyncCallBack: AsyncCallBack<Bitmap?, Any>) {
+        Tracer.debug(TAG, "fetchBitmapFromInternal : $imageInfo")
+        val task = FetchBitmapFromInternalStorage(context, imageInfo, object : AsyncCallBack<Bitmap?, Any> {
+            override fun onProgress(progress: Any?) {
+                notifyTaskProgress(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
             }
-            BITMAP_LOCATION.INTERNAL -> {
-                FetchBitmapFromInternalStorage(context, imageData, asyncCallBack, additionalPayoad)
+
+            override fun onSuccess(mkr: Bitmap?) {
+                notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
             }
-            BITMAP_LOCATION.ASSETS -> {
-                FetchBitmapFromAssets(context, imageData, asyncCallBack, additionalPayoad)
+        })
+        task.executeTask()
+    }
+
+    /**
+     * Method to fetch the Bitmap
+     * @param context
+     * @param imageInfo
+     * @param asyncCallBack
+     */
+    fun fetchBitmapFromURL(context: Context, imageInfo: ImageInfo, asyncCallBack: AsyncCallBack<Bitmap?, Any>) {
+        Tracer.debug(TAG, "fetchBitmapFromURL : $imageInfo")
+        val task = FetchBitmapFromURL(context, imageInfo, object : AsyncCallBack<Bitmap?, Any> {
+            override fun onProgress(progress: Any?) {
+                notifyTaskProgress(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
             }
-            BITMAP_LOCATION.URL -> {
-                FetchBitmapFromURL(context, imageData, asyncCallBack, additionalPayoad)
+
+            override fun onSuccess(mkr: Bitmap?) {
+                notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
             }
-            else -> {
-                FetchBitmapFromExternalStorage(context, imageData, asyncCallBack, additionalPayoad)
+        })
+        task.executeTask()
+    }
+
+    /**
+     * Method to fetch the Bitmap
+     * @param context
+     * @param imageInfo
+     * @param asyncCallBack
+     */
+    fun fetchBitmapFromAssets(context: Context, imageInfo: ImageInfo, asyncCallBack: AsyncCallBack<Bitmap?, Any>) {
+        Tracer.debug(TAG, "fetchBitmapFromAssets : $imageInfo")
+        val task = FetchBitmapFromAssets(context, imageInfo, object : AsyncCallBack<Bitmap?, Any> {
+            override fun onProgress(progress: Any?) {
+                notifyTaskProgress(asyncCallBack as AsyncCallBack<Any, Any>, progress ?: Any())
             }
-        }
+
+            override fun onSuccess(mkr: Bitmap?) {
+                notifyTaskResponse(asyncCallBack as AsyncCallBack<Any, Any>, mkr)
+            }
+        })
+        task.executeTask()
     }
 }

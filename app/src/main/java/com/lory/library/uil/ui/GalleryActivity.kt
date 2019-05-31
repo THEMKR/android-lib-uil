@@ -2,15 +2,14 @@ package com.lory.library.uil.ui
 
 import android.Manifest
 import android.app.Activity
+import android.app.Fragment
+import android.app.FragmentManager
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import android.widget.Toolbar
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.ui.callback.OnBaseActivityListener
 import com.lory.library.ui.callback.OnBaseFragmentListener
@@ -18,8 +17,9 @@ import com.lory.library.ui.controller.AppPermissionController
 import com.lory.library.ui.utils.MKRDialogUtil
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
+import com.lory.library.uil.UILLib
 import com.lory.library.uil.dto.DTOAlbumData
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.dto.Model
 import com.lory.library.uil.provider.FragmentProvider
 import com.lory.library.uil.provider.UILTaskProvider
@@ -183,7 +183,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
         when (v?.id ?: -1) {
             R.id.toolbar_imageView_imageView_ok -> {
                 val model = Model.getInstance()
-                val size = model.selectedImageDataList.size
+                val size = model.selectedImageInfoList.size
                 if (model.isMaxPicCountFixed && size != model.maxPicCount) {
                     Toast.makeText(this, "CURRENT SELECTION COUNT IS $size", Toast.LENGTH_LONG).show()
                     return
@@ -197,12 +197,12 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
                     return
                 }
                 // SEND RESULT TO CALLER
-                val newSelectedImageDataList: ArrayList<ImageData> = ArrayList<ImageData>()
-                val selectedImageDataList = model.selectedImageDataList
-                for (imageData in selectedImageDataList) {
-                    newSelectedImageDataList.add(ImageData.resize(imageData, ImageData(), -1F))
+                val newDtoList: ArrayList<ImageInfo> = ArrayList<ImageInfo>()
+                val selectedDtoList = model.selectedImageInfoList
+                for (imageInfo in selectedDtoList) {
+                    newDtoList.add(UILLib.resizeImage(imageInfo, -1F))
                 }
-                val data = JsonUtil.toStringTokenType<ArrayList<ImageData>>(newSelectedImageDataList, false)
+                val data = JsonUtil.toStringTokenType<ArrayList<ImageInfo>>(newDtoList, false)
                 val intent = Intent()
                 intent.putExtra(EXTRA_IMAGE_DATA, data)
                 setResult(Activity.RESULT_OK, intent)

@@ -7,10 +7,6 @@ import com.lory.library.uil.utils.Constants
 
 open class ImageInfo {
 
-    companion object {
-
-    }
-
     /**
      * Unique Key used by [SessionStorage]
      */
@@ -20,7 +16,7 @@ open class ImageInfo {
         }
 
     /**
-     * Section Of Image to be crop L,T,R,B
+     * Section Of Image to be cropImage L,T,R,B
      */
     @SerializedName("cropSection")
     @Expose
@@ -79,5 +75,98 @@ open class ImageInfo {
 
     override fun hashCode(): Int {
         return path.hashCode()
+    }
+
+    /**
+     * Class used to build the ImageData
+     */
+    class Builder {
+
+        /**
+         * Image Info
+         */
+        private val imageInfo: ImageInfo = ImageInfo()
+
+        /**
+         * Method to set the Src Location of Image
+         * @param location [URL/File-Path/Assets-Path]
+         */
+        fun setStorageLocation(location: String): Builder {
+            imageInfo.path = location
+            return this
+        }
+
+        //=====================================================================================
+
+        /**
+         * Method to set the Storage Location TYPE [Constants.STORAGE_TYPE].value
+         * @param storageType
+         */
+        fun setStorageType(storageType: Int): Builder {
+            imageInfo.storageType = storageType
+            return this
+        }
+
+        //=====================================================================================
+
+        /**
+         * Method to set the Bitmap Crop Section
+         * @param cropSection
+         */
+        fun setCropSection(cropSection: CropSection): Builder {
+            imageInfo.cropSection = cropSection
+            return this
+        }
+
+        //=====================================================================================
+
+        /**
+         * Method to set the Flip TYPE [Constants.FLIP_TYPE].value
+         * @param flipType
+         */
+        fun setFlipType(flipType: Int): Builder {
+            imageInfo.flipType = flipType
+            return this
+        }
+
+        //=====================================================================================
+
+        /**
+         * Method to set the Scale Dimension Correspond to the Screen Width
+         * @param dimensionPer [<OL><LI>0.0 : 0% of Device Screen Width</LI><LI>1.0 : 100% of Device Screen Width</LI><LI>-1.0 : Original Image Size</LI></OL>]
+         */
+        fun setDimenPer(dimensionPer: Float): Builder {
+            imageInfo.dimensionPer = dimensionPer
+            return this
+        }
+
+        //=====================================================================================
+
+        /**
+         * Method to set the Orientation
+         * @param orientation
+         */
+        fun setOrientation(orientation: Constants.ORIENTATION): Builder {
+            imageInfo.orientation = orientation.value
+            return this
+        }
+
+        /**
+         * Method to set the Orientation [Constants.ORIENTATION].value [0,90,180,270]
+         * @param orientation
+         */
+        fun setOrientation(orientation: Int): Builder {
+            imageInfo.orientation = orientation
+            return this
+        }
+
+        //=====================================================================================
+
+        /**
+         * Method to build and return the ImageData which hold all the Required Info
+         */
+        fun build(): ImageInfo {
+            return imageInfo
+        }
     }
 }

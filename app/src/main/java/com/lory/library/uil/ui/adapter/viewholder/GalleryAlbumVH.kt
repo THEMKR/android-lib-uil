@@ -1,13 +1,12 @@
 package com.lory.library.uil.ui.adapter.viewholder
 
-import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.TextView
 import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
+import com.lory.library.uil.UILLib
 import com.lory.library.uil.dto.DTOAlbumData
-import com.lory.library.uil.dto.ImageData
 import com.lory.library.uil.ui.custom.MKRImageDataView
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
@@ -46,7 +45,7 @@ class GalleryAlbumVH : BaseViewHolder<DTOAlbumData> {
         }
         cardView.tag = dto
         textView.text = dto.albumName
-        val imagePathList = dto.imagePathList
-        mkrImageView.imageData = ImageData.resize(imagePathList[0], ImageData(), Constants.DEFAULT_ALBUM_ITEM_LOAD_SIZE)
+        val imagePathList = dto.imageInfoList
+        mkrImageView.imageInfo = UILLib.resizeImage(imagePathList[0], Constants.DEFAULT_ALBUM_ITEM_LOAD_SIZE)
     }
 }

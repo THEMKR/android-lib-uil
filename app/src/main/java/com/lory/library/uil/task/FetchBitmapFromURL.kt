@@ -5,27 +5,27 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.lory.library.asynctask.AsyncCallBack
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.ImageInfo
 import java.net.HttpURLConnection
 import java.net.URL
 
 
-open class FetchBitmapFromURL<MKR> : FetchBitmapTask<MKR> {
+open class FetchBitmapFromURL : FetchBitmapTask {
 
     /**
      * Constructor
      * @param context
-     * @param imageData
+     * @param imageInfo
      * @param asyncCallBack
      * @param additionalPayLoad
      */
-    constructor(context: Context, imageData: ImageData, asyncCallBack: AsyncCallBack<Bitmap?, Any>?, additionalPayLoad: MKR) : super(context, imageData, asyncCallBack, additionalPayLoad) {
+    constructor(context: Context, imageInfo: ImageInfo, asyncCallBack: AsyncCallBack<Bitmap?, Any>?) : super(context, imageInfo, asyncCallBack) {
 
     }
 
     override fun getBitmapFromPath(): Bitmap? {
         try {
-            val url: URL = URL(imageData.path)
+            val url: URL = URL(imageInfo.path)
             var connection = url.openConnection() as HttpURLConnection
             var inputStream = connection.getInputStream()
             val options = BitmapFactory.Options()

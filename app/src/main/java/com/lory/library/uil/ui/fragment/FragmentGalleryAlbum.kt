@@ -1,10 +1,7 @@
 package com.lory.library.uil.ui.fragment
 
+import android.app.Fragment
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +13,7 @@ import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.dto.DTOAlbumData
-import com.lory.library.uil.dto.ImageData
+import com.lory.library.uil.dto.ImageInfo
 import com.lory.library.uil.dto.Model
 import com.lory.library.uil.provider.FragmentProvider
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
@@ -73,14 +70,14 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
                 val tag = FragmentProvider.TAG.GALLERY_PIC
                 val fragment = FragmentProvider.getFragment(tag)
                 val bundle = Bundle()
-                bundle.putString(FragmentGalleryPic.EXTRA_IMAGE_LIST, JsonUtil.toStringTokenType<ArrayList<ImageData>>(tagDto.imagePathList, false))
+                bundle.putString(FragmentGalleryPic.EXTRA_IMAGE_LIST, JsonUtil.toStringTokenType<ArrayList<ImageInfo>>(tagDto.imageInfoList, false))
                 if (activity is OnBaseActivityListener) {
                     (activity as OnBaseActivityListener)?.onBaseActivityAddFragment(fragment, bundle, true, tag)
                 }
             }
             R.id.item_selected_pic_imageView_cancel -> {
-                val tagDto = (view.tag ?: return) as? ImageData ?: return
-                val selectedImageDataList = Model.getInstance().selectedImageDataList
+                val tagDto = (view.tag ?: return) as? ImageInfo ?: return
+                val selectedImageDataList = Model.getInstance().selectedImageInfoList
                 if (selectedImageDataList.contains(tagDto)) {
                     selectedImageDataList.remove(tagDto)
                 }
@@ -117,12 +114,12 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
      */
     private fun updateSelectedImageList() {
         Tracer.debug(TAG, "updateSelectedImageList : ")
-        val selectedImageDataList = Model.getInstance().selectedImageDataList
-        if (selectedImageDataList.size > 0) {
+        val dtoSelectedList = Model.getInstance().selectedImageInfoList
+        if (dtoSelectedList.size > 0) {
             view?.findViewById<View>(R.id.fragment_album_recyclerView_selected_pic)?.visibility = View.VISIBLE
             val baseAdapterItemList: ArrayList<BaseAdapterItem<*>> = ArrayList()
             val adapterViewType = AdapterItemHandler.AdapterItemViewType.SELECTED_PIC.ordinal
-            for (dto in selectedImageDataList) {
+            for (dto in dtoSelectedList) {
                 Tracer.debug(TAG, "updateSelectedImageList : $dto ")
                 baseAdapterItemList.add(BaseAdapterItem(adapterViewType, dto))
             }
