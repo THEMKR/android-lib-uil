@@ -20,7 +20,7 @@ import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.UILLib
 import com.lory.library.uil.dto.DTOAlbumData
-import com.lory.library.uil.dto.ImageInfo
+import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.dto.Model
 import com.lory.library.uil.provider.FragmentProvider
 import com.lory.library.uil.provider.UILTaskProvider

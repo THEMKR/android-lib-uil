@@ -11,7 +11,7 @@ import android.util.Log
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.asynctask.BaseAsyncTask
 import com.lory.library.uil.UILLib
-import com.lory.library.uil.dto.ImageInfo
+import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.utils.Constants
 
 

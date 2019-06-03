@@ -2,6 +2,7 @@ package com.lory.library.uil.dto
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.lory.library.uil.ImageInfo
 
 class DTOAlbumData {
 

@@ -1,11 +1,19 @@
-package com.lory.library.uil.dto
+package com.lory.library.uil
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.lory.library.storage.session.SessionStorage
+import com.lory.library.uil.dto.CropSection
 import com.lory.library.uil.utils.Constants
 
 open class ImageInfo {
+
+    /**
+     * Make Constructor Private
+     */
+    private constructor() {
+
+    }
 
     /**
      * Unique Key used by [SessionStorage]
@@ -52,7 +60,7 @@ open class ImageInfo {
     var orientation: Int = Constants.ORIENTATION.NAN.value
 
     /**
-     * Image Path
+     * Image Location
      */
     @SerializedName("path")
     @Expose
@@ -102,7 +110,16 @@ open class ImageInfo {
          * Method to set the Storage Location TYPE [Constants.STORAGE_TYPE].value
          * @param storageType
          */
-        fun setStorageType(storageType: Int): Builder {
+        internal fun setStorageType(storageType: Constants.STORAGE_TYPE): Builder {
+            imageInfo.storageType = storageType.value
+            return this
+        }
+
+        /**
+         * Method to set the Storage Location TYPE [Constants.STORAGE_TYPE].value
+         * @param storageType
+         */
+        internal fun setStorageType(storageType: Int): Builder {
             imageInfo.storageType = storageType
             return this
         }
@@ -124,7 +141,16 @@ open class ImageInfo {
          * Method to set the Flip TYPE [Constants.FLIP_TYPE].value
          * @param flipType
          */
-        fun setFlipType(flipType: Int): Builder {
+        fun setFlipType(flipType: Constants.FLIP_TYPE): Builder {
+            imageInfo.flipType = flipType.value
+            return this
+        }
+
+        /**
+         * Method to set the Flip TYPE [Constants.FLIP_TYPE].value
+         * @param flipType
+         */
+        internal fun setFlipType(flipType: Int): Builder {
             imageInfo.flipType = flipType
             return this
         }
@@ -155,7 +181,7 @@ open class ImageInfo {
          * Method to set the Orientation [Constants.ORIENTATION].value [0,90,180,270]
          * @param orientation
          */
-        fun setOrientation(orientation: Int): Builder {
+        internal fun setOrientation(orientation: Int): Builder {
             imageInfo.orientation = orientation
             return this
         }

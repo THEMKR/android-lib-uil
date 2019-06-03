@@ -1,5 +1,7 @@
 package com.lory.library.uil.dto
 
+import com.lory.library.uil.ImageInfo
+
 class Model {
     companion object {
         private var MODEL: Model? = null

@@ -6,7 +6,7 @@ import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.asynctask.BaseAsyncTask
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.dto.DTOAlbumData
-import com.lory.library.uil.dto.ImageInfo
+import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
 import java.util.*

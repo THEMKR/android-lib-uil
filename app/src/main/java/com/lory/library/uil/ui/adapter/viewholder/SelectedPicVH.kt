@@ -5,7 +5,7 @@ import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.UILLib
-import com.lory.library.uil.dto.ImageInfo
+import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.ui.custom.MKRImageInfoView
 import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
