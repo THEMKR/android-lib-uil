@@ -279,6 +279,6 @@ class ImageLoader {
         /**
          * This method is called from the back thread whenevre a bitmap is build successfully, else not call in case of bitmap failure
          */
-        fun onImageAlterOperation(bitmap: Bitmap?, imageData: ImageInfo): Bitmap
+        fun onImageAlterOperation(bitmap: Bitmap?, imageData: ImageInfo): Bitmap?
     }
 }

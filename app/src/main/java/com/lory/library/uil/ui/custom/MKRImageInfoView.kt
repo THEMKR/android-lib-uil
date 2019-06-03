@@ -10,12 +10,12 @@ import android.util.AttributeSet
 import android.view.View
 import com.lory.library.storage.session.SessionStorage
 import com.lory.library.uil.BuildConfig
+import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.UILLib
 import com.lory.library.uil.controller.ImageLoader
-import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.utils.Tracer
 
-open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
+open class MKRImageInfoView : View, ImageLoader.OnImageLoaded, ImageLoader.OnImageAlterOperation {
 
     companion object {
         private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageInfoView"
@@ -27,7 +27,8 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
     enum class SCALE_TYPE {
         CENTER_CROP,
         FIT_CENTER,
-        FIT_XY
+        FIT_XY,
+        CUSTOM
     }
 
     /**
@@ -42,7 +43,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
     /**
      * Rect used to draw the bitmap
      */
-    private val rectDrawBitmap = Rect()
+    protected val rectDrawBitmap = Rect()
 
     /**
      * Image data to be set
@@ -57,7 +58,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
                     bitmap = savedBitmap
                 } else {
                     bitmap = UILLib.getDefaultBitmap(context)
-                    imageLoader?.loadImage(field, this)
+                    imageLoader?.loadImage(field, this, this)
                 }
             } else {
                 bitmap = UILLib.getDefaultBitmap(context)
@@ -67,7 +68,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
     /**
      * Drawing Bitmap of the View
      */
-    private var bitmap: Bitmap? = null
+    protected var bitmap: Bitmap? = null
         set(value) {
             var value = value
             if (value == null) {
@@ -78,7 +79,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
             invalidate()
         }
 
-    private var imageLoader: ImageLoader? = null
+    protected var imageLoader: ImageLoader? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -100,7 +101,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
     /**
      * Method to init the View
      */
-    private fun init() {
+    protected fun init() {
         imageLoader = ImageLoader.getInstance(context)
         bitmap = UILLib.getDefaultBitmap(context)
     }
@@ -121,7 +122,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
             bitmap = UILLib.getDefaultBitmap(context)
         }
         if (bitmap?.equals(UILLib.getDefaultBitmap(context)) ?: true) {
-            imageLoader?.loadImage(imageInfo, this)
+            imageLoader?.loadImage(imageInfo, this, this)
         }
         canvas?.drawBitmap(bitmap, null, rectDrawBitmap, null)
     }
@@ -132,15 +133,20 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
             this.bitmap = bitmap
         } else {
             this.bitmap = UILLib.getDefaultBitmap(context)
-            imageLoader?.loadImage(this.imageInfo!!, this)
+            imageLoader?.loadImage(this.imageInfo!!, this, this)
         }
         invalidate()
+    }
+
+    override fun onImageAlterOperation(bitmap: Bitmap?, imageData: ImageInfo): Bitmap? {
+        Tracer.debug(TAG, "onImageAlterOperation : $bitmap : $imageData")
+        return bitmap
     }
 
     /**
      * Method to set the rect based on Bitmap
      */
-    private fun resetRect() {
+    protected fun resetRect() {
         when (scaleType) {
             SCALE_TYPE.CENTER_CROP -> {
                 setRectCropCenter()
@@ -149,13 +155,10 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
                 setRectCenterInside()
             }
             SCALE_TYPE.FIT_XY -> {
-                rectDrawBitmap.left = 0
-                rectDrawBitmap.right = width
-                rectDrawBitmap.top = 0
-                rectDrawBitmap.bottom = height
+                setRectFitXY()
             }
             else -> {
-                setRectCropCenter()
+                setRectCustom()
             }
         }
     }
@@ -163,7 +166,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
     /**
      * Set the rect by cropping the center of the Bitmap
      */
-    private fun setRectCropCenter() {
+    protected fun setRectCropCenter() {
         val bitmapLamda = (bitmap?.width?.toFloat() ?: 1F) / (bitmap?.height?.toFloat() ?: 1F)
         val viewLamda = width.toFloat() / height.toFloat()
         if (viewLamda <= bitmapLamda) {
@@ -186,7 +189,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
     /**
      * Set the rect by fit the center Inside
      */
-    private fun setRectCenterInside() {
+    protected fun setRectCenterInside() {
         val bitmapLamda = (bitmap?.width?.toFloat() ?: 1F) / (bitmap?.height?.toFloat() ?: 1F)
         val viewLamda = width.toFloat() / height.toFloat()
         if (viewLamda <= bitmapLamda) {
@@ -204,5 +207,22 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded {
             rectDrawBitmap.top = 0
             rectDrawBitmap.bottom = height
         }
+    }
+
+    /**
+     * Set the rect by fit XY
+     */
+    protected fun setRectFitXY() {
+        rectDrawBitmap.left = 0
+        rectDrawBitmap.right = width
+        rectDrawBitmap.top = 0
+        rectDrawBitmap.bottom = height
+    }
+
+    /**
+     * Set the rect by custom, DEFAUKT FIT XY call
+     */
+    protected fun setRectCustom() {
+        setRectFitXY()
     }
 }
