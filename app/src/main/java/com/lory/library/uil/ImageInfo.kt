@@ -20,8 +20,15 @@ open class ImageInfo {
      */
     val key: String
         get() {
-            return "[$path][$orientation][$storageType][$flipType][$dimensionPer][$cropSection]"
+            return "[$path][$orientation][$storageType][$flipType][$dimensionPer][$cropSection][$specifire]"
         }
+
+    /**
+     * ADDITIONAL SPECIFIRE FOR KEY CREATION
+     */
+    @SerializedName("specifire")
+    @Expose
+    var specifire: String = ""
 
     /**
      * Section Of Image to be cropImage L,T,R,B
@@ -76,7 +83,8 @@ open class ImageInfo {
                     dimensionPer.equals(other.dimensionPer) &&
                     flipType.equals(other.flipType) &&
                     storageType.equals(other.storageType) &&
-                    cropSection.equals(other.cropSection)
+                    cropSection.equals(other.cropSection) &&
+                    specifire.equals(other.specifire)
         }
         return false
     }

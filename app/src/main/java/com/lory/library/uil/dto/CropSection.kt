@@ -36,7 +36,7 @@ open class CropSection {
     var bottom: Float = 1F
 
     override fun toString(): String {
-        return "CorpSection[$left-$top-$right-$bottom]"
+        return "CorpSection-$left-$top-$right-$bottom"
     }
 
     override fun equals(other: Any?): Boolean {

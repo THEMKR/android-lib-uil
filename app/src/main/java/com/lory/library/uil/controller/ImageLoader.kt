@@ -38,6 +38,7 @@ class ImageLoader {
     private var context: Context
     private val query = Vector<ImageInfo>()
     private val listenerList = Hashtable<ImageInfo, OnImageLoaded>()
+    private val alterListenerList = Hashtable<ImageInfo, OnImageAlterOperation>()
     val uilTaskProvider = UILTaskProvider()
     val onSessionStorageListener = object : OnSessionStorageListener<Bitmap> {
         override fun onItemRecycled(mkr: Bitmap): Int {
@@ -69,6 +70,15 @@ class ImageLoader {
         }
         query.remove(imageInfo)
         listenerList.remove(imageInfo)
+        alterListenerList.remove(imageInfo)
+    }
+
+    /**
+     * Method to load image
+     * @param imageInfo
+     */
+    fun loadImage(imageInfo: ImageInfo?) {
+        loadImage(imageInfo, null, null)
     }
 
     /**
@@ -77,19 +87,58 @@ class ImageLoader {
      * @param onImageLoaded
      */
     fun loadImage(imageInfo: ImageInfo?, onImageLoaded: OnImageLoaded?) {
+        loadImage(imageInfo, onImageLoaded, null)
+    }
+
+    /**
+     * Method to load image
+     * @param imageInfo
+     * @param onImageAlterOperation
+     */
+    fun loadImage(imageInfo: ImageInfo?, onImageAlterOperation: OnImageAlterOperation?) {
+        loadImage(imageInfo, null, onImageAlterOperation)
+    }
+
+    /**
+     * Method to load image
+     * @param imageInfo
+     * @param onImageLoaded
+     * @param onImageAlterOperation If need to manipulation image before saved and return back
+     */
+    fun loadImage(imageInfo: ImageInfo?, onImageLoaded: OnImageLoaded?, onImageAlterOperation: OnImageAlterOperation?) {
         Tracer.debug(TAG, "loadImage : ")
         if (imageInfo == null) {
             return
         }
         val bitmap = sessionStorage.getValue<Bitmap>(imageInfo.key)
         if (bitmap != null && !bitmap.isRecycled) {
-            onImageLoaded?.onImageLoaded(bitmap, imageInfo)
+            if (onImageAlterOperation == null) {
+                onImageLoaded?.onImageLoaded(bitmap, imageInfo)
+            } else {
+                // CALL IMAGE ALTERATION BACK THREAD
+                object : AsyncTask<Void, Void, Bitmap>() {
+                    override fun doInBackground(vararg params: Void?): Bitmap? {
+                        return onImageAlterOperation?.onImageAlterOperation(bitmap, imageInfo)
+                    }
+
+                    override fun onPostExecute(result: Bitmap?) {
+                        super.onPostExecute(result)
+                        if (result != null && !result.isRecycled) {
+                            sessionStorage.put(imageInfo.key, result, onSessionStorageListener)
+                        }
+                        onImageLoaded?.onImageLoaded(result, imageInfo)
+                    }
+                }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+            }
             return
         }
         removeImage(imageInfo)
         query.add(imageInfo)
         if (onImageLoaded != null) {
             listenerList[imageInfo] = onImageLoaded
+        }
+        if (onImageAlterOperation != null) {
+            alterListenerList[imageInfo] = onImageAlterOperation
         }
         runWorker()
     }
@@ -187,9 +236,27 @@ class ImageLoader {
             Tracer.debug(TAG, "BitmapCallback:onSuccess : ")
             threadCount--
             if (mkr != null && !mkr.isRecycled) {
-                sessionStorage.put(imageData.key, mkr, onSessionStorageListener)
+                if (alterListenerList[imageData] != null) {
+                    object : AsyncTask<Void, Void, Bitmap?>() {
+                        override fun doInBackground(vararg params: Void?): Bitmap? {
+                            return alterListenerList[imageData]?.onImageAlterOperation(mkr, imageData)
+                        }
+
+                        override fun onPostExecute(result: Bitmap?) {
+                            super.onPostExecute(result)
+                            if (result != null && !result.isRecycled) {
+                                sessionStorage.put(imageData.key, result, onSessionStorageListener)
+                            }
+                            listenerList[imageData]?.onImageLoaded(result, imageData)
+                        }
+                    }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+                } else {
+                    sessionStorage.put(imageData.key, mkr, onSessionStorageListener)
+                    listenerList[imageData]?.onImageLoaded(mkr, imageData)
+                }
+            } else {
+                listenerList[imageData]?.onImageLoaded(mkr, imageData)
             }
-            listenerList[imageData]?.onImageLoaded(mkr, imageData)
         }
     }
 
@@ -200,5 +267,18 @@ class ImageLoader {
      */
     interface OnImageLoaded {
         fun onImageLoaded(bitmap: Bitmap?, imageData: ImageInfo)
+    }
+
+    /**
+     * Interface used to alter the bitmap before saved it in the cache memory
+     *
+     * @author THE-MKR
+     */
+    interface OnImageAlterOperation {
+
+        /**
+         * This method is called from the back thread whenevre a bitmap is build successfully, else not call in case of bitmap failure
+         */
+        fun onImageAlterOperation(bitmap: Bitmap?, imageData: ImageInfo): Bitmap
     }
 }
