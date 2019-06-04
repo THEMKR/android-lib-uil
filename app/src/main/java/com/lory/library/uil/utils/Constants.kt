@@ -5,7 +5,7 @@ class Constants {
         const val CHANNEL_ID = "com.mkrworld.sketch"
         const val DEFAULT_ALBUM_ITEM_LOAD_SIZE = 0.25F
         const val DEFAULT_PIC_ITEM_LOAD_SIZE = 0.15F
-        const val MAX_THREAD_COUNT: Int = 5
+        const val MAX_THREAD_COUNT: Int = 4
     }
 
     /**

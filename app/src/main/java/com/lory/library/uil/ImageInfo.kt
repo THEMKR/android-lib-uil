@@ -105,7 +105,7 @@ open class ImageInfo {
 
         /**
          * Method to set the Src Location of Image
-         * @param location [URL/File-Path/Assets-Path]
+         * @param location [<OL><LI>URL -> STORAGE_TYPE.URL</LI><LI>ASSETS-PATH -> STORAGE_TYPE.ASSSETS</LI><LI>SD-CARD-PATH -> STORAGE_TYPE.EXTERNAL</LI><LI>INTERNAL-PATH -> STORAGE_TYPE.INTERNAL</LI></OL>]
          */
         fun setStorageLocation(location: String): Builder {
             imageInfo.path = location
@@ -187,7 +187,7 @@ open class ImageInfo {
 
         /**
          * Method to set the Orientation [Constants.ORIENTATION].value [0,90,180,270]
-         * @param orientation
+         * @param orientation [0, 90, 180, 270]
          */
         internal fun setOrientation(orientation: Int): Builder {
             imageInfo.orientation = orientation

@@ -9,6 +9,9 @@ import android.graphics.Canvas
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
+import android.view.View
+import android.widget.ImageView
+import com.lory.library.uil.controller.ImageLoader
 import com.lory.library.uil.dto.CropSection
 import com.lory.library.uil.ui.GalleryActivity
 import com.lory.library.uil.utils.Constants
@@ -96,6 +99,51 @@ class UILLib {
                 inSampleSize + 1
             }
         }
+
+        // =============================================================================================================
+        // =============================================================================================================
+        // =============================================================================================================
+        // LOAD IMAGE START
+        // =============================================================================================================
+        // =============================================================================================================
+        // =============================================================================================================
+
+        /**
+         * Method to load Image
+         * @param imageInfo Imfo of the Image
+         * @param onImageLoaded Callback to get back the loaded image form the dest location definen in imageInfo
+         * @param onImageAlterOperation Callback used to alter the image before fully loaded and return bak to the caller
+         */
+        fun loadImage(imageInfo: ImageInfo, onImageLoaded: ImageLoader.OnImageLoaded?, onImageAlterOperation: ImageLoader.OnImageAlterOperation?) {
+
+        }
+
+        /**
+         * Method to load Image
+         * @param imageView View on which the loaded image is shown
+         * @param imageInfo Imfo of the Image
+         * @param onImageLoaded Callback to get back the loaded image form the dest location definen in imageInfo
+         * @param onImageAlterOperation Callback used to alter the image before fully loaded and return bak to the caller
+         */
+        fun loadImage(imageView: ImageView, imageInfo: ImageInfo, onImageLoaded: ImageLoader.OnImageLoaded?, onImageAlterOperation: ImageLoader.OnImageAlterOperation?) {
+            imageView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener{
+                override fun onViewDetachedFromWindow(v: View?) {
+
+                }
+
+                override fun onViewAttachedToWindow(v: View?) {
+
+                }
+            })
+        }
+
+        // =============================================================================================================
+        // =============================================================================================================
+        // =============================================================================================================
+        // LOAD IMAGE END
+        // =============================================================================================================
+        // =============================================================================================================
+        // =============================================================================================================
 
         // =============================================================================================================
         // =============================================================================================================
