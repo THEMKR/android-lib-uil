@@ -3,6 +3,7 @@ package com.lory.library.uil.controller
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.AsyncTask
+import android.util.Log
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.storage.session.OnSessionStorageListener
 import com.lory.library.storage.session.SessionStorage
@@ -36,7 +37,7 @@ class ImageLoader {
     private var worker: Worker? = null
     private var threadCount = 0
     private var context: Context
-    private val queryList = Vector<Query>()
+    private val queryList = Vector<LoaderQuery>()
     val uilTaskProvider = UILTaskProvider()
     val onSessionStorageListener = object : OnSessionStorageListener<Bitmap> {
         override fun onItemRecycled(mkr: Bitmap): Int {
@@ -68,14 +69,14 @@ class ImageLoader {
         if (imageInfo == null) {
             return
         }
-        remove(Query(imageInfo, onImageLoaded, onImageAlterOperation))
+        remove(LoaderQuery(imageInfo, onImageLoaded, onImageAlterOperation))
     }
 
     /**
-     * Method to Re-move Query
+     * Method to Re-move LoaderQuery
      * @param query
      */
-    private fun remove(query: Query?) {
+    private fun remove(query: LoaderQuery?) {
         if (query != null) {
             queryList.remove(query)
         }
@@ -92,7 +93,7 @@ class ImageLoader {
         if (imageInfo == null) {
             return
         }
-        val query = Query(imageInfo, onImageLoaded, onImageAlterOperation)
+        val query = LoaderQuery(imageInfo, onImageLoaded, onImageAlterOperation)
         val bitmap = sessionStorage.getValue<Bitmap>(imageInfo.key)
         if (bitmap != null && !bitmap.isRecycled) {
             saveAndSendBitmap(bitmap, query, true)
@@ -116,7 +117,7 @@ class ImageLoader {
     /**
      * Class used to control the Number of Request to load bitmap
      */
-    private inner class Worker : AsyncTask<Void, Query, Void>() {
+    private inner class Worker : AsyncTask<Void, LoaderQuery, Void>() {
 
         override fun doInBackground(vararg params: Void?): Void? {
             while (queryList.size > 0) {
@@ -140,8 +141,8 @@ class ImageLoader {
             return null
         }
 
-        override fun onProgressUpdate(vararg values: Query?) {
-            val query: Query = if ((values?.size ?: 0) > 0) {
+        override fun onProgressUpdate(vararg values: LoaderQuery?) {
+            val query: LoaderQuery = if ((values?.size ?: 0) > 0) {
                 values[0]!!
             } else {
                 threadCount--
@@ -183,13 +184,13 @@ class ImageLoader {
      * Class to handle the callback
      */
     private inner class BitmapCallback : AsyncCallBack<Bitmap?, Any> {
-        private val query: Query
+        private val query: LoaderQuery
 
         /**
          * Constructor
          * @param query
          */
-        constructor(query: Query) {
+        constructor(query: LoaderQuery) {
             this.query = query
         }
 
@@ -204,7 +205,11 @@ class ImageLoader {
                 saveAndSendBitmap(mkr, query, false)
             } else {
                 remove(query)
-                query?.onImageLoaded?.onImageLoaded(mkr, query.imageInfo)
+                try {
+                    query?.onImageLoaded?.onImageLoaded(mkr, query.imageInfo)
+                } catch (e: Exception) {
+                    Log.e("MKT", "${TAG} : BitmapCallback : onSuccess : ${e.message} ")
+                }
             }
         }
     }
@@ -212,10 +217,10 @@ class ImageLoader {
     /**
      * Method to save and send the Bitmap to the related caller
      * @param bitmap Bitmap should be bitmap!=NULL && !bitmap.isRecycled
-     * @param query Query
+     * @param query LoaderQuery
      * @param isAlreadyCached TRUE if return from cache else FALSE
      */
-    private fun saveAndSendBitmap(bitmap: Bitmap, query: Query, isAlreadyCached: Boolean) {
+    private fun saveAndSendBitmap(bitmap: Bitmap, query: LoaderQuery, isAlreadyCached: Boolean) {
         if (query.onImageAlterOperation != null) {
             object : AsyncTask<Void, Void, Bitmap?>() {
                 override fun doInBackground(vararg params: Void?): Bitmap? {
@@ -228,7 +233,11 @@ class ImageLoader {
                         sessionStorage.put(query.imageInfo.key, result, onSessionStorageListener)
                     }
                     remove(query)
-                    query.onImageLoaded?.onImageLoaded(result, query.imageInfo)
+                    try {
+                        query.onImageLoaded?.onImageLoaded(result, query.imageInfo)
+                    } catch (e: Exception) {
+                        Log.e("MKT", "${TAG} : saveAndSendBitmap : onSuccess : ${e.message} ")
+                    }
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
         } else {
@@ -236,7 +245,11 @@ class ImageLoader {
                 sessionStorage.put(query.imageInfo.key, bitmap, onSessionStorageListener)
             }
             remove(query)
-            query.onImageLoaded?.onImageLoaded(bitmap, query.imageInfo)
+            try {
+                query.onImageLoaded?.onImageLoaded(bitmap, query.imageInfo)
+            } catch (e: Exception) {
+                Log.e("MKT", "${TAG} : saveAndSendBitmap : onSuccess : ${e.message} ")
+            }
         }
     }
 
@@ -266,7 +279,7 @@ class ImageLoader {
     /**
      * QUERY CLASS
      */
-    class Query {
+    class LoaderQuery {
         val imageInfo: ImageInfo
         val onImageLoaded: OnImageLoaded?
         val onImageAlterOperation: OnImageAlterOperation?
@@ -278,7 +291,7 @@ class ImageLoader {
         }
 
         override fun equals(other: Any?): Boolean {
-            if (other != null && other is Query) {
+            if (other != null && other is LoaderQuery) {
                 if (imageInfo.equals(other.imageInfo)) {
                     if (onImageLoaded != null && onImageAlterOperation != null) {
                         return onImageLoaded.equals(other.onImageLoaded) && onImageAlterOperation.equals(other.onImageAlterOperation)
