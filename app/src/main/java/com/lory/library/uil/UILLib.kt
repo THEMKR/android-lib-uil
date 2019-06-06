@@ -6,9 +6,11 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.support.v4.graphics.drawable.DrawableCompat
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.lory.library.uil.controller.ImageLoader
@@ -110,31 +112,92 @@ class UILLib {
 
         /**
          * Method to load Image
-         * @param imageInfo Imfo of the Image
-         * @param onImageLoaded Callback to get back the loaded image form the dest location definen in imageInfo
-         * @param onImageAlterOperation Callback used to alter the image before fully loaded and return bak to the caller
+         * @param context
+         * @param imageInfo Info of the Image
+         * @param onImageLoaded Callback to get back the loaded image form the dest location define in imageInfo [pass the same which is pass at the time of load image]
          */
-        fun loadImage(imageInfo: ImageInfo, onImageLoaded: ImageLoader.OnImageLoaded?, onImageAlterOperation: ImageLoader.OnImageAlterOperation?) {
+        fun <MKR> removeImage(context: Context, imageInfo: ImageInfo, onImageLoaded: ImageLoader.OnImageLoaderListener<MKR>) {
+            ImageLoader.getInstance(context).remove(imageInfo, onImageLoaded)
+        }
 
+        /**
+         * Method to cancel Image
+         * @param context
+         * @param imageInfo Info of the Image
+         * @param onImageLoaded Callback to get back the loaded image form the dest location definen in imageInfo
+         */
+        fun <MKR> loadImage(context: Context, imageInfo: ImageInfo, onImageLoaded: ImageLoader.OnImageLoaderListener<MKR>) {
+            ImageLoader.getInstance(context).loadImage(imageInfo, onImageLoaded)
         }
 
         /**
          * Method to load Image
-         * @param imageView View on which the loaded image is shown
-         * @param imageInfo Imfo of the Image
-         * @param onImageLoaded Callback to get back the loaded image form the dest location definen in imageInfo
-         * @param onImageAlterOperation Callback used to alter the image before fully loaded and return bak to the caller
+         * @param context
+         * @param imageView View on which the loaded image is shown (Set Image as SRC)
+         * @param imageInfo Info of the Image
          */
-        fun loadImage(imageView: ImageView, imageInfo: ImageInfo, onImageLoaded: ImageLoader.OnImageLoaded?, onImageAlterOperation: ImageLoader.OnImageAlterOperation?) {
-            imageView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener{
-                override fun onViewDetachedFromWindow(v: View?) {
-
+        fun loadImage(context: Context, imageView: ImageView, imageInfo: ImageInfo) {
+            val callback = object : ImageLoader.OnImageLoaderListener<ImageView> {
+                override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: ImageView) {
+                    try {
+                        imageView.setImageBitmap(
+                            if (bitmap != null && !bitmap.isRecycled) {
+                                bitmap
+                            } else {
+                                getDefaultBitmap(context)
+                            }
+                        )
+                    } catch (e: Exception) {
+                        Log.e(TAG, "onImageLoaded : IMAGE-VIEW : ${e.message} ")
+                    }
                 }
 
-                override fun onViewAttachedToWindow(v: View?) {
-
+                override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: ImageView): Bitmap? {
+                    return bitmap
                 }
-            })
+            }
+            // REMOVE OLD IMAGE
+            if (imageView.tag != null && imageView.tag is ImageInfo) {
+                removeImage(context, imageInfo, callback)
+            }
+
+            // LOAD NEW IMAGE
+            loadImage(context, imageInfo, callback)
+        }
+
+        /**
+         * Method to load Image
+         * @param context
+         * @param view View on which the loaded image is shown (Set Image as background)
+         * @param imageInfo Info of the Image
+         */
+        fun loadImage(context: Context, view: View, imageInfo: ImageInfo) {
+            val callback = object : ImageLoader.OnImageLoaderListener<View> {
+                override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: View) {
+                    try {
+                        view.background = BitmapDrawable(
+                            if (bitmap != null && !bitmap.isRecycled) {
+                                bitmap
+                            } else {
+                                getDefaultBitmap(context)
+                            }
+                        )
+                    } catch (e: Exception) {
+                        Log.e(TAG, "onImageLoaded : VIEW : ${e.message} ")
+                    }
+                }
+
+                override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: View): Bitmap? {
+                    return bitmap
+                }
+            }
+            // REMOVE OLD IMAGE
+            if (view.tag != null && view.tag is ImageInfo) {
+                removeImage(context, imageInfo, callback)
+            }
+
+            // LOAD NEW IMAGE
+            loadImage(context, imageInfo, callback)
         }
 
         // =============================================================================================================

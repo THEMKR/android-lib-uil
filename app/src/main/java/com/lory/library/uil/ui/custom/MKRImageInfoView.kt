@@ -15,7 +15,7 @@ import com.lory.library.uil.UILLib
 import com.lory.library.uil.controller.ImageLoader
 import com.lory.library.uil.utils.Tracer
 
-open class MKRImageInfoView : View, ImageLoader.OnImageLoaded{
+open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageInfoView> {
 
     companion object {
         private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageInfoView"
@@ -50,7 +50,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded{
      */
     var imageInfo: ImageInfo? = null
         set(value) {
-            imageLoader?.remove(field, this, null)
+            imageLoader?.remove(field, this)
             field = value
             if (field != null) {
                 val savedBitmap = SessionStorage.getInstance(context).getValue<Bitmap>(field!!.key)
@@ -58,7 +58,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded{
                     bitmap = savedBitmap
                 } else {
                     bitmap = UILLib.getDefaultBitmap(context)
-                    imageLoader?.loadImage(field, this, null)
+                    imageLoader?.loadImage(field, this)
                 }
             } else {
                 bitmap = UILLib.getDefaultBitmap(context)
@@ -107,7 +107,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded{
     }
 
     override fun onDetachedFromWindow() {
-        imageLoader?.remove(imageInfo, this, null)
+        imageLoader?.remove(imageInfo, this)
         super.onDetachedFromWindow()
     }
 
@@ -122,20 +122,24 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaded{
             bitmap = UILLib.getDefaultBitmap(context)
         }
         if (bitmap?.equals(UILLib.getDefaultBitmap(context)) ?: true) {
-            imageLoader?.loadImage(imageInfo, this, null)
+            imageLoader?.loadImage(imageInfo, this)
         }
         canvas?.drawBitmap(bitmap, null, rectDrawBitmap, null)
     }
 
-    override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo) {
+    override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: MKRImageInfoView) {
         Tracer.debug(TAG, "onImageLoaded : $bitmap : $imageInfo")
         if (bitmap != null && !bitmap!!.isRecycled && imageInfo.equals(this.imageInfo)) {
-            this.bitmap = bitmap
+            mkr.bitmap = bitmap
         } else {
-            this.bitmap = UILLib.getDefaultBitmap(context)
-            imageLoader?.loadImage(this.imageInfo!!, this, null)
+            mkr.bitmap = UILLib.getDefaultBitmap(context)
+            imageLoader?.loadImage(this.imageInfo!!, this)
         }
         invalidate()
+    }
+
+    override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: MKRImageInfoView): Bitmap? {
+        return bitmap
     }
 
     /**

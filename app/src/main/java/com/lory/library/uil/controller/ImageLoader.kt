@@ -38,8 +38,8 @@ class ImageLoader {
     private var threadCount = 0
     private var context: Context
     private val queryList = Vector<LoaderQuery>()
-    val uilTaskProvider = UILTaskProvider()
-    val onSessionStorageListener = object : OnSessionStorageListener<Bitmap> {
+    private val uilTaskProvider = UILTaskProvider()
+    private val onSessionStorageListener = object : OnSessionStorageListener<Bitmap> {
         override fun onItemRecycled(mkr: Bitmap): Int {
             mkr.recycle()
             return 0
@@ -63,13 +63,12 @@ class ImageLoader {
      * Method to Re-move image. If callback send in loadImage then it should be send in remove image
      * @param imageInfo
      * @param onImageLoaded
-     * @param onImageAlterOperation If need to manipulation image before saved and return back
      */
-    fun remove(imageInfo: ImageInfo?, onImageLoaded: OnImageLoaded?, onImageAlterOperation: OnImageAlterOperation?) {
+    fun remove(imageInfo: ImageInfo?, onImageLoaded: OnImageLoaderListener<*>) {
         if (imageInfo == null) {
             return
         }
-        remove(LoaderQuery(imageInfo, onImageLoaded, onImageAlterOperation))
+        remove(LoaderQuery(imageInfo, onImageLoaded))
     }
 
     /**
@@ -86,19 +85,19 @@ class ImageLoader {
      * Method to load image
      * @param imageInfo
      * @param onImageLoaded
-     * @param onImageAlterOperation If need to manipulation image before saved and return back
      */
-    fun loadImage(imageInfo: ImageInfo?, onImageLoaded: OnImageLoaded?, onImageAlterOperation: OnImageAlterOperation?) {
+    fun loadImage(imageInfo: ImageInfo?, onImageLoaded: OnImageLoaderListener<*>) {
         Tracer.debug(TAG, "loadImage : ")
         if (imageInfo == null) {
             return
         }
-        val query = LoaderQuery(imageInfo, onImageLoaded, onImageAlterOperation)
+        val query = LoaderQuery(imageInfo, onImageLoaded)
         val bitmap = sessionStorage.getValue<Bitmap>(imageInfo.key)
         if (bitmap != null && !bitmap.isRecycled) {
             saveAndSendBitmap(bitmap, query, true)
             return
         }
+        remove(query)
         queryList.add(query)
         runWorker()
     }
@@ -206,7 +205,7 @@ class ImageLoader {
             } else {
                 remove(query)
                 try {
-                    query?.onImageLoaded?.onImageLoaded(mkr, query.imageInfo)
+                    query?.onImageLoaded?.onImageLoaded(mkr, query.imageInfo, query.onImageLoaded)
                 } catch (e: Exception) {
                     Log.e("MKT", "${TAG} : BitmapCallback : onSuccess : ${e.message} ")
                 }
@@ -221,10 +220,10 @@ class ImageLoader {
      * @param isAlreadyCached TRUE if return from cache else FALSE
      */
     private fun saveAndSendBitmap(bitmap: Bitmap, query: LoaderQuery, isAlreadyCached: Boolean) {
-        if (query.onImageAlterOperation != null) {
+        if (query.onImageLoaded != null) {
             object : AsyncTask<Void, Void, Bitmap?>() {
                 override fun doInBackground(vararg params: Void?): Bitmap? {
-                    return query.onImageAlterOperation.onImageAlterOperation(bitmap, query.imageInfo)
+                    return query.onImageLoaded.onImageAlter(bitmap, query.imageInfo, query.onImageLoaded)
                 }
 
                 override fun onPostExecute(result: Bitmap?) {
@@ -234,7 +233,7 @@ class ImageLoader {
                     }
                     remove(query)
                     try {
-                        query.onImageLoaded?.onImageLoaded(result, query.imageInfo)
+                        query.onImageLoaded?.onImageLoaded(result, query.imageInfo, query.onImageLoaded)
                     } catch (e: Exception) {
                         Log.e("MKT", "${TAG} : saveAndSendBitmap : onSuccess : ${e.message} ")
                     }
@@ -246,7 +245,7 @@ class ImageLoader {
             }
             remove(query)
             try {
-                query.onImageLoaded?.onImageLoaded(bitmap, query.imageInfo)
+                query.onImageLoaded?.onImageLoaded(bitmap, query.imageInfo, query.onImageLoaded)
             } catch (e: Exception) {
                 Log.e("MKT", "${TAG} : saveAndSendBitmap : onSuccess : ${e.message} ")
             }
@@ -258,22 +257,19 @@ class ImageLoader {
      *
      * @author THE-MKR
      */
-    interface OnImageLoaded {
-        fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo)
-    }
-
-    /**
-     * Interface used to alter the bitmap before saved it in the cache memory.
-     * Caller should set the specific value for [ImageInfo.specifire] if user this operation
-     *
-     * @author THE-MKR
-     */
-    interface OnImageAlterOperation {
+    interface OnImageLoaderListener<MKR> {
 
         /**
-         * This method is called from the back thread whenevre a bitmap is build successfully, else not call in case of bitmap failure
+         * Method called when image is successfully downloaded and saved in cache
          */
-        fun onImageAlterOperation(bitmap: Bitmap?, imageInfo: ImageInfo): Bitmap?
+        fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: MKR)
+
+        /**
+         * Method used to alter the bitmap before saved it in the cache memory.
+         * Caller should set the specific value for [ImageInfo.specifire] if user this operation
+         * This method is called from the back thread whenever a bitmap is build successfully, else not call in case of bitmap failure
+         */
+        fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: MKR): Bitmap?
     }
 
     /**
@@ -281,29 +277,21 @@ class ImageLoader {
      */
     class LoaderQuery {
         val imageInfo: ImageInfo
-        val onImageLoaded: OnImageLoaded?
-        val onImageAlterOperation: OnImageAlterOperation?
+        val onImageLoaded: OnImageLoaderListener<Any>
 
-        constructor(imageInfo: ImageInfo, onImageLoaded: OnImageLoaded?, onImageAlterOperation: OnImageAlterOperation?) {
+        /**
+         * Constructor
+         * @param imageInfo
+         * @param onImageLoaded
+         */
+        constructor(imageInfo: ImageInfo, onImageLoaded: OnImageLoaderListener<*>) {
             this.imageInfo = imageInfo
-            this.onImageLoaded = onImageLoaded
-            this.onImageAlterOperation = onImageAlterOperation
+            this.onImageLoaded = onImageLoaded as OnImageLoaderListener<Any>
         }
 
         override fun equals(other: Any?): Boolean {
             if (other != null && other is LoaderQuery) {
-                if (imageInfo.equals(other.imageInfo)) {
-                    if (onImageLoaded != null && onImageAlterOperation != null) {
-                        return onImageLoaded.equals(other.onImageLoaded) && onImageAlterOperation.equals(other.onImageAlterOperation)
-                    } else if (onImageLoaded != null) {
-                        return onImageLoaded.equals(other.onImageLoaded)
-                    } else if (onImageAlterOperation != null) {
-                        return onImageAlterOperation.equals(other.onImageAlterOperation)
-                    } else {
-                        return false
-                    }
-                }
-                return false
+                return imageInfo.equals(other.imageInfo) && onImageLoaded.equals(other.onImageLoaded)
             }
             return false
         }
