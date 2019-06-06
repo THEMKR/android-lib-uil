@@ -133,60 +133,32 @@ class UILLib {
         /**
          * Method to load Image
          * @param context
-         * @param imageView View on which the loaded image is shown (Set Image as SRC)
+         * @param view View on which the loaded image is shown (If view is ImageView then set image as bitmap else Set Image as background)
          * @param imageInfo Info of the Image
-         * @param loaderImageId
-         * @param errorImageId
-         */
-        fun loadImage(context: Context, imageView: ImageView, imageInfo: ImageInfo?, loaderImageId: Int, errorImageId: Int) {
-            imageView.setImageResource(loaderImageId)
-            val callback = object : ImageLoader.OnImageLoaderListener<ImageView> {
-                override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: ImageView) {
-                    try {
-                        if (bitmap != null && !bitmap.isRecycled) {
-                            imageView.setImageBitmap(bitmap)
-                        } else {
-                            imageView.setImageResource(errorImageId)
-                        }
-                    } catch (e: Exception) {
-                        Log.e(TAG, "onImageLoaded : IMAGE-VIEW : ${e.message} ")
-                    }
-                }
-
-                override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: ImageView): Bitmap? {
-                    return bitmap
-                }
-
-                override fun onImageCaller(): ImageView {
-                    return imageView
-                }
-            }
-            // REMOVE OLD IMAGE
-            if (imageView.tag != null && imageView.tag is ImageInfo) {
-                removeImage(context, imageInfo, callback)
-            }
-
-            // LOAD NEW IMAGE
-            loadImage(context, imageInfo, callback)
-        }
-
-        /**
-         * Method to load Image
-         * @param context
-         * @param view View on which the loaded image is shown (Set Image as background)
-         * @param imageInfo Info of the Image
-         * @param loaderImageId
-         * @param errorImageId
+         * @param loaderImageId Loader image ID
+         * @param errorImageId Failure image ID
          */
         fun loadImage(context: Context, view: View, imageInfo: ImageInfo?, loaderImageId: Int, errorImageId: Int) {
-            view.setBackgroundResource(loaderImageId)
+            if (view is ImageView) {
+                view.setImageResource(loaderImageId)
+            } else {
+                view.setBackgroundResource(loaderImageId)
+            }
             val callback = object : ImageLoader.OnImageLoaderListener<View> {
                 override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: View) {
                     try {
                         if (bitmap != null && !bitmap.isRecycled) {
-                            view.background = BitmapDrawable(bitmap)
+                            if (view is ImageView) {
+                                view.setImageBitmap(bitmap)
+                            } else {
+                                view.background = BitmapDrawable(bitmap)
+                            }
                         } else {
-                            view.setBackgroundResource(errorImageId)
+                            if (view is ImageView) {
+                                view.setImageResource(errorImageId)
+                            } else {
+                                view.setBackgroundResource(errorImageId)
+                            }
                         }
                     } catch (e: Exception) {
                         Log.e(TAG, "onImageLoaded : VIEW : ${e.message} ")
