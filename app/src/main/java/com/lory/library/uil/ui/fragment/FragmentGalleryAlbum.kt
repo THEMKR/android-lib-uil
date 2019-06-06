@@ -84,6 +84,10 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
                 if (selectedImageDataList.contains(tagDto)) {
                     selectedImageDataList.remove(tagDto)
                 }
+                if(activity!=null && activity is OnBaseActivityListener){
+                    val model = Model.getInstance()
+                    (activity as OnBaseActivityListener)?.onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
+                }
                 updateSelectedImageList()
             }
         }

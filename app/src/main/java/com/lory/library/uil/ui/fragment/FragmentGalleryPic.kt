@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.lory.library.ui.callback.OnBaseActivityListener
 import com.lory.library.ui.callback.OnBaseFragmentListener
 import com.lory.library.ui.ui.adapter.BaseAdapter
 import com.lory.library.ui.ui.adapter.BaseAdapterItem
@@ -95,7 +96,11 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
                         intent.putExtra(GalleryActivity.EXTRA_IMAGE_DATA, data)
                         activity?.setResult(Activity.RESULT_OK, intent)
                         activity?.finish()
+                        return
                     }
+                }
+                if(activity!=null && activity is OnBaseActivityListener){
+                    (activity as OnBaseActivityListener)?.onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
                 }
                 baseAdapter.notifyDataSetChanged()
             }
