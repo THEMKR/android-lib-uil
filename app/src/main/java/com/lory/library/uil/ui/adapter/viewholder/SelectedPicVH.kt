@@ -41,6 +41,6 @@ class SelectedPicVH : BaseViewHolder<ImageInfo> {
             return
         }
         cancelView.tag = dto
-        mkrImageView.imageInfo = UILLib.resizeImage(dto, Constants.DEFAULT_PIC_ITEM_LOAD_SIZE)
+        mkrImageView.imageInfo = ImageInfo.resizeImage(dto, Constants.DEFAULT_PIC_ITEM_LOAD_SIZE)
     }
 }

@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.TextView
 import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.uil.BuildConfig
+import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.R
 import com.lory.library.uil.UILLib
 import com.lory.library.uil.dto.DTOAlbumData
@@ -47,6 +48,6 @@ class GalleryAlbumVH : BaseViewHolder<DTOAlbumData> {
         cardView.tag = dto
         textView.text = dto.albumName
         val imagePathList = dto.imageInfoList
-        mkrImageView.imageInfo = UILLib.resizeImage(imagePathList[0], Constants.DEFAULT_ALBUM_ITEM_LOAD_SIZE)
+        mkrImageView.imageInfo = ImageInfo.resizeImage(imagePathList[0], Constants.DEFAULT_ALBUM_ITEM_LOAD_SIZE)
     }
 }

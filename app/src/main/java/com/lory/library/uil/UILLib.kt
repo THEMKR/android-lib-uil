@@ -14,9 +14,7 @@ import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import com.lory.library.uil.controller.ImageLoader
-import com.lory.library.uil.dto.CropSection
 import com.lory.library.uil.ui.GalleryActivity
-import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.JsonUtil
 import com.lory.library.uil.utils.Tracer
 
@@ -60,19 +58,29 @@ class UILLib {
          */
         fun getDefaultBitmap(context: Context): Bitmap {
             if (DEFAULT_BITMAP == null) {
-                var drawable = ContextCompat.getDrawable(context, R.drawable.default_image) ?: return BitmapFactory.decodeResource(context.resources, R.drawable.ic_default)
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    drawable = DrawableCompat.wrap(drawable!!).mutate()
-                }
-                val dimenW = (context.resources.displayMetrics.widthPixels.toFloat() * 0.5F).toInt()
-                val dimenH = (dimenW.toFloat() * drawable.intrinsicHeight.toFloat() / drawable.intrinsicWidth.toFloat()).toInt()
-                val bitmap = Bitmap.createBitmap(dimenW, dimenH, Bitmap.Config.ARGB_8888)
-                val canvas = Canvas(bitmap)
-                drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
-                drawable.draw(canvas)
-                DEFAULT_BITMAP = bitmap
+                DEFAULT_BITMAP = getSVGBitmap(context, R.drawable.default_image, 0.5F)
             }
             return DEFAULT_BITMAP!!
+        }
+
+        /**
+         * Method to get the bitmap from svg based on the device width
+         * @param context
+         * @param id  SVG RESOURCE ID
+         * @param ratio Ration means the per of width pixel 0-1. Where 1 = 100%
+         */
+        fun getSVGBitmap(context: Context, id: Int, ratio: Float): Bitmap {
+            var drawable = ContextCompat.getDrawable(context, id) ?: return BitmapFactory.decodeResource(context.resources, R.drawable.ic_default)
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                drawable = DrawableCompat.wrap(drawable!!).mutate()
+            }
+            val dimenW = (context.resources.displayMetrics.widthPixels.toFloat() * ratio).toInt()
+            val dimenH = (dimenW.toFloat() * drawable.intrinsicHeight.toFloat() / drawable.intrinsicWidth.toFloat()).toInt()
+            val bitmap = Bitmap.createBitmap(dimenW, dimenH, Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
+            drawable.draw(canvas)
+            return bitmap
         }
 
         /**
@@ -102,21 +110,13 @@ class UILLib {
             }
         }
 
-        // =============================================================================================================
-        // =============================================================================================================
-        // =============================================================================================================
-        // LOAD IMAGE START
-        // =============================================================================================================
-        // =============================================================================================================
-        // =============================================================================================================
-
         /**
          * Method to load Image
          * @param context
          * @param imageInfo Info of the Image
          * @param onImageLoaded Callback to get back the loaded image form the dest location define in imageInfo [pass the same which is pass at the time of load image]
          */
-        fun <MKR> removeImage(context: Context, imageInfo: ImageInfo, onImageLoaded: ImageLoader.OnImageLoaderListener<MKR>) {
+        fun <MKR> removeImage(context: Context, imageInfo: ImageInfo?, onImageLoaded: ImageLoader.OnImageLoaderListener<MKR>) {
             ImageLoader.getInstance(context).remove(imageInfo, onImageLoaded)
         }
 
@@ -126,7 +126,7 @@ class UILLib {
          * @param imageInfo Info of the Image
          * @param onImageLoaded Callback to get back the loaded image form the dest location definen in imageInfo
          */
-        fun <MKR> loadImage(context: Context, imageInfo: ImageInfo, onImageLoaded: ImageLoader.OnImageLoaderListener<MKR>) {
+        fun <MKR> loadImage(context: Context, imageInfo: ImageInfo?, onImageLoaded: ImageLoader.OnImageLoaderListener<MKR>) {
             ImageLoader.getInstance(context).loadImage(imageInfo, onImageLoaded)
         }
 
@@ -135,18 +135,19 @@ class UILLib {
          * @param context
          * @param imageView View on which the loaded image is shown (Set Image as SRC)
          * @param imageInfo Info of the Image
+         * @param loaderImageId
+         * @param errorImageId
          */
-        fun loadImage(context: Context, imageView: ImageView, imageInfo: ImageInfo) {
+        fun loadImage(context: Context, imageView: ImageView, imageInfo: ImageInfo?, loaderImageId: Int, errorImageId: Int) {
+            imageView.setImageResource(loaderImageId)
             val callback = object : ImageLoader.OnImageLoaderListener<ImageView> {
                 override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: ImageView) {
                     try {
-                        imageView.setImageBitmap(
-                            if (bitmap != null && !bitmap.isRecycled) {
-                                bitmap
-                            } else {
-                                getDefaultBitmap(context)
-                            }
-                        )
+                        if (bitmap != null && !bitmap.isRecycled) {
+                            imageView.setImageBitmap(bitmap)
+                        } else {
+                            imageView.setImageResource(errorImageId)
+                        }
                     } catch (e: Exception) {
                         Log.e(TAG, "onImageLoaded : IMAGE-VIEW : ${e.message} ")
                     }
@@ -154,6 +155,10 @@ class UILLib {
 
                 override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: ImageView): Bitmap? {
                     return bitmap
+                }
+
+                override fun onImageCaller(): ImageView {
+                    return imageView
                 }
             }
             // REMOVE OLD IMAGE
@@ -170,18 +175,19 @@ class UILLib {
          * @param context
          * @param view View on which the loaded image is shown (Set Image as background)
          * @param imageInfo Info of the Image
+         * @param loaderImageId
+         * @param errorImageId
          */
-        fun loadImage(context: Context, view: View, imageInfo: ImageInfo) {
+        fun loadImage(context: Context, view: View, imageInfo: ImageInfo?, loaderImageId: Int, errorImageId: Int) {
+            view.setBackgroundResource(loaderImageId)
             val callback = object : ImageLoader.OnImageLoaderListener<View> {
                 override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: View) {
                     try {
-                        view.background = BitmapDrawable(
-                            if (bitmap != null && !bitmap.isRecycled) {
-                                bitmap
-                            } else {
-                                getDefaultBitmap(context)
-                            }
-                        )
+                        if (bitmap != null && !bitmap.isRecycled) {
+                            view.background = BitmapDrawable(bitmap)
+                        } else {
+                            view.setBackgroundResource(errorImageId)
+                        }
                     } catch (e: Exception) {
                         Log.e(TAG, "onImageLoaded : VIEW : ${e.message} ")
                     }
@@ -189,6 +195,10 @@ class UILLib {
 
                 override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: View): Bitmap? {
                     return bitmap
+                }
+
+                override fun onImageCaller(): View {
+                    return view
                 }
             }
             // REMOVE OLD IMAGE
@@ -199,133 +209,5 @@ class UILLib {
             // LOAD NEW IMAGE
             loadImage(context, imageInfo, callback)
         }
-
-        // =============================================================================================================
-        // =============================================================================================================
-        // =============================================================================================================
-        // LOAD IMAGE END
-        // =============================================================================================================
-        // =============================================================================================================
-        // =============================================================================================================
-
-        // =============================================================================================================
-        // =============================================================================================================
-        // =============================================================================================================
-        // IMAGE INFO OPERATION START
-        // =============================================================================================================
-        // =============================================================================================================
-        // =============================================================================================================
-
-        /**
-         * Method to return ImageInfo with New Size
-         * @param imageInfo Pass the ImageInfo of current image on which you want to do this operation and get the new one
-         * @param dimensionPer
-         * @return Return the newImageData as pass in parameter
-         */
-        fun resizeImage(imageInfo: ImageInfo, dimensionPer: Float): ImageInfo {
-            return ImageInfo.Builder()
-                .setCropSection(imageInfo.cropSection)
-                .setDimenPer(dimensionPer)
-                .setFlipType(imageInfo.flipType)
-                .setOrientation(imageInfo.orientation)
-                .setStorageLocation(imageInfo.path)
-                .setStorageType(imageInfo.storageType)
-                .build()
-        }
-
-        /**
-         * Method to return ImageInfo with New CropSection
-         * @param imageInfo Pass the ImageInfo of current image on which you want to do this operation and get the new one
-         * @param cropSection
-         * @return Return the newImageData as pass in parameter
-         */
-        fun cropImage(imageInfo: ImageInfo, cropSection: CropSection): ImageInfo {
-            return ImageInfo.Builder()
-                .setCropSection(cropSection)
-                .setDimenPer(imageInfo.dimensionPer)
-                .setFlipType(imageInfo.flipType)
-                .setOrientation(imageInfo.orientation)
-                .setStorageLocation(imageInfo.path)
-                .setStorageType(imageInfo.storageType)
-                .build()
-        }
-
-        /**
-         * Method to return ImageInfo with New FlipType
-         * @param imageInfo Pass the ImageInfo of current image on which you want to do this operation and get the new one
-         * @param flipType
-         * @return Return the newImageData as pass in parameter
-         */
-        fun flipImage(imageInfo: ImageInfo, flipType: Constants.FLIP_TYPE): ImageInfo {
-            return ImageInfo.Builder()
-                .setCropSection(imageInfo.cropSection)
-                .setDimenPer(imageInfo.dimensionPer)
-                .setOrientation(imageInfo.orientation)
-                .setStorageLocation(imageInfo.path)
-                .setStorageType(imageInfo.storageType)
-                .setFlipType(
-                    when (imageInfo.flipType) {
-                        Constants.FLIP_TYPE.BOTH.value -> {
-                            when (flipType) {
-                                Constants.FLIP_TYPE.BOTH -> {
-                                    Constants.FLIP_TYPE.NAN.value
-                                }
-                                Constants.FLIP_TYPE.HORIZONTAL -> {
-                                    Constants.FLIP_TYPE.VERTICAL.value
-                                }
-                                Constants.FLIP_TYPE.VERTICAL -> {
-                                    Constants.FLIP_TYPE.HORIZONTAL.value
-                                }
-                                else -> {
-                                    imageInfo.flipType
-                                }
-                            }
-                        }
-                        Constants.FLIP_TYPE.HORIZONTAL.value -> {
-                            when (flipType) {
-                                Constants.FLIP_TYPE.BOTH -> {
-                                    Constants.FLIP_TYPE.VERTICAL.value
-                                }
-                                Constants.FLIP_TYPE.HORIZONTAL -> {
-                                    Constants.FLIP_TYPE.NAN.value
-                                }
-                                Constants.FLIP_TYPE.VERTICAL -> {
-                                    Constants.FLIP_TYPE.BOTH.value
-                                }
-                                else -> {
-                                    imageInfo.flipType
-                                }
-                            }
-                        }
-                        Constants.FLIP_TYPE.VERTICAL.value -> {
-                            when (flipType) {
-                                Constants.FLIP_TYPE.BOTH -> {
-                                    Constants.FLIP_TYPE.HORIZONTAL.value
-                                }
-                                Constants.FLIP_TYPE.HORIZONTAL -> {
-                                    Constants.FLIP_TYPE.BOTH.value
-                                }
-                                Constants.FLIP_TYPE.VERTICAL -> {
-                                    Constants.FLIP_TYPE.NAN.value
-                                }
-                                else -> {
-                                    imageInfo.flipType
-                                }
-                            }
-                        }
-                        else -> {
-                            imageInfo.flipType
-                        }
-                    }
-                ).build()
-        }
-
-        // =============================================================================================================
-        // =============================================================================================================
-        // =============================================================================================================
-        // IMAGE INFO OPERATION END
-        // =============================================================================================================
-        // =============================================================================================================
-        // =============================================================================================================
     }
 }

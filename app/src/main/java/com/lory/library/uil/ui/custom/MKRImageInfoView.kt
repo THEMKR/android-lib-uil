@@ -50,7 +50,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageIn
      */
     var imageInfo: ImageInfo? = null
         set(value) {
-            imageLoader?.remove(field, this)
+            UILLib.removeImage(context, field, this)
             field = value
             if (field != null) {
                 val savedBitmap = SessionStorage.getInstance(context).getValue<Bitmap>(field!!.key)
@@ -58,7 +58,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageIn
                     bitmap = savedBitmap
                 } else {
                     bitmap = UILLib.getDefaultBitmap(context)
-                    imageLoader?.loadImage(field, this)
+                    UILLib.loadImage(context, field, this)
                 }
             } else {
                 bitmap = UILLib.getDefaultBitmap(context)
@@ -78,8 +78,6 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageIn
             resetRect()
             invalidate()
         }
-
-    protected var imageLoader: ImageLoader? = null
 
     constructor(context: Context) : super(context) {
         init()
@@ -102,12 +100,11 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageIn
      * Method to init the View
      */
     protected fun init() {
-        imageLoader = ImageLoader.getInstance(context)
         bitmap = UILLib.getDefaultBitmap(context)
     }
 
     override fun onDetachedFromWindow() {
-        imageLoader?.remove(imageInfo, this)
+        UILLib.removeImage(context, imageInfo, this)
         super.onDetachedFromWindow()
     }
 
@@ -122,7 +119,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageIn
             bitmap = UILLib.getDefaultBitmap(context)
         }
         if (bitmap?.equals(UILLib.getDefaultBitmap(context)) ?: true) {
-            imageLoader?.loadImage(imageInfo, this)
+            UILLib.loadImage(context, imageInfo, this)
         }
         canvas?.drawBitmap(bitmap, null, rectDrawBitmap, null)
     }
@@ -133,13 +130,17 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageIn
             mkr.bitmap = bitmap
         } else {
             mkr.bitmap = UILLib.getDefaultBitmap(context)
-            imageLoader?.loadImage(this.imageInfo!!, this)
+            UILLib.loadImage(context, this.imageInfo!!, this)
         }
         invalidate()
     }
 
     override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: MKRImageInfoView): Bitmap? {
         return bitmap
+    }
+
+    override fun onImageCaller(): MKRImageInfoView {
+        return this
     }
 
     /**

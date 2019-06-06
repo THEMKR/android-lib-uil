@@ -205,7 +205,7 @@ class ImageLoader {
             } else {
                 remove(query)
                 try {
-                    query?.onImageLoaded?.onImageLoaded(mkr, query.imageInfo, query.onImageLoaded)
+                    query?.onImageLoaded?.onImageLoaded(mkr, query.imageInfo, query.onImageLoaded.onImageCaller())
                 } catch (e: Exception) {
                     Log.e("MKT", "${TAG} : BitmapCallback : onSuccess : ${e.message} ")
                 }
@@ -223,7 +223,7 @@ class ImageLoader {
         if (query.onImageLoaded != null) {
             object : AsyncTask<Void, Void, Bitmap?>() {
                 override fun doInBackground(vararg params: Void?): Bitmap? {
-                    return query.onImageLoaded.onImageAlter(bitmap, query.imageInfo, query.onImageLoaded)
+                    return query.onImageLoaded.onImageAlter(bitmap, query.imageInfo, query.onImageLoaded.onImageCaller())
                 }
 
                 override fun onPostExecute(result: Bitmap?) {
@@ -233,7 +233,7 @@ class ImageLoader {
                     }
                     remove(query)
                     try {
-                        query.onImageLoaded?.onImageLoaded(result, query.imageInfo, query.onImageLoaded)
+                        query.onImageLoaded?.onImageLoaded(result, query.imageInfo, query.onImageLoaded.onImageCaller())
                     } catch (e: Exception) {
                         Log.e("MKT", "${TAG} : saveAndSendBitmap : onSuccess : ${e.message} ")
                     }
@@ -245,7 +245,7 @@ class ImageLoader {
             }
             remove(query)
             try {
-                query.onImageLoaded?.onImageLoaded(bitmap, query.imageInfo, query.onImageLoaded)
+                query.onImageLoaded?.onImageLoaded(bitmap, query.imageInfo, query.onImageLoaded.onImageCaller())
             } catch (e: Exception) {
                 Log.e("MKT", "${TAG} : saveAndSendBitmap : onSuccess : ${e.message} ")
             }
@@ -263,6 +263,11 @@ class ImageLoader {
          * Method called when image is successfully downloaded and saved in cache
          */
         fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: MKR)
+
+        /**
+         * Method to get the Generic Transformer
+         */
+        fun onImageCaller(): MKR
 
         /**
          * Method used to alter the bitmap before saved it in the cache memory.
@@ -291,7 +296,7 @@ class ImageLoader {
 
         override fun equals(other: Any?): Boolean {
             if (other != null && other is LoaderQuery) {
-                return imageInfo.equals(other.imageInfo) && onImageLoaded.equals(other.onImageLoaded)
+                return imageInfo.equals(other.imageInfo) && onImageLoaded.onImageCaller().equals(other.onImageLoaded.onImageCaller())
             }
             return false
         }

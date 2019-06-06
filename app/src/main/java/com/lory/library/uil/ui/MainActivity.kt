@@ -5,11 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.ImageView
 import com.lory.library.storage.session.SessionStorage
 import com.lory.library.uil.BuildConfig
+import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.R
 import com.lory.library.uil.UILLib
+import com.lory.library.uil.utils.Constants
 import com.lory.library.uil.utils.Tracer
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,6 +32,8 @@ class MainActivity : AppCompatActivity() {
                 UILLib.launchGallery(this@MainActivity, 1001, 10, false)
             }
         })
+        UILLib.loadImage(this, activity_main_imageView, ImageInfo.Builder().setStorageLocation("https://cdn-images-1.medium.com/max/1200/0*dQtenUyM5MTFaW2_.").setStorageType(Constants.STORAGE_TYPE.URL).setDimenPer(1F).build(), R.drawable.notification_bg, R.drawable.ic_cancel)
+        UILLib.loadImage(this, activity_main_view, ImageInfo.Builder().setStorageLocation("https://cdn-images-1.medium.com/max/1200/0*dQtenUyM5MTFaW2_.").setStorageType(Constants.STORAGE_TYPE.URL).setDimenPer(1F).build(), R.drawable.ic_cancel, R.drawable.notification_bg)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -8,6 +8,113 @@ import com.lory.library.uil.utils.Constants
 
 open class ImageInfo {
 
+    companion object {
+
+        /**
+         * Method to return ImageInfo with New Size
+         * @param imageInfo Pass the ImageInfo of current image on which you want to do this operation and get the new one
+         * @param dimensionPer
+         * @return Return the newImageData as pass in parameter
+         */
+        fun resizeImage(imageInfo: ImageInfo, dimensionPer: Float): ImageInfo {
+            return ImageInfo.Builder()
+                .setCropSection(imageInfo.cropSection)
+                .setDimenPer(dimensionPer)
+                .setFlipType(imageInfo.flipType)
+                .setOrientation(imageInfo.orientation)
+                .setStorageLocation(imageInfo.path)
+                .setStorageType(imageInfo.storageType)
+                .build()
+        }
+
+        /**
+         * Method to return ImageInfo with New CropSection
+         * @param imageInfo Pass the ImageInfo of current image on which you want to do this operation and get the new one
+         * @param cropSection
+         * @return Return the newImageData as pass in parameter
+         */
+        fun cropImage(imageInfo: ImageInfo, cropSection: CropSection): ImageInfo {
+            return ImageInfo.Builder()
+                .setCropSection(cropSection)
+                .setDimenPer(imageInfo.dimensionPer)
+                .setFlipType(imageInfo.flipType)
+                .setOrientation(imageInfo.orientation)
+                .setStorageLocation(imageInfo.path)
+                .setStorageType(imageInfo.storageType)
+                .build()
+        }
+
+        /**
+         * Method to return ImageInfo with New FlipType
+         * @param imageInfo Pass the ImageInfo of current image on which you want to do this operation and get the new one
+         * @param flipType
+         * @return Return the newImageData as pass in parameter
+         */
+        fun flipImage(imageInfo: ImageInfo, flipType: Constants.FLIP_TYPE): ImageInfo {
+            return ImageInfo.Builder()
+                .setCropSection(imageInfo.cropSection)
+                .setDimenPer(imageInfo.dimensionPer)
+                .setOrientation(imageInfo.orientation)
+                .setStorageLocation(imageInfo.path)
+                .setStorageType(imageInfo.storageType)
+                .setFlipType(
+                    when (imageInfo.flipType) {
+                        Constants.FLIP_TYPE.BOTH.value -> {
+                            when (flipType) {
+                                Constants.FLIP_TYPE.BOTH -> {
+                                    Constants.FLIP_TYPE.NAN.value
+                                }
+                                Constants.FLIP_TYPE.HORIZONTAL -> {
+                                    Constants.FLIP_TYPE.VERTICAL.value
+                                }
+                                Constants.FLIP_TYPE.VERTICAL -> {
+                                    Constants.FLIP_TYPE.HORIZONTAL.value
+                                }
+                                else -> {
+                                    imageInfo.flipType
+                                }
+                            }
+                        }
+                        Constants.FLIP_TYPE.HORIZONTAL.value -> {
+                            when (flipType) {
+                                Constants.FLIP_TYPE.BOTH -> {
+                                    Constants.FLIP_TYPE.VERTICAL.value
+                                }
+                                Constants.FLIP_TYPE.HORIZONTAL -> {
+                                    Constants.FLIP_TYPE.NAN.value
+                                }
+                                Constants.FLIP_TYPE.VERTICAL -> {
+                                    Constants.FLIP_TYPE.BOTH.value
+                                }
+                                else -> {
+                                    imageInfo.flipType
+                                }
+                            }
+                        }
+                        Constants.FLIP_TYPE.VERTICAL.value -> {
+                            when (flipType) {
+                                Constants.FLIP_TYPE.BOTH -> {
+                                    Constants.FLIP_TYPE.HORIZONTAL.value
+                                }
+                                Constants.FLIP_TYPE.HORIZONTAL -> {
+                                    Constants.FLIP_TYPE.BOTH.value
+                                }
+                                Constants.FLIP_TYPE.VERTICAL -> {
+                                    Constants.FLIP_TYPE.NAN.value
+                                }
+                                else -> {
+                                    imageInfo.flipType
+                                }
+                            }
+                        }
+                        else -> {
+                            imageInfo.flipType
+                        }
+                    }
+                ).build()
+        }
+    }
+
     /**
      * Make Constructor Private
      */

@@ -88,7 +88,7 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
                         val newDtoList: ArrayList<ImageInfo> = ArrayList<ImageInfo>()
                         val selectedDtoList = model.selectedImageInfoList
                         for (imageInfo in selectedDtoList) {
-                            newDtoList.add(UILLib.resizeImage(imageInfo, -1F))
+                            newDtoList.add(ImageInfo.resizeImage(imageInfo, -1F))
                         }
                         val data = JsonUtil.toStringTokenType<ArrayList<ImageInfo>>(newDtoList, false)
                         val intent = Intent()
