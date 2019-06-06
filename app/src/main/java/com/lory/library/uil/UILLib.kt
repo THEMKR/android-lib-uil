@@ -201,6 +201,7 @@ class UILLib {
                     return view
                 }
             }
+
             // REMOVE OLD IMAGE
             if (view.tag != null && view.tag is ImageInfo) {
                 removeImage(context, imageInfo, callback)
