@@ -114,7 +114,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
 
     override fun onBaseActivitySetScreenTitle(title: String) {
         Tracer.debug(TAG, "onBaseActivitySetScreenTitle: ")
-        findViewById<TextView>(R.id.toolbar_textView_title_message).text = title
+        findViewById<TextView>(R.id.activity_gallery_textiew_message).text = "SELECTED PIC $title"
     }
 
     override fun onBaseActivityReplaceFragment(fragment: Fragment, bundle: Bundle?, tag: String) {

@@ -2,30 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 style="@style/toolbar_dimen">
 
-    <LinearLayout
+    <com.lory.library.ui.ui.view.AppCompatFontTextView
+            android:id="@+id/toolbar_textView_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_centerInParent="true">
+            android:text="@string/gallery"
+            android:layout_centerInParent="true"
+            android:textColor="@color/toolbar_text_color_primary"
+            android:textStyle="bold"
+            android:textSize="@dimen/toolbar_title_text_size"/>
 
-        <com.lory.library.ui.ui.view.AppCompatFontTextView
-                android:id="@+id/toolbar_textView_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/gallery"
-                android:textColor="@color/toolbar_text_color_primary"
-                android:textStyle="bold"
-                android:textSize="@dimen/toolbar_title_text_size"/>
-
-        <com.lory.library.ui.ui.view.AppCompatFontTextView
-                android:id="@+id/toolbar_textView_title_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/gallery"
-                android:textColor="@color/toolbar_text_color_primary"
-                android:textStyle="bold"
-                android:textSize="@dimen/toolbar_title_text_size"/>
-    </LinearLayout>
     <ImageView
             android:id="@+id/toolbar_imageView_imageView_ok"
             android:layout_width="@dimen/toolbar_icon_width"
