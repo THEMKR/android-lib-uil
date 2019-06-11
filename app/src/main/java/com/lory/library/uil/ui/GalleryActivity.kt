@@ -72,12 +72,6 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
         model.maxPicCount = intent?.getIntExtra(EXTRA_IMAGE_COUNT, 1) ?: 1
         model.isMaxPicCountFixed = intent?.getBooleanExtra(EXTRA_IS_COUNT_FIXED, false) ?: false
 
-        findViewById<TextView>(R.id.activity_gallery_textiew_message).text = if (model.isMaxPicCountFixed) {
-            "USER SHOULD SELECT ${model.maxPicCount} IMAGES"
-        } else {
-            "USER SHOULD SELECT AT-MOST ${model.maxPicCount} IMAGES"
-        }
-
         if (appPermissionController?.isHaveAllRequiredPermission() == true) {
             loadGalleryInfoList()
         } else {
@@ -120,6 +114,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
 
     override fun onBaseActivitySetScreenTitle(title: String) {
         Tracer.debug(TAG, "onBaseActivitySetScreenTitle: ")
+        findViewById<TextView>(R.id.activity_gallery_textiew_message).text = "SELECTED PIC $title"
     }
 
     override fun onBaseActivityReplaceFragment(fragment: Fragment, bundle: Bundle?, tag: String) {
@@ -185,8 +180,9 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
             R.id.toolbar_imageView_imageView_ok -> {
                 val model = Model.getInstance()
                 val size = model.selectedImageInfoList.size
+
                 if (model.isMaxPicCountFixed && size != model.maxPicCount) {
-                    Toast.makeText(this, "CURRENT SELECTION COUNT IS $size", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "USER SHOULD SELECT ${model.maxPicCount} IMAGES", Toast.LENGTH_LONG).show()
                     return
                 }
                 if (size == 0) {
@@ -194,7 +190,7 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
                     return
                 }
                 if (size > model.maxPicCount) {
-                    Toast.makeText(this, "USER SHOULDN'T SELECT MORE THEN ${model.maxPicCount} IMAGE", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "USER SHOULD SELECT AT-MOST ${model.maxPicCount} IMAGES", Toast.LENGTH_LONG).show()
                     return
                 }
                 // SEND RESULT TO CALLER
@@ -223,6 +219,8 @@ class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissi
      */
     private fun showAlbumFragment() {
         Tracer.debug(TAG, "showAlbumFragment : ")
+        val model = Model.getInstance()
+        onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
         val tag = FragmentProvider.TAG.GALLERY_ALBUM
         val fragment = FragmentProvider.getFragment(tag)
         val bundle = Bundle()
