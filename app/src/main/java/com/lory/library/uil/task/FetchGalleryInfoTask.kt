@@ -66,6 +66,7 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                         .setStorageLocation(path.trim())
                         .setStorageType(Constants.STORAGE_TYPE.EXTERNAL.value)
                         .setOrientation(cursor!!.getInt(colOrientation))
+                        .setIsCached(true)
                         .build()
                 )
             }
@@ -102,6 +103,7 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                         .setStorageLocation(path.trim())
                         .setStorageType(Constants.STORAGE_TYPE.INTERNAL.value)
                         .setOrientation(cursor!!.getInt(colOrientation))
+                        .setIsCached(true)
                         .build()
                 )
             }

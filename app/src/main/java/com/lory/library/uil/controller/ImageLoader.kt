@@ -92,13 +92,15 @@ class ImageLoader {
             return
         }
         val query = LoaderQuery(imageInfo, onImageLoaded)
-        val bitmap = sessionStorage.getValue<Bitmap>(imageInfo.key)
-        if (bitmap != null && !bitmap.isRecycled) {
-            saveAndSendBitmap(bitmap, query, true)
-            return
+        if (imageInfo.isCached) {
+            val bitmap = sessionStorage.getValue<Bitmap>(imageInfo.key)
+            if (bitmap != null && !bitmap.isRecycled) {
+                saveAndSendBitmap(bitmap, query, true)
+                return
+            }
         }
         remove(query)
-        queryList.add(query)
+        queryList.add(0, query)
         runWorker()
     }
 
@@ -129,7 +131,7 @@ class ImageLoader {
                     threadCount++
                     try {
                         val query = queryList[0]
-                        queryList.removeAt(0)
+                        queryList.remove(query)
                         publishProgress(query)
                     } catch (e: Exception) {
                         Tracer.error(TAG, "doInBackground : ${e.message} ")
@@ -147,11 +149,13 @@ class ImageLoader {
                 threadCount--
                 return
             }
-            val bitmap = sessionStorage.getValue<Bitmap>(query.imageInfo.key)
-            if (bitmap != null && !bitmap.isRecycled) {
-                threadCount--
-                saveAndSendBitmap(bitmap, query, true)
-                return
+            if (query.imageInfo.isCached) {
+                val bitmap = sessionStorage.getValue<Bitmap>(query.imageInfo.key)
+                if (bitmap != null && !bitmap.isRecycled) {
+                    threadCount--
+                    saveAndSendBitmap(bitmap, query, true)
+                    return
+                }
             }
             when (query.imageInfo.storageType) {
                 Constants.STORAGE_TYPE.EXTERNAL.value -> {
@@ -228,7 +232,7 @@ class ImageLoader {
 
                 override fun onPostExecute(result: Bitmap?) {
                     super.onPostExecute(result)
-                    if (result != null && !result.isRecycled) {
+                    if (result != null && !result.isRecycled && query.imageInfo.isCached) {
                         sessionStorage.put(query.imageInfo.key, result, onSessionStorageListener)
                     }
                     remove(query)
@@ -240,7 +244,7 @@ class ImageLoader {
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
         } else {
-            if (!isAlreadyCached) {
+            if (!isAlreadyCached && query.imageInfo.isCached) {
                 sessionStorage.put(query.imageInfo.key, bitmap, onSessionStorageListener)
             }
             remove(query)

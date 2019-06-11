@@ -46,8 +46,8 @@ class UILLib {
          * @param data Intent received in the onActivityResult of caller gallery
          */
         fun parseGalleryResponse(data: Intent?): ArrayList<ImageInfo> {
-            Tracer.debug(TAG, "parseGalleryResponse : ")
             val data = data?.getStringExtra(GalleryActivity.EXTRA_IMAGE_DATA) ?: "[]"
+            Tracer.debug(TAG, "parseGalleryResponse : $data")
             val dtoImageLocationList = JsonUtil.toObjectTokenType<ArrayList<ImageInfo>>(data, false)
             return dtoImageLocationList
         }

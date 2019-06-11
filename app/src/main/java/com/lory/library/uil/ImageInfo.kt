@@ -24,6 +24,7 @@ open class ImageInfo {
                 .setOrientation(imageInfo.orientation)
                 .setStorageLocation(imageInfo.path)
                 .setStorageType(imageInfo.storageType)
+                .setIsCached(imageInfo.isCached)
                 .build()
         }
 
@@ -41,6 +42,7 @@ open class ImageInfo {
                 .setOrientation(imageInfo.orientation)
                 .setStorageLocation(imageInfo.path)
                 .setStorageType(imageInfo.storageType)
+                .setIsCached(imageInfo.isCached)
                 .build()
         }
 
@@ -111,7 +113,9 @@ open class ImageInfo {
                             imageInfo.flipType
                         }
                     }
-                ).build()
+                )
+                .setIsCached(imageInfo.isCached)
+                .build()
         }
     }
 
@@ -127,7 +131,7 @@ open class ImageInfo {
      */
     val key: String
         get() {
-            return "[$path][$orientation][$storageType][$flipType][$dimensionPer][$cropSection][$specifire]"
+            return "[$path][$orientation][$storageType][$flipType][$dimensionPer][$cropSection][$specifire][$isCached]"
         }
 
     /**
@@ -180,6 +184,13 @@ open class ImageInfo {
     @Expose
     var path: String = ""
 
+    /**
+     * If True then cached image in LUR Cache
+     */
+    @SerializedName("isCached")
+    @Expose
+    var isCached: Boolean = false
+
     override fun toString(): String {
         return super.toString() + " : $key"
     }
@@ -191,7 +202,8 @@ open class ImageInfo {
                     flipType.equals(other.flipType) &&
                     storageType.equals(other.storageType) &&
                     cropSection.equals(other.cropSection) &&
-                    specifire.equals(other.specifire)
+                    specifire.equals(other.specifire) &&
+                    isCached.equals(other.isCached)
         }
         return false
     }
@@ -209,6 +221,17 @@ open class ImageInfo {
          * Image Info
          */
         private val imageInfo: ImageInfo = ImageInfo()
+
+        /**
+         * Method to set weather the image is cached in LRUCache or not
+         * @param isCached If TRUE then cached image in LRU cache else Not
+         */
+        fun setIsCached(isCached: Boolean): Builder {
+            imageInfo.isCached = isCached
+            return this
+        }
+
+        //=====================================================================================
 
         /**
          * Method to set the Src Location of Image
