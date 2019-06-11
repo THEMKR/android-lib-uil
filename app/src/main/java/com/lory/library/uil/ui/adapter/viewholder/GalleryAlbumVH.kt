@@ -38,6 +38,7 @@ class GalleryAlbumVH : BaseViewHolder<DTOAlbumData> {
         textView = itemView.findViewById<TextView>(R.id.item_album_textView_albumName)
         cardView = itemView.findViewById<CardView>(R.id.item_album_cardView)
         cardView.setOnClickListener(this)
+        mkrImageView.scaleType = MKRImageInfoView.SCALE_TYPE.CENTER_CROP
     }
 
     override fun bindData(dto: DTOAlbumData) {

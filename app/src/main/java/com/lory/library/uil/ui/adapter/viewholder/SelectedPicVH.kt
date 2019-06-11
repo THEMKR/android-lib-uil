@@ -33,6 +33,7 @@ class SelectedPicVH : BaseViewHolder<ImageInfo> {
         mkrImageView = itemView.findViewById<MKRImageInfoView>(R.id.item_selected_pic_imageView)
         cancelView = itemView.findViewById<View>(R.id.item_selected_pic_imageView_cancel)
         cancelView.setOnClickListener(this)
+        mkrImageView.scaleType = MKRImageInfoView.SCALE_TYPE.CENTER_CROP
     }
 
     override fun bindData(dto: ImageInfo) {

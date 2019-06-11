@@ -36,6 +36,7 @@ class GalleryPicVH : BaseViewHolder<ImageInfo> {
         mkrImageView = itemView.findViewById<MKRImageInfoView>(R.id.item_pic_imageView)
         cardView = itemView.findViewById<CardView>(R.id.item_pic_cardView)
         cardView.setOnClickListener(this)
+        mkrImageView.scaleType = MKRImageInfoView.SCALE_TYPE.CENTER_CROP
     }
 
     override fun bindData(dto: ImageInfo) {
