@@ -13,10 +13,10 @@ import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import com.lory.library.ui.utils.Tracer
 import com.lory.library.uil.controller.ImageLoader
 import com.lory.library.uil.ui.GalleryActivity
 import com.lory.library.uil.utils.JsonUtil
-import com.lory.library.uil.utils.Tracer
 
 class UILLib {
 

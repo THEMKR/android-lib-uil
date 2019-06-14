@@ -14,15 +14,14 @@ import com.lory.library.ui.callback.OnBaseFragmentListener
 import com.lory.library.ui.ui.adapter.BaseAdapter
 import com.lory.library.ui.ui.adapter.BaseAdapterItem
 import com.lory.library.ui.ui.adapter.BaseViewHolder
+import com.lory.library.ui.utils.Tracer
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
-import com.lory.library.uil.UILLib
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.dto.Model
 import com.lory.library.uil.ui.GalleryActivity
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
 import com.lory.library.uil.utils.JsonUtil
-import com.lory.library.uil.utils.Tracer
 
 
 class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VHClickable {

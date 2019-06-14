@@ -4,14 +4,13 @@ import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.TextView
 import com.lory.library.ui.ui.adapter.BaseViewHolder
+import com.lory.library.ui.utils.Tracer
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.R
-import com.lory.library.uil.UILLib
 import com.lory.library.uil.dto.DTOAlbumData
 import com.lory.library.uil.ui.custom.MKRImageInfoView
 import com.lory.library.uil.utils.Constants
-import com.lory.library.uil.utils.Tracer
 
 /**
  * Created by mkr on 14/3/18.

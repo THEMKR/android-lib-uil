@@ -16,9 +16,9 @@ import com.lory.library.ui.callback.OnBaseActivityListener
 import com.lory.library.ui.callback.OnBaseFragmentListener
 import com.lory.library.ui.controller.AppPermissionController
 import com.lory.library.ui.utils.MKRDialogUtil
+import com.lory.library.ui.utils.Tracer
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
-import com.lory.library.uil.UILLib
 import com.lory.library.uil.dto.DTOAlbumData
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.dto.Model
@@ -26,7 +26,6 @@ import com.lory.library.uil.provider.FragmentProvider
 import com.lory.library.uil.provider.UILTaskProvider
 import com.lory.library.uil.ui.fragment.FragmentGalleryAlbum
 import com.lory.library.uil.utils.JsonUtil
-import com.lory.library.uil.utils.Tracer
 
 class GalleryActivity : AppCompatActivity(), OnBaseActivityListener, AppPermissionController.OnAppPermissionControllerListener, View.OnClickListener {
 

@@ -9,11 +9,11 @@ import android.support.annotation.RequiresApi
 import android.util.AttributeSet
 import android.view.View
 import com.lory.library.storage.session.SessionStorage
+import com.lory.library.ui.utils.Tracer
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.UILLib
 import com.lory.library.uil.controller.ImageLoader
-import com.lory.library.uil.utils.Tracer
 
 open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageInfoView> {
 

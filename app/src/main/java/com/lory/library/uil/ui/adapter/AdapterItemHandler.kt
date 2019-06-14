@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.lory.library.ui.ui.adapter.BaseAdapterItemHandler
 import com.lory.library.ui.ui.adapter.BaseViewHolder
+import com.lory.library.ui.utils.Tracer
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.R
 import com.lory.library.uil.ui.adapter.viewholder.GalleryAlbumVH
 import com.lory.library.uil.ui.adapter.viewholder.GalleryPicVH
 import com.lory.library.uil.ui.adapter.viewholder.SelectedPicVH
-import com.lory.library.uil.utils.Tracer
 
 /**
  * Created by mkr on 14/3/18.
