@@ -18,7 +18,7 @@ import java.util.*
 class ImageLoader {
 
     companion object {
-        private const val TAG: String = BuildConfig.BASE_TAG + ".ImageLoader"
+        private const val TAG: String = "ImageLoader"
         private var instance: ImageLoader? = null
 
         /**

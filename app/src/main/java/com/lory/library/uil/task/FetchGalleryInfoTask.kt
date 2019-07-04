@@ -14,7 +14,7 @@ import java.util.*
 
 open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
     companion object {
-        private const val TAG: String = BuildConfig.BASE_TAG + ".FetchGalleryInfoTask"
+        private const val TAG: String =  "FetchGalleryInfoTask"
     }
 
     constructor(context: Context, asyncCallBack: AsyncCallBack<ArrayList<DTOAlbumData>, Any>?) : super(context, asyncCallBack) {

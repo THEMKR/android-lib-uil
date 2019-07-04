@@ -5,12 +5,11 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
 import android.os.Build
-import android.support.annotation.RequiresApi
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.lory.library.storage.session.SessionStorage
 import com.lory.library.ui.utils.Tracer
-import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.UILLib
 import com.lory.library.uil.controller.ImageLoader
@@ -18,7 +17,7 @@ import com.lory.library.uil.controller.ImageLoader
 open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageInfoView> {
 
     companion object {
-        private const val TAG: String = BuildConfig.BASE_TAG + ".MKRImageInfoView"
+        private const val TAG: String = "MKRImageInfoView"
     }
 
     /**
@@ -121,7 +120,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageIn
         if (bitmap?.equals(UILLib.getDefaultBitmap(context)) ?: true) {
             UILLib.loadImage(context, imageInfo, this)
         }
-        canvas?.drawBitmap(bitmap, null, rectDrawBitmap, null)
+        canvas?.drawBitmap(bitmap!!, null, rectDrawBitmap, null)
     }
 
     override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: MKRImageInfoView) {

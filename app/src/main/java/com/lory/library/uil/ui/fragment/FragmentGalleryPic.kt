@@ -3,21 +3,20 @@ package com.lory.library.uil.ui.fragment
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lory.library.ui.callback.OnBaseActivityListener
 import com.lory.library.ui.callback.OnBaseFragmentListener
 import com.lory.library.ui.ui.adapter.BaseAdapter
 import com.lory.library.ui.ui.adapter.BaseAdapterItem
 import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.ui.utils.Tracer
-import com.lory.library.uil.BuildConfig
-import com.lory.library.uil.R
 import com.lory.library.uil.ImageInfo
+import com.lory.library.uil.R
 import com.lory.library.uil.dto.Model
 import com.lory.library.uil.ui.GalleryActivity
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
@@ -26,7 +25,7 @@ import com.lory.library.uil.utils.JsonUtil
 
 class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VHClickable {
     companion object {
-        private const val TAG: String = BuildConfig.BASE_TAG + ".FragmentGalleryPic"
+        private const val TAG: String = "FragmentGalleryPic"
         const val EXTRA_IMAGE_LIST: String = "EXTRA_IMAGE_LIST"
     }
 
@@ -41,7 +40,7 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
         val data = arguments?.getString(FragmentGalleryPic.EXTRA_IMAGE_LIST, "[]") ?: "[]"
         val dtoImageLocationList = JsonUtil.toObjectTokenType<ArrayList<ImageInfo>>(data, false)
         val recyclerView = view?.findViewById(R.id.fragment_pic_recyclerView_pic) as RecyclerView
-        recyclerView?.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
+        recyclerView?.layoutManager = GridLayoutManager(activity, 3, RecyclerView.VERTICAL, false)
         recyclerView?.adapter = baseAdapter
         baseAdapter?.setVHClickCallback(this)
         val baseAdapterItemList: ArrayList<BaseAdapterItem<*>> = ArrayList()
@@ -98,7 +97,7 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
                         return
                     }
                 }
-                if(activity!=null && activity is OnBaseActivityListener){
+                if (activity != null && activity is OnBaseActivityListener) {
                     (activity as OnBaseActivityListener)?.onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
                 }
                 baseAdapter.notifyDataSetChanged()

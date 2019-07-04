@@ -8,11 +8,11 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
-import android.support.v4.content.ContextCompat
-import android.support.v4.graphics.drawable.DrawableCompat
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import com.lory.library.ui.utils.Tracer
 import com.lory.library.uil.controller.ImageLoader
 import com.lory.library.uil.ui.GalleryActivity
@@ -21,7 +21,7 @@ import com.lory.library.uil.utils.JsonUtil
 class UILLib {
 
     companion object {
-        private const val TAG: String = BuildConfig.BASE_TAG + ".UILLib"
+        private const val TAG: String = "UILLib"
         private var DEFAULT_BITMAP: Bitmap? = null
 
         /**

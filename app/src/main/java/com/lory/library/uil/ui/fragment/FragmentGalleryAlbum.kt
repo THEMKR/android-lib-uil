@@ -1,13 +1,13 @@
 package com.lory.library.uil.ui.fragment
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.lory.library.ui.callback.OnBaseActivityListener
 import com.lory.library.ui.callback.OnBaseFragmentListener
 import com.lory.library.ui.ui.adapter.BaseAdapter
@@ -26,7 +26,7 @@ import com.lory.library.uil.utils.JsonUtil
 class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.VHClickable {
 
     companion object {
-        private const val TAG: String = BuildConfig.BASE_TAG + ".FragmentGalleryAlbum"
+        private const val TAG: String = "FragmentGalleryAlbum"
         const val EXTRA_ALBUM_LIST: String = "EXTRA_ALBUM_LIST"
     }
 
@@ -46,7 +46,7 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
         baseAdapterSelected?.setVHClickCallback(this)
 
         val recyclerView = view?.findViewById(R.id.fragment_album_recyclerView_pic) as RecyclerView
-        recyclerView?.layoutManager = GridLayoutManager(activity, 2, GridLayoutManager.VERTICAL, false)
+        recyclerView?.layoutManager = GridLayoutManager(activity, 2, RecyclerView.VERTICAL, false)
         recyclerView?.adapter = baseAdapter
         val baseAdapterItemList: ArrayList<BaseAdapterItem<*>> = ArrayList()
         val adapterViewType = AdapterItemHandler.AdapterItemViewType.GALLERY_ALBUM.ordinal
@@ -84,7 +84,7 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
                 if (selectedImageDataList.contains(tagDto)) {
                     selectedImageDataList.remove(tagDto)
                 }
-                if(activity!=null && activity is OnBaseActivityListener){
+                if (activity != null && activity is OnBaseActivityListener) {
                     val model = Model.getInstance()
                     (activity as OnBaseActivityListener)?.onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
                 }

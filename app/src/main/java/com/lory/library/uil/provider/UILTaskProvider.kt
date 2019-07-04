@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.asynctask.BaseAsyncTaskProvider
 import com.lory.library.ui.utils.Tracer
-import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.dto.DTOAlbumData
 import com.lory.library.uil.task.*
@@ -13,7 +12,7 @@ import com.lory.library.uil.task.*
 open class UILTaskProvider : BaseAsyncTaskProvider() {
 
     companion object {
-        private const val TAG: String = BuildConfig.BASE_TAG + ".UILTaskProvider"
+        private const val TAG: String = "UILTaskProvider"
     }
 
     /**

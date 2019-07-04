@@ -3,9 +3,8 @@ package com.lory.library.uil.ui.adapter.viewholder
 import android.view.View
 import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.ui.utils.Tracer
-import com.lory.library.uil.BuildConfig
-import com.lory.library.uil.R
 import com.lory.library.uil.ImageInfo
+import com.lory.library.uil.R
 import com.lory.library.uil.ui.custom.MKRImageInfoView
 import com.lory.library.uil.utils.Constants
 
@@ -16,7 +15,7 @@ import com.lory.library.uil.utils.Constants
 class SelectedPicVH : BaseViewHolder<ImageInfo> {
 
     companion object {
-        private val TAG: String = BuildConfig.BASE_TAG + ".GalleryPicVH";
+        private val TAG: String = "GalleryPicVH";
     }
 
     private val mkrImageView: MKRImageInfoView

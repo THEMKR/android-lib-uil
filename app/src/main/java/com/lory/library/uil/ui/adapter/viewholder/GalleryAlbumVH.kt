@@ -1,11 +1,10 @@
 package com.lory.library.uil.ui.adapter.viewholder
 
-import android.support.v7.widget.CardView
 import android.view.View
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import com.lory.library.ui.ui.adapter.BaseViewHolder
 import com.lory.library.ui.utils.Tracer
-import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.R
 import com.lory.library.uil.dto.DTOAlbumData
@@ -19,7 +18,7 @@ import com.lory.library.uil.utils.Constants
 class GalleryAlbumVH : BaseViewHolder<DTOAlbumData> {
 
     companion object {
-        private val TAG: String = BuildConfig.BASE_TAG + ".GalleryAlbumVH";
+        private val TAG: String = "GalleryAlbumVH";
     }
 
     private val mkrImageView: MKRImageInfoView
