@@ -80,6 +80,10 @@ class GalleryActivity : MKRAppcompatActivity(), OnBaseActivityListener, AppPermi
         uilTaskProvider.fetchGalleryInfoList(this, asyncCallBackFetchGalleryInfo)
     }
 
+    override fun finishActivity() {
+        finish()
+    }
+
     override fun onDestroy() {
         uilTaskProvider.detachProvider()
         super.onDestroy()

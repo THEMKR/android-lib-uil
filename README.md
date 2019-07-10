@@ -12,6 +12,9 @@
 		}
 
 #	APP Level Gradle
+
+            implementation 'com.github.THEMKR:android-lib-uil:1.0.1'
+
         implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
         implementation 'androidx.core:core-ktx:1.0.2'
         implementation 'com.google.android.material:material:1.0.0-rc01'
