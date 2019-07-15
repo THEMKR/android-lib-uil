@@ -13,7 +13,7 @@
 
 #	APP Level Gradle
 
-            implementation 'com.github.THEMKR:android-lib-uil:1.0.1'
+            implementation 'com.github.THEMKR:android-lib-uil:1.0.2'
 
         implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
         implementation 'androidx.core:core-ktx:1.0.2'
@@ -24,7 +24,7 @@
         implementation 'androidx.browser:browser:1.0.0'
         implementation 'androidx.cardview:cardview:1.0.0'
 
-        implementation 'com.github.THEMKR:android-lib-ui:1.0.0'
+        implementation 'com.github.THEMKR:android-lib-ui:1.0.2'
         implementation 'com.github.THEMKR:android-lib-asynctask:1.0.0'
         implementation 'com.github.THEMKR:android-lib-sqlite:1.0.0'
         implementation 'com.github.THEMKR:android-lib-storage:1.0.0'
