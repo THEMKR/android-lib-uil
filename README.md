@@ -8,24 +8,15 @@
 
 #	Project Level Gradle
 		repositories {
-			maven { url 'https://jitpack.io' }
+			maven { url "https://api.bitbucket.org/2.0/repositories/THEMKR/android-libs/src/releases" }
 		}
 
 #	APP Level Gradle
 
-            implementation 'com.github.THEMKR:android-lib-uil:1.0.2'
+        implementation 'com.lory.library:uil:1.0.0'
 
         implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-        implementation 'androidx.core:core-ktx:1.0.2'
-        implementation 'com.google.android.material:material:1.0.0-rc01'
-        implementation 'androidx.appcompat:appcompat:1.0.0'
-        implementation 'androidx.recyclerview:recyclerview:1.0.0'
-        implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-        implementation 'androidx.browser:browser:1.0.0'
         implementation 'androidx.cardview:cardview:1.0.0'
-
-        implementation 'com.github.THEMKR:android-lib-ui:1.0.2'
-        implementation 'com.github.THEMKR:android-lib-asynctask:1.0.0'
-        implementation 'com.github.THEMKR:android-lib-sqlite:1.0.0'
-        implementation 'com.github.THEMKR:android-lib-storage:1.0.0'
+        implementation 'com.lory.library:ui:1.0.0'
+        implementation 'com.lory.library:storage:1.0.0'
         implementation 'com.google.code.gson:gson:2.8.5'
