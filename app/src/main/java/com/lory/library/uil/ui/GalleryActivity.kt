@@ -91,7 +91,7 @@ class GalleryActivity : MKRAppcompatActivity(), OnBaseActivityListener, AppPermi
 
     override fun onBaseActivitySetScreenTitle(title: String) {
         Tracer.debug(TAG, "onBaseActivitySetScreenTitle: ")
-        findViewById<TextView>(R.id.activity_gallery_textiew_message).text = "SELECTED PIC $title"
+        findViewById<TextView>(R.id.activity_gallery_textiew_message).text = "USER SELECT $title IMAGES"
     }
 
     override fun onBaseActivitySetToolbar(toolbarLayout: View) {

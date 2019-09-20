@@ -16,7 +16,7 @@
     <dimen name="card_padding_no">@dimen/mkrdp_0</dimen>
     <dimen name="card_elevation_no">@dimen/mkrdp_1</dimen>
 
-    <dimen name="gallery_message_text_size">@dimen/mkrdp_4</dimen>
+    <dimen name="gallery_message_text_size">@dimen/mkrdp_3</dimen>
     <dimen name="gallery_message_text_padding">@dimen/mkrdp_1</dimen>
 
     <dimen name="fragment_album_selected_list_margin">@dimen/mkrdp_1</dimen>
