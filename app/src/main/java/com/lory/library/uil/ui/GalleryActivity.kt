@@ -76,7 +76,7 @@ class GalleryActivity : MKRAppcompatActivity(), OnBaseActivityListener, AppPermi
     }
 
     override fun init(intent: Intent?) {
-        MKRDialogUtil.showLoadingDialog(this, "LOAD MOBILE GALLERY")
+        MKRDialogUtil.showLoadingDialog(this, "LOAD MOBILE GALLERY. Plz wait....")
         uilTaskProvider.fetchGalleryInfoList(this, asyncCallBackFetchGalleryInfo)
     }
 
