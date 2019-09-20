@@ -39,10 +39,10 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
         super.onViewCreated(view, savedInstanceState)
         val data = arguments?.getString(FragmentGalleryPic.EXTRA_IMAGE_LIST, "[]") ?: "[]"
         val dtoImageLocationList = JsonUtil.toObjectTokenType<ArrayList<ImageInfo>>(data, false)
-        val recyclerView = view?.findViewById(R.id.fragment_pic_recyclerView_pic) as RecyclerView
-        recyclerView?.layoutManager = GridLayoutManager(activity, 3, RecyclerView.VERTICAL, false)
-        recyclerView?.adapter = baseAdapter
-        baseAdapter?.setVHClickCallback(this)
+        val recyclerView = view.findViewById(R.id.fragment_pic_recyclerView_pic) as RecyclerView
+        recyclerView.layoutManager = GridLayoutManager(activity, 3, RecyclerView.VERTICAL, false)
+        recyclerView.adapter = baseAdapter
+        baseAdapter.setVHClickCallback(this)
         val baseAdapterItemList: ArrayList<BaseAdapterItem<*>> = ArrayList()
         val adapterViewType = AdapterItemHandler.AdapterItemViewType.GALLERY_PIC.ordinal
         for (dto in dtoImageLocationList) {
@@ -98,7 +98,7 @@ class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VH
                     }
                 }
                 if (activity != null && activity is OnBaseActivityListener) {
-                    (activity as OnBaseActivityListener)?.onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
+                    (activity as OnBaseActivityListener).onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
                 }
                 baseAdapter.notifyDataSetChanged()
             }

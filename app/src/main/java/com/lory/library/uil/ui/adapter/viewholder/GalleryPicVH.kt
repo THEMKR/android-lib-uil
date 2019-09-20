@@ -39,9 +39,6 @@ class GalleryPicVH : BaseViewHolder<ImageInfo> {
 
     override fun bindData(dto: ImageInfo) {
         Tracer.debug(TAG, "bindData: " + dto)
-        if (dto == null) {
-            return
-        }
         cardView.tag = dto
         cardView.setCardBackgroundColor(
             if (Model.getInstance().selectedImageInfoList.contains(dto)) {

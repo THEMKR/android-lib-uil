@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import com.lory.library.asynctask.AsyncCallBack
+import com.lory.library.ui.asynctask.AsyncCallBack
 import com.lory.library.uil.ImageInfo
 import java.net.HttpURLConnection
 import java.net.URL

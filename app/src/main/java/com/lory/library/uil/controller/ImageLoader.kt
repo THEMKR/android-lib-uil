@@ -4,11 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.AsyncTask
 import android.util.Log
-import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.storage.session.OnSessionStorageListener
 import com.lory.library.storage.session.SessionStorage
+import com.lory.library.ui.asynctask.AsyncCallBack
 import com.lory.library.ui.utils.Tracer
-import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.provider.UILTaskProvider
 import com.lory.library.uil.utils.Constants
@@ -143,7 +142,7 @@ class ImageLoader {
         }
 
         override fun onProgressUpdate(vararg values: LoaderQuery?) {
-            val query: LoaderQuery = if ((values?.size ?: 0) > 0) {
+            val query: LoaderQuery = if ((values.size ?: 0) > 0) {
                 values[0]!!
             } else {
                 threadCount--
@@ -209,7 +208,7 @@ class ImageLoader {
             } else {
                 remove(query)
                 try {
-                    query?.onImageLoaded?.onImageLoaded(mkr, query.imageInfo, query.onImageLoaded.onImageCaller())
+                    query.onImageLoaded.onImageLoaded(mkr, query.imageInfo, query.onImageLoaded.onImageCaller())
                 } catch (e: Exception) {
                     Log.e("MKT", "${TAG} : BitmapCallback : onSuccess : ${e.message} ")
                 }
@@ -237,7 +236,7 @@ class ImageLoader {
                     }
                     remove(query)
                     try {
-                        query.onImageLoaded?.onImageLoaded(result, query.imageInfo, query.onImageLoaded.onImageCaller())
+                        query.onImageLoaded.onImageLoaded(result, query.imageInfo, query.onImageLoaded.onImageCaller())
                     } catch (e: Exception) {
                         Log.e("MKT", "${TAG} : saveAndSendBitmap : onSuccess : ${e.message} ")
                     }
@@ -249,7 +248,7 @@ class ImageLoader {
             }
             remove(query)
             try {
-                query.onImageLoaded?.onImageLoaded(bitmap, query.imageInfo, query.onImageLoaded.onImageCaller())
+                query.onImageLoaded.onImageLoaded(bitmap, query.imageInfo, query.onImageLoaded.onImageCaller())
             } catch (e: Exception) {
                 Log.e("MKT", "${TAG} : saveAndSendBitmap : onSuccess : ${e.message} ")
             }

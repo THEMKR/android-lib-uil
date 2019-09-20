@@ -72,7 +72,7 @@ class UILLib {
         fun getSVGBitmap(context: Context, id: Int, ratio: Float): Bitmap {
             var drawable = ContextCompat.getDrawable(context, id) ?: return BitmapFactory.decodeResource(context.resources, R.drawable.ic_default)
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                drawable = DrawableCompat.wrap(drawable!!).mutate()
+                drawable = DrawableCompat.wrap(drawable).mutate()
             }
             val dimenW = (context.resources.displayMetrics.widthPixels.toFloat() * ratio).toInt()
             val dimenH = (dimenW.toFloat() * drawable.intrinsicHeight.toFloat() / drawable.intrinsicWidth.toFloat()).toInt()

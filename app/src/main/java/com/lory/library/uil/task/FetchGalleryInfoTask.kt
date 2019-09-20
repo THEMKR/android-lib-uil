@@ -2,8 +2,8 @@ package com.lory.library.uil.task
 
 import android.content.Context
 import android.provider.MediaStore
-import com.lory.library.asynctask.AsyncCallBack
-import com.lory.library.asynctask.BaseAsyncTask
+import com.lory.library.ui.asynctask.AsyncCallBack
+import com.lory.library.ui.asynctask.BaseAsyncTask
 import com.lory.library.ui.utils.Tracer
 import com.lory.library.uil.BuildConfig
 import com.lory.library.uil.dto.DTOAlbumData
@@ -49,15 +49,15 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
         try {
             val locale = Locale.getDefault()
             val cursor = context.contentResolver.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC") ?: return null
-            val colPathIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.DATA)
-            val colAlbumNameIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
-            val colOrientation = cursor!!.getColumnIndex(MediaStore.Images.Media.ORIENTATION)
+            val colPathIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
+            val colAlbumNameIndex = cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
+            val colOrientation = cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION)
             while (cursor.moveToNext()) {
-                val path = cursor?.getString(colPathIndex) ?: continue
+                val path = cursor.getString(colPathIndex) ?: continue
                 if (path.trim().isEmpty()) {
                     continue
                 }
-                val bucketName = cursor!!.getString(colAlbumNameIndex).toUpperCase(locale).trim()
+                val bucketName = cursor.getString(colAlbumNameIndex).toUpperCase(locale).trim()
                 if (!mapAlbum.containsKey(bucketName)) {
                     mapAlbum[bucketName] = DTOAlbumData(Constants.STORAGE_TYPE.EXTERNAL.value, bucketName)
                 }
@@ -65,7 +65,7 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                     ImageInfo.Builder()
                         .setStorageLocation(path.trim())
                         .setStorageType(Constants.STORAGE_TYPE.EXTERNAL.value)
-                        .setOrientation(cursor!!.getInt(colOrientation))
+                        .setOrientation(cursor.getInt(colOrientation))
                         .setIsCached(true)
                         .build()
                 )
@@ -86,15 +86,15 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
         try {
             val locale = Locale.getDefault()
             val cursor = context.contentResolver.query(MediaStore.Images.Media.INTERNAL_CONTENT_URI, null, null, null, MediaStore.Images.Media.DATE_TAKEN + " DESC") ?: return null
-            val colPathIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.DATA)
-            val colAlbumNameIndex = cursor!!.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
-            val colOrientation = cursor!!.getColumnIndex(MediaStore.Images.Media.ORIENTATION)
+            val colPathIndex = cursor.getColumnIndex(MediaStore.Images.Media.DATA)
+            val colAlbumNameIndex = cursor.getColumnIndex(MediaStore.Images.Media.BUCKET_DISPLAY_NAME)
+            val colOrientation = cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION)
             while (cursor.moveToNext()) {
-                val path = cursor?.getString(colPathIndex) ?: continue
+                val path = cursor.getString(colPathIndex) ?: continue
                 if (path.trim().isEmpty()) {
                     continue
                 }
-                val bucketName = cursor!!.getString(colAlbumNameIndex).toUpperCase(locale).trim()
+                val bucketName = cursor.getString(colAlbumNameIndex).toUpperCase(locale).trim()
                 if (!mapAlbum.containsKey(bucketName)) {
                     mapAlbum[bucketName] = DTOAlbumData(Constants.STORAGE_TYPE.INTERNAL.value, bucketName)
                 }
@@ -102,7 +102,7 @@ open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
                     ImageInfo.Builder()
                         .setStorageLocation(path.trim())
                         .setStorageType(Constants.STORAGE_TYPE.INTERNAL.value)
-                        .setOrientation(cursor!!.getInt(colOrientation))
+                        .setOrientation(cursor.getInt(colOrientation))
                         .setIsCached(true)
                         .build()
                 )

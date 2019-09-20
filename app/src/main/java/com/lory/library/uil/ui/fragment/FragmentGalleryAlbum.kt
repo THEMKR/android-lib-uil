@@ -42,12 +42,12 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
         super.onViewCreated(view, savedInstanceState)
         val data = arguments?.getString(EXTRA_ALBUM_LIST, "{}") ?: "{}"
         val dtoAlbumDataList = JsonUtil.toObjectTokenType<ArrayList<DTOAlbumData>>(data, true)
-        baseAdapter?.setVHClickCallback(this)
-        baseAdapterSelected?.setVHClickCallback(this)
+        baseAdapter.setVHClickCallback(this)
+        baseAdapterSelected.setVHClickCallback(this)
 
-        val recyclerView = view?.findViewById(R.id.fragment_album_recyclerView_pic) as RecyclerView
-        recyclerView?.layoutManager = GridLayoutManager(activity, 2, RecyclerView.VERTICAL, false)
-        recyclerView?.adapter = baseAdapter
+        val recyclerView = view.findViewById(R.id.fragment_album_recyclerView_pic) as RecyclerView
+        recyclerView.layoutManager = GridLayoutManager(activity, 2, RecyclerView.VERTICAL, false)
+        recyclerView.adapter = baseAdapter
         val baseAdapterItemList: ArrayList<BaseAdapterItem<*>> = ArrayList()
         val adapterViewType = AdapterItemHandler.AdapterItemViewType.GALLERY_ALBUM.ordinal
         for (dto in dtoAlbumDataList) {
@@ -56,9 +56,9 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
         }
         baseAdapter.updateAdapterItemList(baseAdapterItemList)
 
-        val recyclerViewSelected = view?.findViewById(R.id.fragment_album_recyclerView_selected_pic) as RecyclerView
-        recyclerViewSelected?.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        recyclerViewSelected?.adapter = baseAdapterSelected
+        val recyclerViewSelected = view.findViewById(R.id.fragment_album_recyclerView_selected_pic) as RecyclerView
+        recyclerViewSelected.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewSelected.adapter = baseAdapterSelected
         updateSelectedImageList()
     }
 
@@ -75,7 +75,7 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
                 val bundle = Bundle()
                 bundle.putString(FragmentGalleryPic.EXTRA_IMAGE_LIST, JsonUtil.toStringTokenType<ArrayList<ImageInfo>>(tagDto.imageInfoList, false))
                 if (activity is OnBaseActivityListener) {
-                    (activity as OnBaseActivityListener)?.onBaseActivityAddFragment(fragment, bundle, true, tag)
+                    (activity as OnBaseActivityListener).onBaseActivityAddFragment(fragment, bundle, true, tag)
                 }
             }
             R.id.item_selected_pic_imageView_cancel -> {
@@ -86,7 +86,7 @@ class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.
                 }
                 if (activity != null && activity is OnBaseActivityListener) {
                     val model = Model.getInstance()
-                    (activity as OnBaseActivityListener)?.onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
+                    (activity as OnBaseActivityListener).onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
                 }
                 updateSelectedImageList()
             }

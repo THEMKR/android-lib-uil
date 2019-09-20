@@ -125,7 +125,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageIn
 
     override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: MKRImageInfoView) {
         Tracer.debug(TAG, "onImageLoaded : $bitmap : $imageInfo")
-        if (bitmap != null && !bitmap!!.isRecycled && imageInfo.equals(this.imageInfo)) {
+        if (bitmap != null && !bitmap.isRecycled && imageInfo.equals(this.imageInfo)) {
             mkr.bitmap = bitmap
         } else {
             mkr.bitmap = UILLib.getDefaultBitmap(context)

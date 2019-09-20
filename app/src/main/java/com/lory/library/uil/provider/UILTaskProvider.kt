@@ -2,8 +2,8 @@ package com.lory.library.uil.provider
 
 import android.content.Context
 import android.graphics.Bitmap
-import com.lory.library.asynctask.AsyncCallBack
-import com.lory.library.asynctask.BaseAsyncTaskProvider
+import com.lory.library.ui.asynctask.AsyncCallBack
+import com.lory.library.ui.asynctask.BaseAsyncTaskProvider
 import com.lory.library.ui.utils.Tracer
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.dto.DTOAlbumData
