@@ -56,6 +56,7 @@ class GalleryActivity : MKRAppcompatActivity(), OnBaseActivityListener, AppPermi
         model.reset()
         model.maxPicCount = intent?.getIntExtra(EXTRA_IMAGE_COUNT, 1) ?: 1
         model.isMaxPicCountFixed = intent?.getBooleanExtra(EXTRA_IS_COUNT_FIXED, false) ?: false
+        checkAndCallPermission()
     }
 
     override fun getActivityLayoutId(): Int {
