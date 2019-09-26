@@ -99,7 +99,7 @@ class ImageLoader {
             }
         }
         remove(query)
-        queryList.add(0, query)
+        queryList.add(query)
         runWorker()
     }
 

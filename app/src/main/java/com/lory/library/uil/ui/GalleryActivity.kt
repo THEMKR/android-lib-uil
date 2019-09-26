@@ -142,7 +142,9 @@ class GalleryActivity : MKRAppcompatActivity(), OnBaseActivityListener, AppPermi
     private fun showAlbumFragment() {
         Tracer.debug(TAG, "showAlbumFragment : ")
         val model = Model.getInstance()
-        onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
+        if (model.maxPicCount != 1 || !model.isMaxPicCountFixed) {
+            onBaseActivitySetScreenTitle(" : ${model.selectedImageInfoList.size}/${model.maxPicCount}")
+        }
         val tag = FragmentProvider.TAG.GALLERY_ALBUM
         val fragment = FragmentProvider.getFragment(tag)
         val bundle = Bundle()

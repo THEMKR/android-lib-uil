@@ -11,7 +11,7 @@
             android:largeHeap="true">
 
         <activity
-                android:theme="@style/AppTheme"
+                android:theme="@style/GalleryTheme"
                 android:name=".ui.GalleryActivity"
                 android:label="@string/gallery"
                 android:excludeFromRecents="true"
