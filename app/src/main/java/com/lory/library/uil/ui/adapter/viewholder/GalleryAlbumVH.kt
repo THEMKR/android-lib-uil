@@ -41,12 +41,9 @@ class GalleryAlbumVH : BaseViewHolder<DTOAlbumData> {
 
     override fun bindData(dto: DTOAlbumData) {
         Tracer.debug(TAG, "bindData: " + dto)
-        if (dto == null) {
-            return
-        }
         cardView.tag = dto
         textView.text = dto.albumName
         val imagePathList = dto.imageInfoList
-        mkrImageView.imageInfo = ImageInfo.resizeImage(imagePathList[0], Constants.DEFAULT_ALBUM_ITEM_LOAD_SIZE)
+        mkrImageView.imageInfo = ImageInfo.cloneBuilder(imagePathList[0]).setDimenPer(Constants.DEFAULT_ALBUM_ITEM_LOAD_SIZE).build()
     }
 }

@@ -5,16 +5,15 @@ import android.provider.MediaStore
 import com.lory.library.ui.asynctask.AsyncCallBack
 import com.lory.library.ui.asynctask.BaseAsyncTask
 import com.lory.library.ui.utils.Tracer
-import com.lory.library.uil.BuildConfig
-import com.lory.library.uil.dto.DTOAlbumData
 import com.lory.library.uil.ImageInfo
+import com.lory.library.uil.dto.DTOAlbumData
 import com.lory.library.uil.utils.Constants
 import java.util.*
 
 
 open class FetchGalleryInfoTask : BaseAsyncTask<ArrayList<DTOAlbumData>, Any> {
     companion object {
-        private const val TAG: String =  "FetchGalleryInfoTask"
+        private const val TAG: String = "FetchGalleryInfoTask"
     }
 
     constructor(context: Context, asyncCallBack: AsyncCallBack<ArrayList<DTOAlbumData>, Any>?) : super(context, asyncCallBack) {

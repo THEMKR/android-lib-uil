@@ -125,7 +125,7 @@ class GalleryActivity : MKRAppcompatActivity(), OnBaseActivityListener, AppPermi
                 val newDtoList: ArrayList<ImageInfo> = ArrayList<ImageInfo>()
                 val selectedDtoList = model.selectedImageInfoList
                 for (imageInfo in selectedDtoList) {
-                    newDtoList.add(ImageInfo.resizeImage(imageInfo, -1F))
+                    newDtoList.add(ImageInfo.cloneBuilder(imageInfo).setDimenPer(-1F).build())
                 }
                 val data = JsonUtil.toStringTokenType<ArrayList<ImageInfo>>(newDtoList, false)
                 val intent = Intent()

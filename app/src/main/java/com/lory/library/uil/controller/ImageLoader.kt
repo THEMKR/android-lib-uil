@@ -142,7 +142,7 @@ class ImageLoader {
         }
 
         override fun onProgressUpdate(vararg values: LoaderQuery?) {
-            val query: LoaderQuery = if ((values.size ?: 0) > 0) {
+            val query: LoaderQuery = if (values.size > 0) {
                 values[0]!!
             } else {
                 threadCount--

@@ -11,39 +11,20 @@ open class ImageInfo {
     companion object {
 
         /**
-         * Method to return ImageInfo with New Size
+         * Method to return ImageInfo.Builder with pre filed value of the info passed as param
          * @param imageInfo Pass the ImageInfo of current image on which you want to do this operation and get the new one
-         * @param dimensionPer
-         * @return Return the newImageData as pass in parameter
+         * @return Return the Builder with pre filed value of the info passed as param
          */
-        fun resizeImage(imageInfo: ImageInfo, dimensionPer: Float): ImageInfo {
-            return ImageInfo.Builder()
+        fun cloneBuilder(imageInfo: ImageInfo): ImageInfo.Builder {
+            return Builder()
                 .setCropSection(imageInfo.cropSection)
-                .setDimenPer(dimensionPer)
-                .setFlipType(imageInfo.flipType)
-                .setOrientation(imageInfo.orientation)
-                .setStorageLocation(imageInfo.path)
-                .setStorageType(imageInfo.storageType)
-                .setIsCached(imageInfo.isCached)
-                .build()
-        }
-
-        /**
-         * Method to return ImageInfo with New CropSection
-         * @param imageInfo Pass the ImageInfo of current image on which you want to do this operation and get the new one
-         * @param cropSection
-         * @return Return the newImageData as pass in parameter
-         */
-        fun cropImage(imageInfo: ImageInfo, cropSection: CropSection): ImageInfo {
-            return ImageInfo.Builder()
-                .setCropSection(cropSection)
                 .setDimenPer(imageInfo.dimensionPer)
                 .setFlipType(imageInfo.flipType)
                 .setOrientation(imageInfo.orientation)
                 .setStorageLocation(imageInfo.path)
                 .setStorageType(imageInfo.storageType)
                 .setIsCached(imageInfo.isCached)
-                .build()
+                .setSpecifire(imageInfo.specifire)
         }
 
         /**
@@ -52,13 +33,8 @@ open class ImageInfo {
          * @param flipType
          * @return Return the newImageData as pass in parameter
          */
-        fun flipImage(imageInfo: ImageInfo, flipType: Constants.FLIP_TYPE): ImageInfo {
-            return ImageInfo.Builder()
-                .setCropSection(imageInfo.cropSection)
-                .setDimenPer(imageInfo.dimensionPer)
-                .setOrientation(imageInfo.orientation)
-                .setStorageLocation(imageInfo.path)
-                .setStorageType(imageInfo.storageType)
+        fun cloneFlipImageBuilder(imageInfo: ImageInfo, flipType: Constants.FLIP_TYPE): ImageInfo {
+            return cloneBuilder(imageInfo)
                 .setFlipType(
                     when (imageInfo.flipType) {
                         Constants.FLIP_TYPE.BOTH.value -> {
@@ -140,6 +116,7 @@ open class ImageInfo {
     @SerializedName("specifire")
     @Expose
     var specifire: String = ""
+        private set
 
     /**
      * Section Of Image to be cropImage L,T,R,B
@@ -147,6 +124,7 @@ open class ImageInfo {
     @SerializedName("cropSection")
     @Expose
     var cropSection: CropSection = CropSection()
+        private set
 
     /**
      * Type of Storage Location [Constants.STORAGE_TYPE].value
@@ -154,6 +132,7 @@ open class ImageInfo {
     @SerializedName("storageType")
     @Expose
     var storageType: Int = Constants.STORAGE_TYPE.EXTERNAL.value
+        private set
 
     /**
      * Flip Type [Constants.FLIP_TYPE].value
@@ -161,6 +140,7 @@ open class ImageInfo {
     @SerializedName("flipType")
     @Expose
     var flipType: Int = Constants.FLIP_TYPE.NAN.value
+        private set
 
     /**
      * Scale Dimension Correspond to the Screen Width
@@ -169,6 +149,7 @@ open class ImageInfo {
     @SerializedName("dimensionPer")
     @Expose
     var dimensionPer: Float = 1F
+        private set
 
     /**
      * Type of Orientation Location [Constants.ORIENTATION].value
@@ -176,6 +157,7 @@ open class ImageInfo {
     @SerializedName("orientation")
     @Expose
     var orientation: Int = Constants.ORIENTATION.NAN.value
+        private set
 
     /**
      * Image Location
@@ -183,6 +165,7 @@ open class ImageInfo {
     @SerializedName("path")
     @Expose
     var path: String = ""
+        private set
 
     /**
      * If True then cached image in LUR Cache
@@ -190,6 +173,7 @@ open class ImageInfo {
     @SerializedName("isCached")
     @Expose
     var isCached: Boolean = false
+        private set
 
     override fun toString(): String {
         return super.toString() + " : $key"
@@ -239,6 +223,15 @@ open class ImageInfo {
          */
         fun setStorageLocation(location: String): Builder {
             imageInfo.path = location
+            return this
+        }
+
+        /**
+         * Method to set the Src Location of Image
+         * @param specifire
+         */
+        fun setSpecifire(specifire: String): Builder {
+            imageInfo.specifire = specifire
             return this
         }
 

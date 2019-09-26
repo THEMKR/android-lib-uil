@@ -36,10 +36,7 @@ class SelectedPicVH : BaseViewHolder<ImageInfo> {
 
     override fun bindData(dto: ImageInfo) {
         Tracer.debug(TAG, "bindData: " + dto)
-        if (dto == null) {
-            return
-        }
         cancelView.tag = dto
-        mkrImageView.imageInfo = ImageInfo.resizeImage(dto, Constants.DEFAULT_PIC_ITEM_LOAD_SIZE)
+        mkrImageView.imageInfo = ImageInfo.cloneBuilder(dto).setDimenPer(Constants.DEFAULT_PIC_ITEM_LOAD_SIZE).build()
     }
 }

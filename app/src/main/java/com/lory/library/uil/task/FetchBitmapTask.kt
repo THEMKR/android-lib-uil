@@ -10,8 +10,8 @@ import android.graphics.Paint.FILTER_BITMAP_FLAG
 import android.util.Log
 import com.lory.library.ui.asynctask.AsyncCallBack
 import com.lory.library.ui.asynctask.BaseAsyncTask
-import com.lory.library.uil.UILLib
 import com.lory.library.uil.ImageInfo
+import com.lory.library.uil.UILLib
 import com.lory.library.uil.utils.Constants
 
 
@@ -135,8 +135,6 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
                 if (!bitmap.equals(flipBitmapHorizontal)) {
                     bitmap.recycle()
                 }
-                flipBitmapHorizontal
-
                 val flipBitmapVertical = Bitmap.createBitmap(flipBitmapHorizontal.width, flipBitmapHorizontal.height, flipBitmapHorizontal.config)
                 canvas = Canvas(flipBitmapVertical)
                 flipHorizontalMatrix = Matrix()
