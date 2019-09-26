@@ -14,7 +14,7 @@ import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.UILLib
 import com.lory.library.uil.controller.ImageLoader
 
-open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageInfoView> {
+open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
 
     companion object {
         private const val TAG: String = "MKRImageInfoView"
@@ -123,23 +123,19 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener<MKRImageIn
         canvas?.drawBitmap(bitmap!!, null, rectDrawBitmap, null)
     }
 
-    override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: MKRImageInfoView) {
+    override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo) {
         Tracer.debug(TAG, "onImageLoaded : $bitmap : $imageInfo")
         if (bitmap != null && !bitmap.isRecycled && imageInfo.equals(this.imageInfo)) {
-            mkr.bitmap = bitmap
+            this.bitmap = bitmap
         } else {
-            mkr.bitmap = UILLib.getDefaultBitmap(context)
+            this.bitmap = UILLib.getDefaultBitmap(context)
             UILLib.loadImage(context, this.imageInfo!!, this)
         }
         invalidate()
     }
 
-    override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: MKRImageInfoView): Bitmap? {
+    override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo): Bitmap? {
         return bitmap
-    }
-
-    override fun onImageCaller(): MKRImageInfoView {
-        return this
     }
 
     /**

@@ -116,7 +116,7 @@ class UILLib {
          * @param imageInfo Info of the Image
          * @param onImageLoaded Callback to get back the loaded image form the dest location define in imageInfo [pass the same which is pass at the time of load image]
          */
-        fun <MKR> removeImage(context: Context, imageInfo: ImageInfo?, onImageLoaded: ImageLoader.OnImageLoaderListener<MKR>) {
+        fun removeImage(context: Context, imageInfo: ImageInfo?, onImageLoaded: ImageLoader.OnImageLoaderListener) {
             ImageLoader.getInstance(context).remove(imageInfo, onImageLoaded)
         }
 
@@ -126,7 +126,7 @@ class UILLib {
          * @param imageInfo Info of the Image
          * @param onImageLoaded Callback to get back the loaded image form the dest location definen in imageInfo
          */
-        fun <MKR> loadImage(context: Context, imageInfo: ImageInfo?, onImageLoaded: ImageLoader.OnImageLoaderListener<MKR>) {
+        fun loadImage(context: Context, imageInfo: ImageInfo?, onImageLoaded: ImageLoader.OnImageLoaderListener) {
             ImageLoader.getInstance(context).loadImage(imageInfo, onImageLoaded)
         }
 
@@ -144,8 +144,8 @@ class UILLib {
             } else {
                 view.setBackgroundResource(loaderImageId)
             }
-            val callback = object : ImageLoader.OnImageLoaderListener<View> {
-                override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: View) {
+            val callback = object : ImageLoader.OnImageLoaderListener {
+                override fun onImageLoaded(bitmap: Bitmap?, imageInfo: ImageInfo) {
                     try {
                         if (bitmap != null && !bitmap.isRecycled) {
                             if (view is ImageView) {
@@ -165,12 +165,8 @@ class UILLib {
                     }
                 }
 
-                override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo, mkr: View): Bitmap? {
+                override fun onImageAlter(bitmap: Bitmap?, imageInfo: ImageInfo): Bitmap? {
                     return bitmap
-                }
-
-                override fun onImageCaller(): View {
-                    return view
                 }
             }
 
