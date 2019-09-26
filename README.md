@@ -13,7 +13,7 @@
 
 #	APP Level Gradle
 
-        implementation 'com.lory.library:uil:1.0.0'
+        implementation 'com.lory.library:uil:1.0.5'
 
         implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
         implementation 'androidx.cardview:cardview:1.0.0'
