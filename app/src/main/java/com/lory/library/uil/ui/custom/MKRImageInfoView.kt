@@ -98,7 +98,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
     /**
      * Method to init the View
      */
-    protected fun init() {
+    protected open fun init() {
         bitmap = UILLib.getDefaultBitmap(context)
     }
 
@@ -141,7 +141,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
     /**
      * Method to set the rect based on Bitmap
      */
-    protected fun resetRect() {
+    protected open fun resetRect() {
         when (scaleType) {
             SCALE_TYPE.CENTER_CROP -> {
                 setRectCropCenter()
@@ -161,7 +161,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
     /**
      * Set the rect by cropping the center of the Bitmap
      */
-    protected fun setRectCropCenter() {
+    protected open fun setRectCropCenter() {
         val bitmapLamda = (bitmap?.width?.toFloat() ?: 1F) / (bitmap?.height?.toFloat() ?: 1F)
         val viewLamda = width.toFloat() / height.toFloat()
         if (viewLamda <= bitmapLamda) {
@@ -184,7 +184,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
     /**
      * Set the rect by fit the center Inside
      */
-    protected fun setRectCenterInside() {
+    protected open fun setRectCenterInside() {
         val bitmapLamda = (bitmap?.width?.toFloat() ?: 1F) / (bitmap?.height?.toFloat() ?: 1F)
         val viewLamda = width.toFloat() / height.toFloat()
         if (viewLamda <= bitmapLamda) {
@@ -207,7 +207,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
     /**
      * Set the rect by fit XY
      */
-    protected fun setRectFitXY() {
+    protected open fun setRectFitXY() {
         rectDrawBitmap.left = 0
         rectDrawBitmap.right = width
         rectDrawBitmap.top = 0
@@ -217,7 +217,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
     /**
      * Set the rect by custom, DEFAUKT FIT XY call
      */
-    protected fun setRectCustom() {
+    protected open fun setRectCustom() {
         setRectFitXY()
     }
 }
