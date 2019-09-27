@@ -168,7 +168,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
             // MATCH HEIGHT
             val widthReq = ((width.toFloat() * (bitmap?.width?.toFloat() ?: 1F)) / (bitmap?.height?.toFloat() ?: 1F)).toInt()
             rectDrawBitmap.left = -((widthReq - width) shr 1)
-            rectDrawBitmap.right = rectDrawBitmap.top + widthReq
+            rectDrawBitmap.right = rectDrawBitmap.left + widthReq
             rectDrawBitmap.top = 0
             rectDrawBitmap.bottom = height
         } else {
@@ -198,7 +198,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
             // MATCH HEIGHT
             val widthReq = ((width.toFloat() * (bitmap?.width?.toFloat() ?: 1F)) / (bitmap?.height?.toFloat() ?: 1F)).toInt()
             rectDrawBitmap.left = (width - widthReq) shr 1
-            rectDrawBitmap.right = rectDrawBitmap.top + widthReq
+            rectDrawBitmap.right = rectDrawBitmap.left + widthReq
             rectDrawBitmap.top = 0
             rectDrawBitmap.bottom = height
         }
