@@ -3,7 +3,6 @@ package com.lory.library.uil.controller
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.AsyncTask
-import android.util.Log
 import com.lory.library.storage.session.OnSessionStorageListener
 import com.lory.library.storage.session.SessionStorage
 import com.lory.library.ui.asynctask.AsyncCallBack
@@ -210,7 +209,6 @@ class ImageLoader {
                 try {
                     query.onImageLoaded.onImageLoaded(mkr, query.imageInfo)
                 } catch (e: Exception) {
-                    Log.e("MKT", "${TAG} : BitmapCallback : onSuccess : ${e.message} ")
                 }
             }
         }
@@ -238,7 +236,6 @@ class ImageLoader {
                     try {
                         query.onImageLoaded.onImageLoaded(result, query.imageInfo)
                     } catch (e: Exception) {
-                        Log.e("MKT", "${TAG} : saveAndSendBitmap : onSuccess : ${e.message} ")
                     }
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
@@ -250,7 +247,6 @@ class ImageLoader {
             try {
                 query.onImageLoaded.onImageLoaded(bitmap, query.imageInfo)
             } catch (e: Exception) {
-                Log.e("MKT", "${TAG} : saveAndSendBitmap : onSuccess : ${e.message} ")
             }
         }
     }

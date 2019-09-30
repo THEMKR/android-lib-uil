@@ -8,7 +8,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
@@ -161,7 +160,6 @@ class UILLib {
                             }
                         }
                     } catch (e: Exception) {
-                        Log.e(TAG, "onImageLoaded : VIEW : ${e.message} ")
                     }
                 }
 

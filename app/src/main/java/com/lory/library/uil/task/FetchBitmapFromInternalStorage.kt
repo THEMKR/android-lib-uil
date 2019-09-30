@@ -3,7 +3,6 @@ package com.lory.library.uil.task
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import com.lory.library.ui.asynctask.AsyncCallBack
 import com.lory.library.uil.ImageInfo
 
@@ -34,7 +33,6 @@ open class FetchBitmapFromInternalStorage : FetchBitmapTask {
             bitmap = BitmapFactory.decodeFile(imageInfo.path, options)
             return bitmap
         } catch (e: Exception) {
-            Log.e("UIL", "getBitmapFromPath : INTERNAL : ${e.message} ")
             return null
         }
     }

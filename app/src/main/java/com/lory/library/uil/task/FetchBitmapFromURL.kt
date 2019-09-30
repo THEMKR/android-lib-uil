@@ -3,7 +3,6 @@ package com.lory.library.uil.task
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import com.lory.library.ui.asynctask.AsyncCallBack
 import com.lory.library.uil.ImageInfo
 import java.net.HttpURLConnection
@@ -39,7 +38,6 @@ open class FetchBitmapFromURL : FetchBitmapTask {
             options.inJustDecodeBounds = false
             return BitmapFactory.decodeStream(inputStream, null, options)
         } catch (e: Exception) {
-            Log.e("UIL", "getBitmapFromPath : URL : ${e.message} ")
             return null
         }
     }

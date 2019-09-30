@@ -3,7 +3,6 @@ package com.lory.library.uil.task
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.util.Log
 import com.lory.library.ui.asynctask.AsyncCallBack
 import com.lory.library.uil.ImageInfo
 
@@ -32,7 +31,6 @@ open class FetchBitmapFromSdCard : FetchBitmapTask {
             options.inJustDecodeBounds = false
             return BitmapFactory.decodeFile(imageInfo.path, options)
         } catch (e: Exception) {
-            Log.e("UIL", "getBitmapFromPath : EXTERNAL : ${e.message} ")
             return null
         }
     }

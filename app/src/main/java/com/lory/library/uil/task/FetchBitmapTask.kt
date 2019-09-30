@@ -7,7 +7,6 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Paint.FILTER_BITMAP_FLAG
-import android.util.Log
 import com.lory.library.ui.asynctask.AsyncCallBack
 import com.lory.library.ui.asynctask.BaseAsyncTask
 import com.lory.library.uil.ImageInfo
@@ -37,7 +36,6 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
     override fun doInBackground(): Bitmap? {
         val cropSection = imageInfo.cropSection
         if (cropSection.left >= cropSection.right || cropSection.top >= cropSection.bottom) {
-            Log.e("MKR", "FetchBitmapTask : INVALID CROP SECTION : $cropSection")
             return null
         }
         // CREATE BITMAP
@@ -79,7 +77,6 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
                 return rotatedBitmap
             }
             Constants.ORIENTATION.REVERSED.value -> {
-                Log.e("MKR", "orientBitmap : 3 : ${bitmap.width} : ${bitmap.height}")
                 val rotatedBitmap = Bitmap.createBitmap(bitmap.width, bitmap.height, bitmap.config)
                 val matrix = Matrix()
                 matrix.preRotate(180F)
