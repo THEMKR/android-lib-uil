@@ -166,7 +166,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
         val viewLamda = width.toFloat() / height.toFloat()
         if (viewLamda <= bitmapLamda) {
             // MATCH HEIGHT
-            val widthReq = ((width.toFloat() * (bitmap?.width?.toFloat() ?: 1F)) / (bitmap?.height?.toFloat() ?: 1F)).toInt()
+            val widthReq = ((height.toFloat() * (bitmap?.width?.toFloat() ?: 1F)) / (bitmap?.height?.toFloat() ?: 1F)).toInt()
             rectDrawBitmap.left = -((widthReq - width) shr 1)
             rectDrawBitmap.right = rectDrawBitmap.left + widthReq
             rectDrawBitmap.top = 0
@@ -175,7 +175,7 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
             // MATH WIDTH
             rectDrawBitmap.left = 0
             rectDrawBitmap.right = width
-            val heightReq = ((height.toFloat() * (bitmap?.height?.toFloat() ?: 1F)) / (bitmap?.width?.toFloat() ?: 1F)).toInt()
+            val heightReq = ((width.toFloat() * (bitmap?.height?.toFloat() ?: 1F)) / (bitmap?.width?.toFloat() ?: 1F)).toInt()
             rectDrawBitmap.top = -((heightReq - height) shr 1)
             rectDrawBitmap.bottom = rectDrawBitmap.top + heightReq
         }
@@ -191,12 +191,12 @@ open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
             // MATH WIDTH
             rectDrawBitmap.left = 0
             rectDrawBitmap.right = width
-            val heightReq = ((height.toFloat() * (bitmap?.height?.toFloat() ?: 1F)) / (bitmap?.width?.toFloat() ?: 1F)).toInt()
+            val heightReq = ((width.toFloat() * (bitmap?.height?.toFloat() ?: 1F)) / (bitmap?.width?.toFloat() ?: 1F)).toInt()
             rectDrawBitmap.top = (height - heightReq) shr 1
             rectDrawBitmap.bottom = rectDrawBitmap.top + heightReq
         } else {
             // MATCH HEIGHT
-            val widthReq = ((width.toFloat() * (bitmap?.width?.toFloat() ?: 1F)) / (bitmap?.height?.toFloat() ?: 1F)).toInt()
+            val widthReq = ((height.toFloat() * (bitmap?.width?.toFloat() ?: 1F)) / (bitmap?.height?.toFloat() ?: 1F)).toInt()
             rectDrawBitmap.left = (width - widthReq) shr 1
             rectDrawBitmap.right = rectDrawBitmap.left + widthReq
             rectDrawBitmap.top = 0
