@@ -40,9 +40,9 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
         }
         // CREATE BITMAP
         var bitmap = getBitmapFromPath() ?: return null
-        bitmap = cropBitmap(bitmap)
         bitmap = flipBitmap(bitmap)
         bitmap = orientBitmap(bitmap)
+        bitmap = cropBitmap(bitmap)
         return bitmap
     }
 
