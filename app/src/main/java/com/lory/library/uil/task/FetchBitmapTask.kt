@@ -154,13 +154,13 @@ abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
     protected fun cropBitmap(bitmap: Bitmap): Bitmap {
         val cropSection = imageInfo.cropSection
         // IF NO CROP
-        if (cropSection.left == 0F && cropSection.top == 0F && cropSection.right == 1F && cropSection.bottom == 1F) {
+        if (cropSection.left <= 0F && cropSection.top <= 0F && cropSection.right >= 1F && cropSection.bottom >= 1F) {
             return bitmap
         }
         val left = (bitmap.width.toFloat() * cropSection.left).toInt()
-        val top = (bitmap.width.toFloat() * cropSection.top).toInt()
+        val top = (bitmap.height.toFloat() * cropSection.top).toInt()
         val width = (bitmap.width.toFloat() * (cropSection.right - cropSection.left)).toInt()
-        val height = (bitmap.width.toFloat() * (cropSection.bottom - cropSection.top)).toInt()
+        val height = (bitmap.height.toFloat() * (cropSection.bottom - cropSection.top)).toInt()
         val cropBitmap = Bitmap.createBitmap(bitmap, left, top, width, height)
         if (cropBitmap != bitmap) {
             bitmap.recycle()
