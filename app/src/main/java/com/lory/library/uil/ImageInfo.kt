@@ -34,64 +34,62 @@ open class ImageInfo {
          * @return Return the newImageData as pass in parameter
          */
         fun cloneFlipImageBuilder(imageInfo: ImageInfo, flipType: Constants.FLIP_TYPE): ImageInfo {
-            return cloneBuilder(imageInfo)
-                .setFlipType(
-                    when (imageInfo.flipType) {
-                        Constants.FLIP_TYPE.BOTH.value -> {
-                            when (flipType) {
-                                Constants.FLIP_TYPE.BOTH -> {
-                                    Constants.FLIP_TYPE.NAN.value
-                                }
-                                Constants.FLIP_TYPE.HORIZONTAL -> {
-                                    Constants.FLIP_TYPE.VERTICAL.value
-                                }
-                                Constants.FLIP_TYPE.VERTICAL -> {
-                                    Constants.FLIP_TYPE.HORIZONTAL.value
-                                }
-                                else -> {
-                                    imageInfo.flipType
-                                }
-                            }
+            val build = cloneBuilder(imageInfo)
+            when (imageInfo.flipType) {
+                Constants.FLIP_TYPE.BOTH.value -> {
+                    when (flipType) {
+                        Constants.FLIP_TYPE.BOTH -> {
+                            build.setFlipType(Constants.FLIP_TYPE.NAN.value)
                         }
-                        Constants.FLIP_TYPE.HORIZONTAL.value -> {
-                            when (flipType) {
-                                Constants.FLIP_TYPE.BOTH -> {
-                                    Constants.FLIP_TYPE.VERTICAL.value
-                                }
-                                Constants.FLIP_TYPE.HORIZONTAL -> {
-                                    Constants.FLIP_TYPE.NAN.value
-                                }
-                                Constants.FLIP_TYPE.VERTICAL -> {
-                                    Constants.FLIP_TYPE.BOTH.value
-                                }
-                                else -> {
-                                    imageInfo.flipType
-                                }
-                            }
+                        Constants.FLIP_TYPE.HORIZONTAL -> {
+                            build.setFlipType(Constants.FLIP_TYPE.VERTICAL.value)
                         }
-                        Constants.FLIP_TYPE.VERTICAL.value -> {
-                            when (flipType) {
-                                Constants.FLIP_TYPE.BOTH -> {
-                                    Constants.FLIP_TYPE.HORIZONTAL.value
-                                }
-                                Constants.FLIP_TYPE.HORIZONTAL -> {
-                                    Constants.FLIP_TYPE.BOTH.value
-                                }
-                                Constants.FLIP_TYPE.VERTICAL -> {
-                                    Constants.FLIP_TYPE.NAN.value
-                                }
-                                else -> {
-                                    imageInfo.flipType
-                                }
-                            }
+                        Constants.FLIP_TYPE.VERTICAL -> {
+                            build.setFlipType(Constants.FLIP_TYPE.HORIZONTAL.value)
                         }
                         else -> {
-                            imageInfo.flipType
+                            build.setFlipType(imageInfo.flipType)
                         }
                     }
-                )
-                .setIsCached(imageInfo.isCached)
-                .build()
+                }
+                Constants.FLIP_TYPE.HORIZONTAL.value -> {
+                    when (flipType) {
+                        Constants.FLIP_TYPE.BOTH -> {
+                            build.setFlipType(Constants.FLIP_TYPE.VERTICAL.value)
+                        }
+                        Constants.FLIP_TYPE.HORIZONTAL -> {
+                            build.setFlipType(Constants.FLIP_TYPE.NAN.value)
+                        }
+                        Constants.FLIP_TYPE.VERTICAL -> {
+                            build.setFlipType(Constants.FLIP_TYPE.BOTH.value)
+                        }
+                        else -> {
+                            build.setFlipType(imageInfo.flipType)
+                        }
+                    }
+                }
+                Constants.FLIP_TYPE.VERTICAL.value -> {
+                    when (flipType) {
+                        Constants.FLIP_TYPE.BOTH -> {
+                            build.setFlipType(Constants.FLIP_TYPE.HORIZONTAL.value)
+                        }
+                        Constants.FLIP_TYPE.HORIZONTAL -> {
+                            build.setFlipType(Constants.FLIP_TYPE.BOTH.value)
+                        }
+                        Constants.FLIP_TYPE.VERTICAL -> {
+                            build.setFlipType(Constants.FLIP_TYPE.NAN.value)
+                        }
+                        else -> {
+                            build.setFlipType(imageInfo.flipType)
+                        }
+                    }
+                }
+                else -> {
+                    build.setFlipType(flipType.value)
+                }
+            }
+            build.setIsCached(imageInfo.isCached)
+            return build.build()
         }
     }
 
