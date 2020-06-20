@@ -3,10 +3,12 @@ package com.lory.library.uil.task
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.lory.library.ui.asynctask.AsyncCallBack
+import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.uil.ImageInfo
 
-
+/**
+ * @author THEMKR
+ */
 open class FetchBitmapFromInternalStorage : FetchBitmapTask {
 
     /**

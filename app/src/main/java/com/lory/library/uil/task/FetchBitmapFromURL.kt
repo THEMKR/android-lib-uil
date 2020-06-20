@@ -3,12 +3,14 @@ package com.lory.library.uil.task
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import com.lory.library.ui.asynctask.AsyncCallBack
+import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.uil.ImageInfo
 import java.net.HttpURLConnection
 import java.net.URL
 
-
+/**
+ * @author THEMKR
+ */
 open class FetchBitmapFromURL : FetchBitmapTask {
 
     /**

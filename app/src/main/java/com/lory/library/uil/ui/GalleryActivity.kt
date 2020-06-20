@@ -8,7 +8,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import com.lory.library.ui.asynctask.AsyncCallBack
+import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.ui.callback.OnBaseActivityListener
 import com.lory.library.ui.controller.AppPermissionController
 import com.lory.library.ui.ui.activity.MKRAppcompatActivity
@@ -23,6 +23,9 @@ import com.lory.library.uil.provider.UILTaskProvider
 import com.lory.library.uil.ui.fragment.FragmentGalleryAlbum
 import com.lory.library.uil.utils.JsonUtil
 
+/**
+ * @author THEMKR
+ */
 class GalleryActivity : MKRAppcompatActivity(), OnBaseActivityListener, AppPermissionController.OnAppPermissionControllerListener, View.OnClickListener {
 
     companion object {

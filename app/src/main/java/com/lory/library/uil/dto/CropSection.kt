@@ -3,6 +3,9 @@ package com.lory.library.uil.dto
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
+/**
+ * @author THEMKR
+ */
 open class CropSection {
 
     /**

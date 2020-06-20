@@ -12,9 +12,8 @@ import com.lory.library.uil.ui.custom.MKRImageInfoView
 import com.lory.library.uil.utils.Constants
 
 /**
- * Created by mkr on 14/3/18.
+ * @author THEMKR
  */
-
 class GalleryAlbumVH : BaseViewHolder<DTOAlbumData> {
 
     companion object {

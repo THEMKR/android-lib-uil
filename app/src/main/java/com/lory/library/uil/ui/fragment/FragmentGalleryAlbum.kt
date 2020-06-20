@@ -22,6 +22,9 @@ import com.lory.library.uil.provider.FragmentProvider
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
 import com.lory.library.uil.utils.JsonUtil
 
+/**
+ * @author THEMKR
+ */
 class FragmentGalleryAlbum : Fragment(), OnBaseFragmentListener, BaseViewHolder.VHClickable {
 
     companion object {

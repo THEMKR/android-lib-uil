@@ -2,6 +2,9 @@ package com.lory.library.uil.dto
 
 import com.lory.library.uil.ImageInfo
 
+/**
+ * @author THEMKR
+ */
 class Model {
     companion object {
         private var MODEL: Model? = null

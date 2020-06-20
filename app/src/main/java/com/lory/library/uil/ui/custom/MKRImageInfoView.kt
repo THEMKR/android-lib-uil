@@ -14,6 +14,9 @@ import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.UILLib
 import com.lory.library.uil.controller.ImageLoader
 
+/**
+ * @author THEMKR
+ */
 open class MKRImageInfoView : View, ImageLoader.OnImageLoaderListener {
 
     companion object {

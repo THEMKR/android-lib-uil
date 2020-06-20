@@ -3,6 +3,9 @@ package com.lory.library.uil.utils
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 
+/**
+ * @author THEMKR
+ */
 class JsonUtil {
     companion object {
 

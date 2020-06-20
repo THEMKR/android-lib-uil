@@ -22,7 +22,9 @@ import com.lory.library.uil.ui.GalleryActivity
 import com.lory.library.uil.ui.adapter.AdapterItemHandler
 import com.lory.library.uil.utils.JsonUtil
 
-
+/**
+ * @author THEMKR
+ */
 class FragmentGalleryPic : Fragment(), OnBaseFragmentListener, BaseViewHolder.VHClickable {
     companion object {
         private const val TAG: String = "FragmentGalleryPic"

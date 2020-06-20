@@ -6,6 +6,9 @@ import com.lory.library.storage.session.SessionStorage
 import com.lory.library.uil.dto.CropSection
 import com.lory.library.uil.utils.Constants
 
+/**
+ * @author THEMKR
+ */
 open class ImageInfo {
 
     companion object {

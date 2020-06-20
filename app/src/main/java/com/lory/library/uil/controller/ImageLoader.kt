@@ -3,16 +3,18 @@ package com.lory.library.uil.controller
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.AsyncTask
+import com.lory.library.asynctask.AsyncCallBack
 import com.lory.library.storage.session.OnSessionStorageListener
 import com.lory.library.storage.session.SessionStorage
-import com.lory.library.ui.asynctask.AsyncCallBack
 import com.lory.library.ui.utils.Tracer
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.provider.UILTaskProvider
 import com.lory.library.uil.utils.Constants
 import java.util.*
 
-
+/**
+ * @author THEMKR
+ */
 class ImageLoader {
 
     companion object {

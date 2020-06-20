@@ -4,6 +4,9 @@ import androidx.fragment.app.Fragment
 import com.lory.library.uil.ui.fragment.FragmentGalleryAlbum
 import com.lory.library.uil.ui.fragment.FragmentGalleryPic
 
+/**
+ * @author THEMKR
+ */
 class FragmentProvider {
     companion object {
         fun getFragment(tag: String): Fragment {

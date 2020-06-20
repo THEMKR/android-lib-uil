@@ -12,9 +12,8 @@ import com.lory.library.uil.ui.adapter.viewholder.GalleryPicVH
 import com.lory.library.uil.ui.adapter.viewholder.SelectedPicVH
 
 /**
- * Created by mkr on 14/3/18.
+ * @author THEMKR
  */
-
 class AdapterItemHandler : BaseAdapterItemHandler() {
     companion object {
         private val TAG: String = "AdapterItemHandler";

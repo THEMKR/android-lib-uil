@@ -1,5 +1,8 @@
 package com.lory.library.uil.utils
 
+/**
+ * @author THEMKR
+ */
 class Constants {
     companion object {
         const val CHANNEL_ID = "com.mkrworld.sketch"

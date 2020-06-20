@@ -17,6 +17,9 @@ import com.lory.library.uil.controller.ImageLoader
 import com.lory.library.uil.ui.GalleryActivity
 import com.lory.library.uil.utils.JsonUtil
 
+/**
+ * @author THEMKR
+ */
 class UILLib {
 
     companion object {

@@ -7,13 +7,15 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Paint.ANTI_ALIAS_FLAG
 import android.graphics.Paint.FILTER_BITMAP_FLAG
-import com.lory.library.ui.asynctask.AsyncCallBack
-import com.lory.library.ui.asynctask.BaseAsyncTask
+import com.lory.library.asynctask.AsyncCallBack
+import com.lory.library.asynctask.BaseAsyncTask
 import com.lory.library.uil.ImageInfo
 import com.lory.library.uil.UILLib
 import com.lory.library.uil.utils.Constants
 
-
+/**
+ * @author THEMKR
+ */
 abstract class FetchBitmapTask : BaseAsyncTask<Bitmap?, Any> {
 
     val imageInfo: ImageInfo

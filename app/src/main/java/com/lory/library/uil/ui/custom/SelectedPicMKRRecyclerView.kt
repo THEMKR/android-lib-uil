@@ -9,7 +9,9 @@ import androidx.core.content.ContextCompat
 import com.lory.library.ui.ui.view.MKRRecyclerView
 import com.lory.library.uil.R
 
-
+/**
+ * @author THEMKR
+ */
 open class SelectedPicMKRRecyclerView : MKRRecyclerView {
 
     private val paint = Paint()
